@@ -1,0 +1,28 @@
+{
+  "styling_rules": {
+    "outfit_options_mode_v1": {
+      "version": "1.0",
+      "description": "Rules and templates for generating 2 safe + 1 bold (only if requested) outfit options. Each option should be one sentence max.",
+      "defaults": {
+        "max_options": 3,
+        "default_options": 2,
+        "include_bold_only_if": "signals.user_requests_bold == true",
+        "option_sentence_limit": 1,
+        "max_overlays_per_option": 1
+      },
+      "option_structure": {
+        "format": "{Top} + {Bottom} + {Shoe} + {One_finisher}",
+        "one_finisher_examples": ["structured bag", "simple jewelry", "light layer", "watch", "sunglasses"]
+      },
+      "constraints": [
+        "Respect user constraints (no heels, modest, comfort-first, weather).",
+        "No shopping suggestions unless the user asks to buy or closet lacks items.",
+        "Keep language simple; no long explanations."
+      ],
+      "tone_notes": [
+        "Affirm first, then options.",
+        "Do not sound bossy—use optional phrasing when needed."
+      ]
+    }
+  }
+}

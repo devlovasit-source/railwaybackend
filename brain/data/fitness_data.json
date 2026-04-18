@@ -1,0 +1,1589 @@
+{
+  "version": "3.0",
+  "meta": {
+    "description": "AHVI Fitness Brain v3 — workout intelligence bank with session templates, weekly programs, body-goal rules, age-aware logic, meal linking, energy routing, and progression ladders.",
+    "authoring_notes": [
+      "Use this bank for recommendation routing, not just display.",
+      "Filter order: gender -> age_band -> goal -> duration -> location -> equipment -> style -> target area -> constraints -> energy level -> meal links.",
+      "All linked meal_plan_keys are references and should exist in the nutrition bank."
+    ]
+  },
+  "durations_supported": [10, 20, 30, 40, 50, 60],
+  "genders_supported": ["women", "men", "universal"],
+  "levels_supported": ["beginner", "intermediate", "advanced", "all"],
+  "styles_supported": [
+    "cardio",
+    "strength",
+    "weights",
+    "dance_fitness",
+    "yoga",
+    "posture",
+    "mobility",
+    "low_impact",
+    "hiit",
+    "walking"
+  ],
+  "locations_supported": ["home", "gym", "hotel_room", "outdoor", "office"],
+  "equipment_supported": ["none", "dumbbells", "resistance_band", "gym_machines", "mat"],
+  "target_areas_supported": [
+    "full_body",
+    "core",
+    "glutes",
+    "legs",
+    "arms",
+    "back",
+    "shoulders",
+    "chest",
+    "hips"
+  ],
+  "goals_supported": [
+    "fat_loss",
+    "muscle_gain",
+    "toning",
+    "strength",
+    "mobility",
+    "posture",
+    "travel_fitness",
+    "pcos_support",
+    "general_fitness",
+    "core_strength",
+    "back_health",
+    "stress_relief",
+    "hormone_friendly",
+    "cardio"
+  ],
+  "energy_levels_supported": ["low", "moderate", "high"],
+  "age_bands_supported": ["18_24", "25_34", "35_44", "45_54", "55_plus"],
+
+  "session_templates": [
+    {
+      "key": "women_10_glute_activation_home",
+      "title": "Women — 10 Min Glute Activation",
+      "gender": "women",
+      "style": "strength",
+      "goal_tags": ["toning", "glutes", "general_fitness"],
+      "target_areas": ["glutes", "legs"],
+      "level": "beginner",
+      "duration_min": 10,
+      "equipment": ["none"],
+      "location": ["home", "hotel_room"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Activation", "items": ["Glute bridges 15", "Fire hydrants 12 each side", "Donkey kicks 12 each side"] },
+        { "title": "Main", "items": ["Squats 15", "Pulse squats 15", "Glute bridge hold 20 sec"] }
+      ],
+      "tags": ["women", "glutes", "quick", "home", "no_equipment"]
+    },
+    {
+      "key": "men_10_core_power_home",
+      "title": "Men — 10 Min Core Power",
+      "gender": "men",
+      "style": "strength",
+      "goal_tags": ["core_strength", "strength", "general_fitness"],
+      "target_areas": ["core"],
+      "level": "beginner",
+      "duration_min": 10,
+      "equipment": ["none"],
+      "location": ["home", "hotel_room"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Core Circuit x 3", "items": ["Plank 25 sec", "Bicycle crunch 20", "Leg raises 10", "Mountain climbers 20"] }
+      ],
+      "tags": ["men", "core", "quick", "home", "no_equipment"]
+    },
+    {
+      "key": "universal_10_dance_cardio_home",
+      "title": "Universal — 10 Min Dance Cardio",
+      "gender": "universal",
+      "style": "dance_fitness",
+      "goal_tags": ["fat_loss", "cardio", "general_fitness"],
+      "target_areas": ["full_body"],
+      "level": "beginner",
+      "duration_min": 10,
+      "equipment": ["none"],
+      "location": ["home", "hotel_room"],
+      "energy_level": "high",
+      "cards": [
+        { "title": "Dance Flow", "items": ["Bollywood cardio 3 min", "Side step + clap 2 min", "High energy freestyle 3 min", "Cool groove 2 min"] }
+      ],
+      "tags": ["dance", "cardio", "quick", "fun"]
+    },
+    {
+      "key": "universal_10_posture_reset",
+      "title": "Universal — 10 Min Posture Reset",
+      "gender": "universal",
+      "style": "posture",
+      "goal_tags": ["posture", "mobility", "back_health"],
+      "target_areas": ["back", "shoulders", "core"],
+      "level": "all",
+      "duration_min": 10,
+      "equipment": ["none"],
+      "location": ["home", "office", "hotel_room"],
+      "energy_level": "low",
+      "cards": [
+        { "title": "Reset", "items": ["Wall angels 10", "Cat-cow 10", "Bird dog 8 each side", "Chest opener 30 sec", "Thread the needle 30 sec each side"] }
+      ],
+      "tags": ["posture", "desk_job", "quick", "recovery"]
+    },
+
+    {
+      "key": "women_20_fatloss_hiit_home",
+      "title": "Women — 20 Min Fat Loss HIIT",
+      "gender": "women",
+      "style": "cardio",
+      "goal_tags": ["fat_loss", "toning"],
+      "target_areas": ["full_body"],
+      "level": "beginner",
+      "duration_min": 20,
+      "equipment": ["none"],
+      "location": ["home"],
+      "energy_level": "high",
+      "cards": [
+        { "title": "Warm-up", "items": ["March in place 2 min", "Arm swings 1 min", "Hip circles 1 min"] },
+        { "title": "HIIT Block x 3", "items": ["Squats 15", "Standing knee drives 20", "Step touch 45 sec", "Glute bridges 15"] },
+        { "title": "Cool-down", "items": ["Slow breathing 1 min", "Quad stretch 30 sec each side"] }
+      ],
+      "tags": ["women", "fat_loss", "home", "cardio"]
+    },
+    {
+      "key": "men_20_upper_strength_home",
+      "title": "Men — 20 Min Upper Strength Home",
+      "gender": "men",
+      "style": "strength",
+      "goal_tags": ["muscle_gain", "strength"],
+      "target_areas": ["arms", "chest", "shoulders"],
+      "level": "beginner",
+      "duration_min": 20,
+      "equipment": ["dumbbells"],
+      "location": ["home", "gym"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Strength Block x 3", "items": ["Dumbbell curls 12", "Shoulder press 10", "Floor press 10", "Tricep extensions 10"] },
+        { "title": "Finisher", "items": ["Push-ups 8 to 10", "Plank 20 sec"] }
+      ],
+      "tags": ["men", "upper_body", "weights", "muscle_gain"]
+    },
+    {
+      "key": "universal_20_yoga_mobility_home",
+      "title": "Universal — 20 Min Yoga Mobility",
+      "gender": "universal",
+      "style": "yoga",
+      "goal_tags": ["mobility", "recovery", "stress_relief"],
+      "target_areas": ["full_body"],
+      "level": "all",
+      "duration_min": 20,
+      "equipment": ["none"],
+      "location": ["home", "hotel_room"],
+      "energy_level": "low",
+      "cards": [
+        { "title": "Flow", "items": ["Cat-cow 1 min", "Downward dog 30 sec", "Low lunge 30 sec each side", "Child’s pose 1 min", "Seated forward fold 1 min", "Supine twist 30 sec each side", "Breathing 2 min"] }
+      ],
+      "tags": ["yoga", "mobility", "recovery", "home"]
+    },
+    {
+      "key": "universal_20_back_friendly_core_home",
+      "title": "Universal — 20 Min Back-Friendly Core",
+      "gender": "universal",
+      "style": "strength",
+      "goal_tags": ["core_strength", "posture", "back_health"],
+      "target_areas": ["core", "back"],
+      "level": "beginner",
+      "duration_min": 20,
+      "equipment": ["none"],
+      "location": ["home"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Core Block x 3", "items": ["Dead bug 10 each side", "Bird dog 10 each side", "Glute bridge 12", "Side plank knees down 15 sec each side"] },
+        { "title": "Mobility", "items": ["Cat-cow 10", "Child’s pose 30 sec"] }
+      ],
+      "tags": ["back_friendly", "core", "posture", "home"]
+    },
+
+    {
+      "key": "women_30_lower_body_home",
+      "title": "Women — 30 Min Lower Body Sculpt",
+      "gender": "women",
+      "style": "strength",
+      "goal_tags": ["toning", "glutes", "legs"],
+      "target_areas": ["glutes", "legs"],
+      "level": "beginner",
+      "duration_min": 30,
+      "equipment": ["none"],
+      "location": ["home"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Warm-up", "items": ["March in place 2 min", "Leg swings 30 sec", "Hip circles 30 sec"] },
+        { "title": "Main Circuit x 3", "items": ["Squats 15", "Reverse lunges 10 each side", "Glute bridges 20", "Pulse squats 15", "Calf raises 15"] },
+        { "title": "Cool-down", "items": ["Figure-4 stretch 30 sec", "Hamstring stretch 30 sec", "Butterfly stretch 30 sec"] }
+      ],
+      "tags": ["women", "glutes", "legs", "toning"]
+    },
+    {
+      "key": "men_30_muscle_gain_dumbbells",
+      "title": "Men — 30 Min Muscle Gain Dumbbells",
+      "gender": "men",
+      "style": "weights",
+      "goal_tags": ["muscle_gain", "strength"],
+      "target_areas": ["full_body", "arms", "chest"],
+      "level": "intermediate",
+      "duration_min": 30,
+      "equipment": ["dumbbells"],
+      "location": ["home", "gym"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Warm-up", "items": ["Arm circles 1 min", "Bodyweight squats 10", "Shoulder mobility 1 min"] },
+        { "title": "Main Block x 3", "items": ["Dumbbell chest press 10", "Dumbbell row 10 each side", "Goblet squat 10", "Shoulder press 10"] },
+        { "title": "Accessory", "items": ["Bicep curls 12", "Tricep extensions 12"] }
+      ],
+      "tags": ["men", "weights", "muscle_gain", "dumbbells"]
+    },
+    {
+      "key": "universal_30_dance_fitness",
+      "title": "Universal — 30 Min Dance Fitness",
+      "gender": "universal",
+      "style": "dance_fitness",
+      "goal_tags": ["fat_loss", "cardio", "general_fitness"],
+      "target_areas": ["full_body"],
+      "level": "beginner",
+      "duration_min": 30,
+      "equipment": ["none"],
+      "location": ["home"],
+      "energy_level": "high",
+      "cards": [
+        { "title": "Dance Block 1", "items": ["Bollywood cardio 10 min"] },
+        { "title": "Dance Block 2", "items": ["Zumba-style moves 10 min"] },
+        { "title": "Dance Block 3", "items": ["Freestyle cardio groove 10 min"] }
+      ],
+      "tags": ["dance", "cardio", "fat_loss", "fun"]
+    },
+    {
+      "key": "universal_30_full_body_hotel_room",
+      "title": "Universal — 30 Min Hotel Room Workout",
+      "gender": "universal",
+      "style": "strength",
+      "goal_tags": ["travel_fitness", "maintenance", "general_fitness"],
+      "target_areas": ["full_body"],
+      "level": "all",
+      "duration_min": 30,
+      "equipment": ["none"],
+      "location": ["hotel_room"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Circuit x 3", "items": ["Squats 15", "Incline push-ups on bed/desk 12", "Glute bridges 15", "Plank 25 sec", "Reverse lunges 10 each side"] },
+        { "title": "Cool-down", "items": ["Hip stretch 30 sec each side", "Hamstring stretch 30 sec"] }
+      ],
+      "tags": ["travel", "hotel", "no_equipment", "full_body"]
+    },
+
+    {
+      "key": "women_40_fatloss_strength_mix",
+      "title": "Women — 40 Min Fat Loss + Strength Mix",
+      "gender": "women",
+      "style": "strength",
+      "goal_tags": ["fat_loss", "toning", "strength"],
+      "target_areas": ["full_body", "glutes", "core"],
+      "level": "intermediate",
+      "duration_min": 40,
+      "equipment": ["dumbbells"],
+      "location": ["home", "gym"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Warm-up", "items": ["Walk in place 3 min", "Arm circles 1 min", "Hip openers 1 min"] },
+        { "title": "Strength Block x 3", "items": ["Goblet squat 12", "Romanian deadlift 10", "Dumbbell row 10 each side", "Glute bridge 15"] },
+        { "title": "Cardio Finisher", "items": ["Step touch 1 min", "High knees low impact 45 sec", "Bodyweight squats 15"] }
+      ],
+      "tags": ["women", "fat_loss", "weights", "full_body"]
+    },
+    {
+      "key": "men_40_upper_hypertrophy_gym",
+      "title": "Men — 40 Min Upper Hypertrophy Gym",
+      "gender": "men",
+      "style": "weights",
+      "goal_tags": ["muscle_gain", "strength"],
+      "target_areas": ["arms", "chest", "shoulders", "back"],
+      "level": "intermediate",
+      "duration_min": 40,
+      "equipment": ["gym_machines", "dumbbells"],
+      "location": ["gym"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Main Lifts", "items": ["Lat pulldown 3x10", "Chest press 3x10", "Seated row 3x10", "Shoulder press 3x10"] },
+        { "title": "Accessory", "items": ["Bicep curls 3x12", "Tricep pushdown 3x12"] }
+      ],
+      "tags": ["men", "gym", "upper_body", "muscle_gain"]
+    },
+    {
+      "key": "universal_40_yoga_flow_strength",
+      "title": "Universal — 40 Min Yoga Flow + Strength",
+      "gender": "universal",
+      "style": "yoga",
+      "goal_tags": ["mobility", "strength", "recovery"],
+      "target_areas": ["full_body", "core"],
+      "level": "all",
+      "duration_min": 40,
+      "equipment": ["none"],
+      "location": ["home"],
+      "energy_level": "low",
+      "cards": [
+        { "title": "Flow", "items": ["Sun salutations 8 min", "Warrior flow 8 min", "Chair pose 1 min total", "Plank to cobra transitions 8 reps", "Hip openers 8 min", "Breathing 4 min"] }
+      ],
+      "tags": ["yoga", "mobility", "strength", "home"]
+    },
+
+    {
+      "key": "women_50_glutes_legs_weights",
+      "title": "Women — 50 Min Glutes + Legs Weights",
+      "gender": "women",
+      "style": "weights",
+      "goal_tags": ["strength", "toning", "glutes"],
+      "target_areas": ["glutes", "legs"],
+      "level": "intermediate",
+      "duration_min": 50,
+      "equipment": ["dumbbells", "gym_machines"],
+      "location": ["gym", "home"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Warm-up", "items": ["5 min incline walk", "Hip mobility 2 min"] },
+        { "title": "Main Lifts", "items": ["Goblet squat 4x10", "Romanian deadlift 4x10", "Bulgarian split squat 3x8 each side", "Hip thrust 4x12"] },
+        { "title": "Accessory", "items": ["Glute bridge pulse 20", "Calf raises 20"] }
+      ],
+      "tags": ["women", "glutes", "legs", "weights"]
+    },
+    {
+      "key": "men_50_full_body_gym_strength",
+      "title": "Men — 50 Min Full Body Gym Strength",
+      "gender": "men",
+      "style": "weights",
+      "goal_tags": ["muscle_gain", "strength"],
+      "target_areas": ["full_body"],
+      "level": "intermediate",
+      "duration_min": 50,
+      "equipment": ["gym_machines", "dumbbells"],
+      "location": ["gym"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Main Lifts", "items": ["Bench press 4x8", "Lat pulldown 4x10", "Leg press 4x10", "Shoulder press 3x10"] },
+        { "title": "Accessory", "items": ["Bicep curls 3x12", "Tricep pushdown 3x12", "Plank 30 sec x 3"] }
+      ],
+      "tags": ["men", "gym", "muscle_gain", "weights"]
+    },
+    {
+      "key": "universal_50_cardio_plus_strength",
+      "title": "Universal — 50 Min Cardio + Strength",
+      "gender": "universal",
+      "style": "cardio",
+      "goal_tags": ["fat_loss", "general_fitness", "strength"],
+      "target_areas": ["full_body"],
+      "level": "intermediate",
+      "duration_min": 50,
+      "equipment": ["dumbbells"],
+      "location": ["home", "gym"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Cardio", "items": ["Brisk walk or treadmill 15 min"] },
+        { "title": "Strength Block x 3", "items": ["Goblet squat 12", "Dumbbell row 10 each side", "Push-ups 10", "Glute bridge 15"] },
+        { "title": "Cool-down", "items": ["Stretch 5 min"] }
+      ],
+      "tags": ["fat_loss", "strength", "hybrid"]
+    },
+
+    {
+      "key": "women_60_yoga_tone_flow",
+      "title": "Women — 60 Min Yoga Tone Flow",
+      "gender": "women",
+      "style": "yoga",
+      "goal_tags": ["mobility", "toning", "stress_relief"],
+      "target_areas": ["full_body", "core", "legs"],
+      "level": "all",
+      "duration_min": 60,
+      "equipment": ["none"],
+      "location": ["home"],
+      "energy_level": "low",
+      "cards": [
+        { "title": "Warm-up", "items": ["Breathing 3 min", "Gentle mobility 5 min"] },
+        { "title": "Flow", "items": ["Sun salutations 10 min", "Standing sequence 12 min", "Balance poses 8 min", "Core yoga 8 min", "Hip openers 8 min"] },
+        { "title": "Cool-down", "items": ["Supine twist 2 min", "Savasana 4 min"] }
+      ],
+      "tags": ["women", "yoga", "mobility", "tone"]
+    },
+    {
+      "key": "men_60_strength_split_gym",
+      "title": "Men — 60 Min Strength Split Gym",
+      "gender": "men",
+      "style": "weights",
+      "goal_tags": ["muscle_gain", "strength"],
+      "target_areas": ["full_body", "chest", "back", "legs"],
+      "level": "intermediate",
+      "duration_min": 60,
+      "equipment": ["gym_machines", "dumbbells"],
+      "location": ["gym"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Warm-up", "items": ["5 min treadmill", "Band work 2 min"] },
+        { "title": "Main Lifts", "items": ["Bench press 4x8", "Seated row 4x10", "Leg press 4x10", "Dumbbell shoulder press 3x10"] },
+        { "title": "Accessory", "items": ["Bicep curls 3x12", "Tricep pushdown 3x12", "Calf raises 3x15"] },
+        { "title": "Cool-down", "items": ["Stretch chest, back, hamstrings 5 min"] }
+      ],
+      "tags": ["men", "gym", "strength", "muscle_gain"]
+    },
+    {
+      "key": "universal_60_full_body_home_strength",
+      "title": "Universal — 60 Min Full Body Home Strength",
+      "gender": "universal",
+      "style": "strength",
+      "goal_tags": ["strength", "general_fitness", "fat_loss"],
+      "target_areas": ["full_body"],
+      "level": "intermediate",
+      "duration_min": 60,
+      "equipment": ["dumbbells"],
+      "location": ["home"],
+      "energy_level": "moderate",
+      "cards": [
+        { "title": "Warm-up", "items": ["Walk in place 5 min", "Mobility 5 min"] },
+        { "title": "Strength Block A", "items": ["Goblet squat 12", "Dumbbell row 10 each side", "Push-ups 10"] },
+        { "title": "Strength Block B", "items": ["Romanian deadlift 12", "Shoulder press 10", "Glute bridge 15"] },
+        { "title": "Core + Cool-down", "items": ["Plank 30 sec x 3", "Stretch 8 min"] }
+      ],
+      "tags": ["home", "weights", "full_body", "strength"]
+    },
+    {
+      "key": "women_20_pcos_support_home",
+      "title": "Women — 20 Min PCOS Support Home",
+      "gender": "women",
+      "style": "low_impact",
+      "goal_tags": ["pcos_support", "fat_loss", "hormone_friendly"],
+      "target_areas": ["full_body"],
+      "level": "beginner",
+      "duration_min": 20,
+      "equipment": ["none"],
+      "location": ["home", "outdoor"],
+      "energy_level": "low",
+      "cards": [
+        { "title": "Walk", "items": ["Brisk walk 8 min"] },
+        { "title": "Strength Block x 2", "items": ["Squats 10", "Glute bridges 12", "Wall push-ups 10", "Dead bug 10 each side"] },
+        { "title": "Cool-down", "items": ["Deep breathing 2 min"] }
+      ],
+      "tags": ["pcos", "women", "low_stress", "balanced"]
+    },
+    {
+      "key": "women_30_pcos_strength_walk",
+      "title": "Women — 30 Min PCOS Strength + Walk",
+      "gender": "women",
+      "style": "low_impact",
+      "goal_tags": ["pcos_support", "strength", "fat_loss"],
+      "target_areas": ["full_body", "glutes", "core"],
+      "level": "beginner",
+      "duration_min": 30,
+      "equipment": ["none"],
+      "location": ["home", "outdoor"],
+      "energy_level": "low",
+      "cards": [
+        { "title": "Walk", "items": ["Brisk walk 10 min"] },
+        { "title": "Strength Block x 3", "items": ["Squats 10", "Glute bridges 15", "Wall push-ups 10", "Bird dog 10 each side"] },
+        { "title": "Cool-down", "items": ["Breathing 2 min", "Stretch 3 min"] }
+      ],
+      "tags": ["pcos", "women", "home", "low_impact"]
+    }
+  ],
+
+  "weekly_programs": [
+    {
+      "key": "women_3day_home_toning",
+      "title": "Women 3-Day Home Toning Plan",
+      "gender": "women",
+      "goal": "toning",
+      "level": "beginner",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "women_30_lower_body_home",
+        "wed": "women_20_fatloss_hiit_home",
+        "fri": "women_10_glute_activation_home"
+      },
+      "rest_day_guidance": ["Walk 20 min", "Stretch 5 min"],
+      "progression": ["Week 2: add reps", "Week 3: add one extra round", "Week 4: shorten rest"]
+    },
+    {
+      "key": "women_4day_pcos_support",
+      "title": "Women 4-Day PCOS Support Plan",
+      "gender": "women",
+      "goal": "pcos_support",
+      "level": "beginner",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "women_20_pcos_support_home",
+        "tue": "universal_10_posture_reset",
+        "thu": "women_30_pcos_strength_walk",
+        "sat": "universal_20_yoga_mobility_home"
+      },
+      "rest_day_guidance": ["Walk daily", "Avoid very high intensity every day"],
+      "progression": ["Week 2: add 5 min to walk", "Week 3: add one extra strength round"]
+    },
+    {
+      "key": "men_4day_muscle_gain_gym",
+      "title": "Men 4-Day Muscle Gain Gym Plan",
+      "gender": "men",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "men_40_upper_hypertrophy_gym",
+        "tue": "men_50_full_body_gym_strength",
+        "thu": "men_20_upper_strength_home",
+        "fri": "men_60_strength_split_gym"
+      },
+      "rest_day_guidance": ["Walk lightly", "Prioritize sleep and protein"],
+      "progression": ["Increase weights gradually", "Track reps before increasing load"]
+    },
+    {
+      "key": "universal_5day_posture_mobility",
+      "title": "Universal 5-Day Posture + Mobility Plan",
+      "gender": "universal",
+      "goal": "posture",
+      "level": "all",
+      "days_per_week": 5,
+      "schedule": {
+        "mon": "universal_10_posture_reset",
+        "tue": "universal_20_yoga_mobility_home",
+        "wed": "universal_20_back_friendly_core_home",
+        "thu": "universal_10_posture_reset",
+        "fri": "universal_40_yoga_flow_strength"
+      },
+      "rest_day_guidance": ["Walk more", "Take standing breaks every hour"],
+      "progression": ["Increase holds by 5 sec", "Add one extra round where possible"]
+    },
+    {
+      "key": "universal_travel_3day",
+      "title": "Universal Travel 3-Day Plan",
+      "gender": "universal",
+      "goal": "travel_fitness",
+      "level": "all",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "universal_30_full_body_hotel_room",
+        "wed": "universal_10_dance_cardio_home",
+        "fri": "universal_20_yoga_mobility_home"
+      },
+      "rest_day_guidance": ["Walk in airport/hotel", "Stretch after travel"],
+      "progression": ["Add rounds", "Increase pace"]
+    }
+  ],
+
+  "goal_routes": {
+    "fat_loss": [
+      "women_20_fatloss_hiit_home",
+      "universal_10_dance_cardio_home",
+      "universal_30_dance_fitness",
+      "universal_50_cardio_plus_strength",
+      "women_40_fatloss_strength_mix",
+      "women_20_pcos_support_home",
+      "women_30_pcos_strength_walk"
+    ],
+    "muscle_gain": [
+      "men_20_upper_strength_home",
+      "men_30_muscle_gain_dumbbells",
+      "men_40_upper_hypertrophy_gym",
+      "men_50_full_body_gym_strength",
+      "men_60_strength_split_gym"
+    ],
+    "toning": [
+      "women_10_glute_activation_home",
+      "women_30_lower_body_home",
+      "women_40_fatloss_strength_mix",
+      "women_60_yoga_tone_flow"
+    ],
+    "strength": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "men_20_upper_strength_home",
+      "men_30_muscle_gain_dumbbells",
+      "women_40_fatloss_strength_mix",
+      "women_50_glutes_legs_weights",
+      "men_50_full_body_gym_strength",
+      "men_60_strength_split_gym",
+      "universal_60_full_body_home_strength"
+    ],
+    "mobility": [
+      "universal_10_posture_reset",
+      "universal_20_yoga_mobility_home",
+      "universal_40_yoga_flow_strength",
+      "women_60_yoga_tone_flow"
+    ],
+    "posture": [
+      "universal_10_posture_reset",
+      "universal_20_back_friendly_core_home",
+      "universal_20_yoga_mobility_home"
+    ],
+    "travel_fitness": [
+      "universal_30_full_body_hotel_room",
+      "universal_10_dance_cardio_home",
+      "universal_20_yoga_mobility_home"
+    ],
+    "pcos_support": [
+      "women_20_pcos_support_home",
+      "women_30_pcos_strength_walk"
+    ],
+    "general_fitness": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "universal_10_dance_cardio_home",
+      "universal_30_dance_fitness",
+      "universal_50_cardio_plus_strength",
+      "universal_60_full_body_home_strength"
+    ]
+  },
+
+  "gender_routes": {
+    "women": [
+      "women_10_glute_activation_home",
+      "women_20_fatloss_hiit_home",
+      "women_30_lower_body_home",
+      "women_40_fatloss_strength_mix",
+      "women_50_glutes_legs_weights",
+      "women_60_yoga_tone_flow",
+      "women_20_pcos_support_home",
+      "women_30_pcos_strength_walk"
+    ],
+    "men": [
+      "men_10_core_power_home",
+      "men_20_upper_strength_home",
+      "men_30_muscle_gain_dumbbells",
+      "men_40_upper_hypertrophy_gym",
+      "men_50_full_body_gym_strength",
+      "men_60_strength_split_gym"
+    ],
+    "universal": [
+      "universal_10_dance_cardio_home",
+      "universal_10_posture_reset",
+      "universal_20_yoga_mobility_home",
+      "universal_20_back_friendly_core_home",
+      "universal_30_dance_fitness",
+      "universal_30_full_body_hotel_room",
+      "universal_40_yoga_flow_strength",
+      "universal_50_cardio_plus_strength",
+      "universal_60_full_body_home_strength"
+    ]
+  },
+
+  "duration_routes": {
+    "10": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "universal_10_dance_cardio_home",
+      "universal_10_posture_reset"
+    ],
+    "20": [
+      "women_20_fatloss_hiit_home",
+      "men_20_upper_strength_home",
+      "universal_20_yoga_mobility_home",
+      "universal_20_back_friendly_core_home",
+      "women_20_pcos_support_home"
+    ],
+    "30": [
+      "women_30_lower_body_home",
+      "men_30_muscle_gain_dumbbells",
+      "universal_30_dance_fitness",
+      "universal_30_full_body_hotel_room",
+      "women_30_pcos_strength_walk"
+    ],
+    "40": [
+      "women_40_fatloss_strength_mix",
+      "men_40_upper_hypertrophy_gym",
+      "universal_40_yoga_flow_strength"
+    ],
+    "50": [
+      "women_50_glutes_legs_weights",
+      "men_50_full_body_gym_strength",
+      "universal_50_cardio_plus_strength"
+    ],
+    "60": [
+      "women_60_yoga_tone_flow",
+      "men_60_strength_split_gym",
+      "universal_60_full_body_home_strength"
+    ]
+  },
+
+  "target_area_routes": {
+    "full_body": [
+      "universal_10_dance_cardio_home",
+      "women_20_fatloss_hiit_home",
+      "universal_30_dance_fitness",
+      "women_40_fatloss_strength_mix",
+      "men_50_full_body_gym_strength",
+      "universal_60_full_body_home_strength",
+      "women_20_pcos_support_home",
+      "women_30_pcos_strength_walk"
+    ],
+    "glutes": [
+      "women_10_glute_activation_home",
+      "women_30_lower_body_home",
+      "women_50_glutes_legs_weights"
+    ],
+    "legs": [
+      "women_30_lower_body_home",
+      "women_50_glutes_legs_weights"
+    ],
+    "core": [
+      "men_10_core_power_home",
+      "universal_20_back_friendly_core_home",
+      "universal_10_posture_reset",
+      "women_60_yoga_tone_flow"
+    ],
+    "arms": [
+      "men_20_upper_strength_home",
+      "men_40_upper_hypertrophy_gym"
+    ],
+    "back": [
+      "universal_10_posture_reset",
+      "universal_20_back_friendly_core_home",
+      "men_40_upper_hypertrophy_gym"
+    ],
+    "shoulders": [
+      "men_20_upper_strength_home",
+      "men_40_upper_hypertrophy_gym"
+    ],
+    "chest": [
+      "men_20_upper_strength_home",
+      "men_30_muscle_gain_dumbbells",
+      "men_60_strength_split_gym"
+    ]
+  },
+
+  "style_routes": {
+    "cardio": [
+      "women_20_fatloss_hiit_home",
+      "universal_10_dance_cardio_home",
+      "universal_30_dance_fitness",
+      "universal_50_cardio_plus_strength"
+    ],
+    "strength": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "women_30_lower_body_home",
+      "women_40_fatloss_strength_mix",
+      "universal_20_back_friendly_core_home",
+      "universal_60_full_body_home_strength"
+    ],
+    "weights": [
+      "men_20_upper_strength_home",
+      "men_30_muscle_gain_dumbbells",
+      "men_40_upper_hypertrophy_gym",
+      "women_50_glutes_legs_weights",
+      "men_50_full_body_gym_strength",
+      "men_60_strength_split_gym"
+    ],
+    "dance_fitness": [
+      "universal_10_dance_cardio_home",
+      "universal_30_dance_fitness"
+    ],
+    "yoga": [
+      "universal_20_yoga_mobility_home",
+      "universal_40_yoga_flow_strength",
+      "women_60_yoga_tone_flow"
+    ],
+    "posture": [
+      "universal_10_posture_reset",
+      "universal_20_back_friendly_core_home"
+    ],
+    "mobility": [
+      "universal_10_posture_reset",
+      "universal_20_yoga_mobility_home",
+      "universal_40_yoga_flow_strength"
+    ],
+    "low_impact": [
+      "women_20_pcos_support_home",
+      "women_30_pcos_strength_walk"
+    ]
+  },
+
+  "location_routes": {
+    "home": [
+      "women_10_glute_activation_home",
+      "women_20_fatloss_hiit_home",
+      "women_30_lower_body_home",
+      "women_40_fatloss_strength_mix",
+      "universal_20_yoga_mobility_home",
+      "universal_60_full_body_home_strength",
+      "women_20_pcos_support_home"
+    ],
+    "gym": [
+      "men_20_upper_strength_home",
+      "men_40_upper_hypertrophy_gym",
+      "women_50_glutes_legs_weights",
+      "men_50_full_body_gym_strength",
+      "men_60_strength_split_gym"
+    ],
+    "hotel_room": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "universal_10_dance_cardio_home",
+      "universal_30_full_body_hotel_room"
+    ],
+    "office": [
+      "universal_10_posture_reset"
+    ],
+    "outdoor": [
+      "women_20_pcos_support_home",
+      "women_30_pcos_strength_walk"
+    ]
+  },
+
+  "equipment_routes": {
+    "none": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "universal_10_dance_cardio_home",
+      "universal_10_posture_reset",
+      "women_20_fatloss_hiit_home",
+      "universal_20_yoga_mobility_home",
+      "universal_20_back_friendly_core_home",
+      "women_30_lower_body_home",
+      "universal_30_dance_fitness",
+      "universal_30_full_body_hotel_room",
+      "women_20_pcos_support_home",
+      "women_30_pcos_strength_walk",
+      "women_60_yoga_tone_flow"
+    ],
+    "dumbbells": [
+      "men_20_upper_strength_home",
+      "men_30_muscle_gain_dumbbells",
+      "women_40_fatloss_strength_mix",
+      "women_50_glutes_legs_weights",
+      "universal_50_cardio_plus_strength",
+      "universal_60_full_body_home_strength"
+    ],
+    "resistance_band": [],
+    "gym_machines": [
+      "men_40_upper_hypertrophy_gym",
+      "women_50_glutes_legs_weights",
+      "men_50_full_body_gym_strength",
+      "men_60_strength_split_gym"
+    ]
+  },
+
+  "constraint_routes": {
+    "knee_friendly": [
+      "universal_10_posture_reset",
+      "women_20_pcos_support_home",
+      "universal_20_yoga_mobility_home"
+    ],
+    "back_friendly": [
+      "universal_10_posture_reset",
+      "universal_20_back_friendly_core_home",
+      "universal_20_yoga_mobility_home"
+    ],
+    "low_energy_day": [
+      "universal_10_posture_reset",
+      "universal_10_dance_cardio_home",
+      "women_20_pcos_support_home"
+    ],
+    "no_equipment": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "universal_20_yoga_mobility_home",
+      "universal_30_full_body_hotel_room"
+    ],
+    "quick_workout": [
+      "women_10_glute_activation_home",
+      "men_10_core_power_home",
+      "universal_10_dance_cardio_home",
+      "universal_10_posture_reset"
+    ],
+    "travel_friendly": [
+      "universal_30_full_body_hotel_room",
+      "universal_10_dance_cardio_home",
+      "universal_20_yoga_mobility_home"
+    ]
+  },
+
+  "body_goal_rules": {
+    "women": {
+      "fat_loss": {
+        "prefer_styles": ["cardio", "strength", "low_impact", "dance_fitness"],
+        "prefer_targets": ["full_body", "glutes", "legs", "core"],
+        "prefer_durations": [20, 30, 40],
+        "notes": ["Combine strength + walking", "Avoid doing only cardio"]
+      },
+      "glute_toning": {
+        "prefer_styles": ["strength", "weights"],
+        "prefer_targets": ["glutes", "legs"],
+        "prefer_durations": [10, 20, 30, 40, 50],
+        "notes": ["Use glute activation + lower body sessions", "Progress to weights over time"]
+      },
+      "pcos_support": {
+        "prefer_styles": ["low_impact", "strength", "mobility", "yoga"],
+        "prefer_targets": ["full_body", "core", "glutes"],
+        "prefer_durations": [20, 30],
+        "notes": ["Consistency over intensity", "Walking + strength works well"]
+      },
+      "posture_reset": {
+        "prefer_styles": ["posture", "mobility", "yoga"],
+        "prefer_targets": ["back", "core", "shoulders"],
+        "prefer_durations": [10, 20, 30],
+        "notes": ["Best for desk workers", "Short frequent sessions work well"]
+      }
+    },
+    "men": {
+      "muscle_gain": {
+        "prefer_styles": ["weights", "strength"],
+        "prefer_targets": ["chest", "back", "arms", "legs", "full_body"],
+        "prefer_durations": [20, 30, 40, 50, 60],
+        "notes": ["Prioritize progressive overload", "Protein + recovery matter"]
+      },
+      "fat_loss": {
+        "prefer_styles": ["cardio", "strength", "weights"],
+        "prefer_targets": ["full_body", "core"],
+        "prefer_durations": [20, 30, 40, 50],
+        "notes": ["Use strength + steps + simple meals"]
+      },
+      "upper_body_build": {
+        "prefer_styles": ["weights", "strength"],
+        "prefer_targets": ["chest", "arms", "shoulders", "back"],
+        "prefer_durations": [20, 30, 40, 50, 60],
+        "notes": ["Split push + pull work", "Track weights weekly"]
+      },
+      "posture_reset": {
+        "prefer_styles": ["posture", "mobility", "strength"],
+        "prefer_targets": ["back", "core", "shoulders"],
+        "prefer_durations": [10, 20, 30],
+        "notes": ["Useful alongside gym work", "Do 2–3 times weekly"]
+      }
+    },
+    "universal": {
+      "travel_fitness": {
+        "prefer_styles": ["strength", "mobility", "cardio"],
+        "prefer_targets": ["full_body"],
+        "prefer_durations": [10, 20, 30],
+        "notes": ["Low-friction hotel-room workouts work best"]
+      },
+      "general_fitness": {
+        "prefer_styles": ["strength", "cardio", "yoga", "dance_fitness"],
+        "prefer_targets": ["full_body", "core"],
+        "prefer_durations": [20, 30, 40],
+        "notes": ["Mix styles across the week"]
+      }
+    }
+  },
+
+  "age_rules": {
+    "18_24": {
+      "prefer_intensity": "moderate_to_high",
+      "prefer_durations": [20, 30, 40, 50, 60],
+      "notes": ["Can handle more cardio and dance fitness", "Still prioritize form and recovery"]
+    },
+    "25_34": {
+      "prefer_intensity": "moderate",
+      "prefer_durations": [20, 30, 40, 50],
+      "notes": ["Best balance of strength + cardio + posture work"]
+    },
+    "35_44": {
+      "prefer_intensity": "moderate",
+      "prefer_durations": [20, 30, 40],
+      "notes": ["Strength stays important; recovery matters more"]
+    },
+    "45_54": {
+      "prefer_intensity": "moderate_low_impact",
+      "prefer_durations": [10, 20, 30, 40],
+      "notes": ["Prefer joint-friendly cardio, posture, and strength"]
+    },
+    "55_plus": {
+      "prefer_intensity": "low_to_moderate",
+      "prefer_durations": [10, 20, 30],
+      "notes": ["Mobility, posture, walking, and low-impact strength first"]
+    }
+  },
+
+  "meal_plan_links": {
+    "fat_loss": [
+      "balanced_7day_indian_veg",
+      "weight_loss_7_day_indian_veg",
+      "high_protein_weight_loss_week"
+    ],
+    "muscle_gain": [
+      "muscle_gain_7_day_indian_mixed",
+      "high_protein_7_day_plan",
+      "strength_training_fuel_plan"
+    ],
+    "toning": [
+      "balanced_7day_indian_veg",
+      "high_protein_light_week"
+    ],
+    "pcos_support": [
+      "pcos_friendly_7_day_indian",
+      "balanced_low_sugar_week"
+    ],
+    "mobility": [
+      "anti_inflammation_light_week",
+      "balanced_7day_indian_veg"
+    ],
+    "posture": [
+      "balanced_7day_indian_veg",
+      "high_protein_light_week"
+    ],
+    "travel_fitness": [
+      "travel_simple_high_protein_plan",
+      "hotel_friendly_meal_structure"
+    ]
+  },
+
+  "workout_meal_rules": [
+    {
+      "goal": "fat_loss",
+      "recommended_meal_focus": ["high_protein", "controlled_portions", "lower_sugar", "fiber_rich"],
+      "pre_workout_meal_style": ["light fruit", "banana", "coffee or tea optional", "light snack"],
+      "post_workout_meal_style": ["protein + fiber", "eggs/paneer/curd", "simple lunch or dinner"],
+      "linked_meal_plan_keys": [
+        "weight_loss_7_day_indian_veg",
+        "high_protein_weight_loss_week",
+        "balanced_low_sugar_week"
+      ]
+    },
+    {
+      "goal": "muscle_gain",
+      "recommended_meal_focus": ["high_protein", "higher_calories", "carb_support", "strength_fuel"],
+      "pre_workout_meal_style": ["banana + peanut butter", "toast + eggs", "oats + curd"],
+      "post_workout_meal_style": ["protein + carbs", "paneer/chicken + rice", "protein smoothie"],
+      "linked_meal_plan_keys": [
+        "muscle_gain_7_day_indian_mixed",
+        "high_protein_7_day_plan",
+        "strength_training_fuel_plan"
+      ]
+    },
+    {
+      "goal": "pcos_support",
+      "recommended_meal_focus": ["balanced", "lower_sugar", "protein_every_meal", "walking_support"],
+      "pre_workout_meal_style": ["light fruit", "curd", "nuts"],
+      "post_workout_meal_style": ["protein + fiber", "balanced plate"],
+      "linked_meal_plan_keys": [
+        "pcos_friendly_7_day_indian",
+        "balanced_low_sugar_week"
+      ]
+    },
+    {
+      "goal": "posture",
+      "recommended_meal_focus": ["balanced", "anti_inflammation", "hydration"],
+      "pre_workout_meal_style": ["light snack if needed"],
+      "post_workout_meal_style": ["balanced protein + veg meal"],
+      "linked_meal_plan_keys": [
+        "anti_inflammation_light_week",
+        "balanced_7day_indian_veg"
+      ]
+    },
+    {
+      "goal": "travel_fitness",
+      "recommended_meal_focus": ["portable_protein", "simple_meals", "hydration"],
+      "pre_workout_meal_style": ["banana", "coffee", "light nuts"],
+      "post_workout_meal_style": ["protein-focused breakfast or simple plate"],
+      "linked_meal_plan_keys": [
+        "travel_simple_high_protein_plan",
+        "hotel_friendly_meal_structure"
+      ]
+    }
+  ],
+
+  "schedule_templates": [
+    {
+      "key": "women_3day_toning_structure",
+      "title": "Women 3-Day Toning Structure",
+      "pattern": ["lower_body", "fat_loss_cardio", "glute_activation"],
+      "notes": ["Great for toning and consistency", "Home-friendly"]
+    },
+    {
+      "key": "men_4day_muscle_gain_structure",
+      "title": "Men 4-Day Muscle Gain Structure",
+      "pattern": ["upper_strength", "full_body_strength", "upper_strength", "strength_split"],
+      "notes": ["Best with gym access", "Track weights weekly"]
+    },
+    {
+      "key": "universal_5day_posture_structure",
+      "title": "Universal 5-Day Posture + Mobility Structure",
+      "pattern": ["posture", "yoga", "core", "posture", "mobility_strength"],
+      "notes": ["Best for desk workers", "Short sessions work well"]
+    },
+    {
+      "key": "travel_3day_structure",
+      "title": "Travel 3-Day Structure",
+      "pattern": ["hotel_room_strength", "quick_cardio", "yoga_mobility"],
+      "notes": ["Low friction", "Room-friendly"]
+    }
+  ],
+
+  "safety_notes": {
+    "general": [
+      "Stop if you feel sharp pain",
+      "Focus on good form before increasing reps or load",
+      "Take extra rest if sleep or recovery is poor",
+      "Consult a qualified professional for injuries or medical conditions"
+    ],
+    "pcos_support": [
+      "Consistency matters more than intensity",
+      "Pair workouts with sleep, walking, and regular meals",
+      "Avoid extreme intensity if recovery is poor"
+    ],
+    "knee_friendly": [
+      "Avoid jumps if painful",
+      "Prioritize glute strength and controlled tempo"
+    ],
+    "back_friendly": [
+      "Keep spine neutral",
+      "Avoid forcing range of motion"
+    ]
+  }
+,
+
+  "progression_ladders": {
+    "beginner_to_intermediate": {
+      "week_1_2": ["Learn form", "Keep 45–60 sec rest", "Leave 2–3 reps in reserve"],
+      "week_3_4": ["Add 2 reps per set", "Reduce rest slightly", "Add one extra round where form stays clean"],
+      "week_5_6": ["Add light dumbbells or bands", "Increase tempo control", "Move one session from 20 to 30 min"],
+      "week_7_8": ["Upgrade to intermediate templates", "Track reps and loads", "Add a dedicated recovery day"]
+    },
+    "intermediate_to_advanced": {
+      "week_1_2": ["Track load and reps", "Use structured split days", "Keep 1–2 reps in reserve"],
+      "week_3_4": ["Add load to primary lifts", "Increase total sets on priority goal", "Keep one low-stress day"],
+      "week_5_6": ["Introduce supersets or density blocks", "Increase volume on target area days", "Deload if recovery dips"],
+      "week_7_8": ["Rotate exercises", "Run one strength block and one hypertrophy block", "Reassess body-goal direction"]
+    }
+  },
+
+  "warmup_library": {
+    "general_5_min": ["March in place 1 min", "Arm circles 30 sec", "Hip circles 30 sec", "Leg swings 30 sec each", "Bodyweight squats 10"],
+    "lower_body": ["March in place 1 min", "Hip openers 30 sec", "Leg swings 30 sec each", "Glute bridges 10", "Bodyweight squats 10"],
+    "upper_body": ["Arm swings 30 sec", "Shoulder rolls 30 sec", "Wall slides 10", "Band pull-aparts 12", "Cat-cow 8"],
+    "core": ["Dead bug 6 each side", "Bird dog 6 each side", "Cat-cow 8", "Breathing 1 min"],
+    "dance_cardio": ["Step touch 1 min", "March with reach 1 min", "Side steps 1 min", "Light groove 2 min"],
+    "yoga": ["Breathing 1 min", "Cat-cow 1 min", "Child's pose 30 sec", "Downward dog 30 sec", "Low lunge 30 sec each"]
+  },
+
+  "cooldown_library": {
+    "general_5_min": ["Slow breathing 1 min", "Hamstring stretch 30 sec each", "Quad stretch 30 sec each", "Chest opener 30 sec", "Child's pose 30 sec"],
+    "lower_body": ["Figure-4 stretch 30 sec each", "Hamstring stretch 30 sec each", "Hip flexor stretch 30 sec each", "Calf stretch 30 sec each"],
+    "upper_body": ["Chest stretch 30 sec", "Thread the needle 30 sec each side", "Neck stretch 20 sec each", "Lats stretch 30 sec"],
+    "core": ["Child's pose 30 sec", "Supine twist 30 sec each side", "Breathing 1 min"],
+    "dance_cardio": ["Slow groove 1 min", "Quad stretch 30 sec each", "Calf stretch 30 sec each", "Breathing 1 min"],
+    "yoga": ["Supine twist 30 sec each", "Happy baby 30 sec", "Savasana 2 min"]
+  },
+
+  "recovery_templates": [
+    {
+      "key": "recovery_10_low_energy_reset",
+      "title": "10 Min Low Energy Reset",
+      "duration_min": 10,
+      "style": "mobility",
+      "gender": "universal",
+      "cards": [
+        {"title": "Reset", "items": ["Breathing 2 min", "Cat-cow 8", "Child's pose 30 sec", "Hip flexor stretch 30 sec each", "Neck stretch 20 sec each"]}
+      ]
+    },
+    {
+      "key": "recovery_20_walk_stretch",
+      "title": "20 Min Walk + Stretch Recovery",
+      "duration_min": 20,
+      "style": "walking",
+      "gender": "universal",
+      "cards": [
+        {"title": "Walk", "items": ["Easy walk 12 min"]},
+        {"title": "Stretch", "items": ["Hamstring stretch 30 sec each", "Quad stretch 30 sec each", "Chest opener 30 sec", "Breathing 2 min"]}
+      ]
+    },
+    {
+      "key": "recovery_30_yoga_restore",
+      "title": "30 Min Yoga Restore",
+      "duration_min": 30,
+      "style": "yoga",
+      "gender": "universal",
+      "cards": [
+        {"title": "Restore", "items": ["Breathing 3 min", "Gentle flow 12 min", "Hip openers 8 min", "Supine twist 2 min", "Savasana 5 min"]}
+      ]
+    }
+  ],
+
+  "weekly_programs_extended": [
+    {
+      "key": "women_5day_glute_fatloss_combo",
+      "title": "Women 5-Day Glute + Fat Loss Combo",
+      "gender": "women",
+      "goal": "fat_loss",
+      "level": "intermediate",
+      "days_per_week": 5,
+      "schedule": {
+        "mon": "women_30_lower_body_home",
+        "tue": "women_20_fatloss_hiit_home",
+        "wed": "universal_20_yoga_mobility_home",
+        "thu": "women_40_fatloss_strength_mix",
+        "sat": "women_10_glute_activation_home"
+      },
+      "meal_plan_key": "high_protein_weight_loss_week",
+      "rest_day_guidance": ["Walk 20–30 min", "Keep protein consistent", "Use one low-energy reset if needed"]
+    },
+    {
+      "key": "women_4day_glute_build_weights",
+      "title": "Women 4-Day Glute Build Weights",
+      "gender": "women",
+      "goal": "glute_toning",
+      "level": "intermediate",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "women_50_glutes_legs_weights",
+        "wed": "women_10_glute_activation_home",
+        "fri": "women_40_fatloss_strength_mix",
+        "sat": "universal_20_yoga_mobility_home"
+      },
+      "meal_plan_key": "high_protein_light_week",
+      "rest_day_guidance": ["Keep daily steps moderate", "Do not skip recovery", "Increase weights only if form is stable"]
+    },
+    {
+      "key": "men_5day_upper_lower_hypertrophy",
+      "title": "Men 5-Day Upper Lower Hypertrophy",
+      "gender": "men",
+      "goal": "muscle_gain",
+      "level": "intermediate",
+      "days_per_week": 5,
+      "schedule": {
+        "mon": "men_40_upper_hypertrophy_gym",
+        "tue": "men_50_full_body_gym_strength",
+        "wed": "universal_10_posture_reset",
+        "thu": "men_60_strength_split_gym",
+        "sat": "men_20_upper_strength_home"
+      },
+      "meal_plan_key": "muscle_gain_7_day_indian_mixed",
+      "rest_day_guidance": ["Prioritize protein", "Sleep 7–8 hours", "Use posture reset between lifting days"]
+    },
+    {
+      "key": "men_4day_fatloss_strength",
+      "title": "Men 4-Day Fat Loss Strength",
+      "gender": "men",
+      "goal": "fat_loss",
+      "level": "intermediate",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "men_20_upper_strength_home",
+        "tue": "universal_50_cardio_plus_strength",
+        "thu": "men_50_full_body_gym_strength",
+        "sat": "universal_30_dance_fitness"
+      },
+      "meal_plan_key": "balanced_low_sugar_week",
+      "rest_day_guidance": ["Walk 8k+ steps", "Keep meals simple and protein-forward"]
+    },
+    {
+      "key": "universal_4day_beginner_reset",
+      "title": "Universal 4-Day Beginner Reset",
+      "gender": "universal",
+      "goal": "general_fitness",
+      "level": "beginner",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "universal_10_posture_reset",
+        "tue": "universal_20_yoga_mobility_home",
+        "thu": "universal_30_full_body_hotel_room",
+        "sat": "universal_10_dance_cardio_home"
+      },
+      "meal_plan_key": "balanced_7day_indian_veg",
+      "rest_day_guidance": ["Walk daily", "Keep sessions easy to repeat", "Use low-energy recovery on stressful days"]
+    },
+    {
+      "key": "universal_3day_55plus_foundation",
+      "title": "Universal 55+ Foundation Plan",
+      "gender": "universal",
+      "goal": "mobility",
+      "level": "beginner",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "universal_10_posture_reset",
+        "wed": "universal_20_yoga_mobility_home",
+        "fri": "recovery_20_walk_stretch"
+      },
+      "meal_plan_key": "anti_inflammation_light_week",
+      "rest_day_guidance": ["Keep movement gentle and consistent", "Hydrate well"]
+    },
+    {
+      "key": "travel_5day_low_friction",
+      "title": "Travel 5-Day Low Friction Plan",
+      "gender": "universal",
+      "goal": "travel_fitness",
+      "level": "all",
+      "days_per_week": 5,
+      "schedule": {
+        "mon": "universal_30_full_body_hotel_room",
+        "tue": "universal_10_posture_reset",
+        "wed": "universal_20_yoga_mobility_home",
+        "thu": "universal_10_dance_cardio_home",
+        "fri": "recovery_20_walk_stretch"
+      },
+      "meal_plan_key": "travel_simple_high_protein_plan",
+      "rest_day_guidance": ["Choose portability over perfection", "Walk whenever possible"]
+    },
+    {
+      "key": "desk_job_5day_posture_core",
+      "title": "Desk Job 5-Day Posture + Core",
+      "gender": "universal",
+      "goal": "posture",
+      "level": "all",
+      "days_per_week": 5,
+      "schedule": {
+        "mon": "universal_10_posture_reset",
+        "tue": "universal_20_back_friendly_core_home",
+        "wed": "recovery_10_low_energy_reset",
+        "thu": "universal_10_posture_reset",
+        "fri": "universal_40_yoga_flow_strength"
+      },
+      "meal_plan_key": "balanced_7day_indian_veg",
+      "rest_day_guidance": ["Stand hourly", "Walk after meals when possible"]
+    },
+    {
+      "key": "women_4day_yoga_tone_balance",
+      "title": "Women 4-Day Yoga + Tone Balance",
+      "gender": "women",
+      "goal": "toning",
+      "level": "beginner",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "women_60_yoga_tone_flow",
+        "wed": "women_30_lower_body_home",
+        "fri": "universal_20_yoga_mobility_home",
+        "sat": "women_10_glute_activation_home"
+      },
+      "meal_plan_key": "high_protein_light_week",
+      "rest_day_guidance": ["Keep hydration high", "Use low-energy reset if stressed"]
+    },
+    {
+      "key": "men_3day_home_strength_minimal",
+      "title": "Men 3-Day Home Strength Minimal",
+      "gender": "men",
+      "goal": "strength",
+      "level": "beginner",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "men_20_upper_strength_home",
+        "wed": "men_30_muscle_gain_dumbbells",
+        "fri": "men_10_core_power_home"
+      },
+      "meal_plan_key": "strength_training_fuel_plan",
+      "rest_day_guidance": ["Keep protein high", "Walk on non-lifting days"]
+    },
+    {
+      "key": "women_3day_low_energy_consistency",
+      "title": "Women 3-Day Low Energy Consistency",
+      "gender": "women",
+      "goal": "general_fitness",
+      "level": "beginner",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "women_20_pcos_support_home",
+        "wed": "universal_10_posture_reset",
+        "fri": "recovery_20_walk_stretch"
+      },
+      "meal_plan_key": "balanced_low_sugar_week",
+      "rest_day_guidance": ["Consistency beats intensity", "Keep workouts easy to restart"]
+    },
+    {
+      "key": "universal_4day_cardio_strength_blend",
+      "title": "Universal 4-Day Cardio + Strength Blend",
+      "gender": "universal",
+      "goal": "fat_loss",
+      "level": "intermediate",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "universal_30_dance_fitness",
+        "tue": "universal_50_cardio_plus_strength",
+        "thu": "universal_20_yoga_mobility_home",
+        "sat": "universal_60_full_body_home_strength"
+      },
+      "meal_plan_key": "high_protein_weight_loss_week",
+      "rest_day_guidance": ["Keep step count up", "Use yoga day as active recovery"]
+    },
+    {
+      "key": "women_5day_pcos_long_term",
+      "title": "Women 5-Day PCOS Long-Term Structure",
+      "gender": "women",
+      "goal": "pcos_support",
+      "level": "beginner",
+      "days_per_week": 5,
+      "schedule": {
+        "mon": "women_20_pcos_support_home",
+        "tue": "recovery_20_walk_stretch",
+        "wed": "women_30_pcos_strength_walk",
+        "thu": "universal_10_posture_reset",
+        "sat": "universal_20_yoga_mobility_home"
+      },
+      "meal_plan_key": "pcos_friendly_7_day_indian",
+      "rest_day_guidance": ["Avoid all-out sessions on poor sleep days", "Keep meals regular"]
+    },
+    {
+      "key": "men_6day_body_goal_push",
+      "title": "Men 6-Day Body Goal Push",
+      "gender": "men",
+      "goal": "upper_body_build",
+      "level": "advanced",
+      "days_per_week": 6,
+      "schedule": {
+        "mon": "men_40_upper_hypertrophy_gym",
+        "tue": "men_50_full_body_gym_strength",
+        "wed": "universal_10_posture_reset",
+        "thu": "men_20_upper_strength_home",
+        "fri": "men_60_strength_split_gym",
+        "sat": "recovery_20_walk_stretch"
+      },
+      "meal_plan_key": "muscle_gain_7_day_indian_mixed",
+      "rest_day_guidance": ["Only for well-recovered users", "Deload every 5–6 weeks"]
+    },
+    {
+      "key": "universal_3day_beginner_hotel",
+      "title": "Universal 3-Day Beginner Hotel Structure",
+      "gender": "universal",
+      "goal": "travel_fitness",
+      "level": "beginner",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "universal_30_full_body_hotel_room",
+        "wed": "universal_10_posture_reset",
+        "fri": "universal_20_yoga_mobility_home"
+      },
+      "meal_plan_key": "hotel_friendly_meal_structure",
+      "rest_day_guidance": ["Keep friction low", "Prioritize hydration and steps"]
+    },
+    {
+      "key": "women_4day_home_strength_plus_yoga",
+      "title": "Women 4-Day Home Strength + Yoga",
+      "gender": "women",
+      "goal": "strength",
+      "level": "beginner",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "women_30_lower_body_home",
+        "tue": "universal_20_yoga_mobility_home",
+        "thu": "women_40_fatloss_strength_mix",
+        "sat": "women_10_glute_activation_home"
+      },
+      "meal_plan_key": "high_protein_light_week",
+      "rest_day_guidance": ["Pair strength days with better protein intake"]
+    },
+    {
+      "key": "men_4day_compact_home_plus_gym",
+      "title": "Men 4-Day Compact Home + Gym",
+      "gender": "men",
+      "goal": "strength",
+      "level": "intermediate",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "men_20_upper_strength_home",
+        "tue": "men_40_upper_hypertrophy_gym",
+        "thu": "men_30_muscle_gain_dumbbells",
+        "sat": "men_50_full_body_gym_strength"
+      },
+      "meal_plan_key": "strength_training_fuel_plan",
+      "rest_day_guidance": ["Track total weekly volume", "Use one recovery day after hard lifting"]
+    },
+    {
+      "key": "universal_4day_anti_stress_fitness",
+      "title": "Universal 4-Day Anti-Stress Fitness",
+      "gender": "universal",
+      "goal": "stress_relief",
+      "level": "all",
+      "days_per_week": 4,
+      "schedule": {
+        "mon": "universal_20_yoga_mobility_home",
+        "wed": "universal_10_posture_reset",
+        "fri": "recovery_30_yoga_restore",
+        "sat": "universal_10_dance_cardio_home"
+      },
+      "meal_plan_key": "anti_inflammation_light_week",
+      "rest_day_guidance": ["Keep pressure low", "Favor consistency and sleep"]
+    },
+    {
+      "key": "women_3day_45plus_low_impact",
+      "title": "Women 45+ Low Impact Structure",
+      "gender": "women",
+      "goal": "general_fitness",
+      "level": "beginner",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "women_20_pcos_support_home",
+        "wed": "universal_10_posture_reset",
+        "fri": "recovery_20_walk_stretch"
+      },
+      "meal_plan_key": "balanced_7day_indian_veg",
+      "rest_day_guidance": ["Use joint-friendly movement", "Keep pace conversational"]
+    },
+    {
+      "key": "men_45plus_foundation_strength",
+      "title": "Men 45+ Foundation Strength",
+      "gender": "men",
+      "goal": "general_fitness",
+      "level": "beginner",
+      "days_per_week": 3,
+      "schedule": {
+        "mon": "men_20_upper_strength_home",
+        "wed": "universal_20_back_friendly_core_home",
+        "fri": "recovery_20_walk_stretch"
+      },
+      "meal_plan_key": "balanced_7day_indian_veg",
+      "rest_day_guidance": ["Prioritize form", "Use posture work between sessions"]
+    }
+  ],
+
+  "recommendation_engine_rules": {
+    "selection_order": [
+      "gender",
+      "age_band",
+      "goal",
+      "duration",
+      "location",
+      "equipment",
+      "style",
+      "target_area",
+      "constraint",
+      "energy_level"
+    ],
+    "fallback_logic": {
+      "gender": "universal",
+      "age_band": "25_34",
+      "duration": 20,
+      "location": "home",
+      "equipment": "none",
+      "energy_level": "moderate"
+    },
+    "notes": [
+      "If goal is pcos_support, prioritize low_impact + walking + strength over HIIT.",
+      "If age band is 45_54 or 55_plus, downrank high-impact and up-rank posture, mobility, low-impact, and walking.",
+      "If location is hotel_room, prefer hotel-friendly or no-equipment templates.",
+      "If energy level is low, prefer posture, yoga, mobility, walking, or low-impact templates.",
+      "If target area is specific but equipment/location do not support it, fall back to closest full_body or body-part home template."
+    ]
+  },
+
+  "completion_status": {
+    "session_templates": "core_complete",
+    "weekly_programs": "expanded",
+    "goal_rules": "complete_for_v3",
+    "age_aware_rules": "complete_for_v3",
+    "meal_linking": "complete_for_v3",
+    "next_best_expansions": [
+      "Add 80–120 more session templates for better density across durations and target areas",
+      "Add rehab-safe categories only if reviewed carefully",
+      "Add pregnancy/postpartum only with clearly validated scope",
+      "Add language/tone response templates for AHVI fitness voice"
+    ]
+  },
+
+  "safety_notes": {
+    "general": [
+      "Stop if you feel sharp pain",
+      "Focus on good form before increasing reps or load",
+      "Take extra rest if sleep or recovery is poor",
+      "Consult a qualified professional for injuries or medical conditions"
+    ],
+    "pcos_support": [
+      "Consistency matters more than intensity",
+      "Pair workouts with sleep, walking, and regular meals",
+      "Avoid extreme intensity if recovery is poor"
+    ],
+    "knee_friendly": [
+      "Avoid jumps if painful",
+      "Prioritize glute strength and controlled tempo"
+    ],
+    "back_friendly": [
+      "Keep spine neutral",
+      "Avoid forcing range of motion"
+    ]
+  }
+}

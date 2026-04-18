@@ -1,0 +1,405 @@
+{
+  "version": "1.0",
+  "description": "AHVI full outfit builder logic. Combines top, bottom, one-piece, layers, shoes, accessories, color harmony, occasion, season, body-balance, and styling mood into complete outfit outputs for women and men.",
+  "schema": {
+    "fields": [
+      "builder_id",
+      "gender",
+      "mode",
+      "occasion_tags",
+      "season_tags",
+      "style_modes",
+      "formality",
+      "base_formula_source",
+      "color_logic_source",
+      "shoe_logic_source",
+      "accessory_logic_source",
+      "layer_logic",
+      "body_balance_rules",
+      "comfort_rules",
+      "output_shape",
+      "notes"
+    ]
+  },
+  "runtime_order": [
+    "detect gender",
+    "detect occasion + place + season + weather",
+    "select outfit mode (top_bottom, one_piece, layered, indian, fusion)",
+    "pick base formula from ahvi_top_bottom_combos_v1",
+    "apply color pairing from ahvi_color_pair_logic_v1",
+    "apply shoe selection from ahvi_shoe_selection_logic_v1",
+    "apply accessory set from ahvi_accessory_combo_logic_v1",
+    "apply body balance refinement if allowed",
+    "apply comfort and practicality rules",
+    "assemble final outfit",
+    "generate 2 safe + 1 bold by default"
+  ],
+  "global_builder_rules": {
+    "default_output": {
+      "count": 3,
+      "mix": "2_safe_1_bold"
+    },
+    "safe_option_definition": "Most practical and occasion-safe formula with stable color harmony and easier shoe choice.",
+    "bold_option_definition": "One stronger move only: color, silhouette, or accessory emphasis, while still respecting context.",
+    "one_hero_rule": "Each outfit should usually have one hero decision only: statement color, statement layer, statement accessory, or statement shoe.",
+    "layer_rule": "If the outfit already has texture, print, or embellishment, use cleaner layers.",
+    "shoe_rule": "Shoes must match both formality and movement needs.",
+    "accessory_rule": "Accessories should finish the outfit, not overcrowd it.",
+    "color_rule": "Base formula picks the silhouette. Color logic upgrades the emotional feel.",
+    "bag_rule": "Bag should match the polish level of shoes and outfit, not necessarily the exact color.",
+    "comfort_first_rule": "If user signals comfort need, travel, mobility, or vulnerable mood, comfort outranks drama."
+  },
+  "women": {
+    "builder_modes": [
+      {
+        "builder_id": "W_BUILD_001",
+        "gender": "women",
+        "mode": "top_bottom_daywear",
+        "occasion_tags": ["daily", "brunch", "casual_meeting", "travel"],
+        "season_tags": ["all_season"],
+        "style_modes": ["timeless", "clean", "easy", "soft_polished"],
+        "formality": "casual_to_smart_casual",
+        "base_formula_source": ["W_TB_001", "W_TB_002", "W_TB_005", "W_TB_009"],
+        "color_logic_source": ["WCP_002", "WCP_005", "WCP_007", "WCP_010", "WCP_011"],
+        "shoe_logic_source": ["W_SHOE_001", "W_SHOE_005"],
+        "accessory_logic_source": ["W_ACC_001", "W_ACC_002", "W_ACC_006"],
+        "layer_logic": [
+          "use light blazer if place is city or meeting-led",
+          "use cardigan if user tone or styling mood is softer",
+          "skip layer if weather is hot and outfit is already complete"
+        ],
+        "body_balance_rules": [
+          "use tuck or half_tuck if cleaner waist definition helps",
+          "prefer straighter bottoms if top has volume",
+          "prefer cleaner tops if bottom is wider or more detailed"
+        ],
+        "comfort_rules": [
+          "prefer sneakers or loafers for longer days",
+          "avoid fragile fabrics for travel-heavy contexts"
+        ],
+        "output_shape": "top + bottom + optional layer + shoe + bag + small accessory finisher",
+        "notes": "Core builder for women’s daywear and casual polish."
+      },
+      {
+        "builder_id": "W_BUILD_002",
+        "gender": "women",
+        "mode": "workwear_builder",
+        "occasion_tags": ["work", "office", "meeting", "presentation"],
+        "season_tags": ["all_season"],
+        "style_modes": ["sharp", "professional", "minimal", "polished"],
+        "formality": "workwear",
+        "base_formula_source": ["W_TB_002", "W_TB_008", "W_TB_010", "W_LY_001"],
+        "color_logic_source": ["WCP_001", "WCP_004", "WCP_007", "WCP_008", "WCP_011"],
+        "shoe_logic_source": ["W_SHOE_002"],
+        "accessory_logic_source": ["W_ACC_001", "W_ACC_002"],
+        "layer_logic": [
+          "prefer blazer when authority or structure is needed",
+          "prefer softer longline layer when user wants a gentler work look"
+        ],
+        "body_balance_rules": [
+          "use clean verticals for stronger work polish",
+          "keep one structured element near shoulders or waist for balance"
+        ],
+        "comfort_rules": [
+          "prefer loafers or block heels for long office days",
+          "avoid over-accessorising in formal work contexts"
+        ],
+        "output_shape": "work top + tailored bottom + blazer_optional + work shoe + structured bag + minimal jewellery",
+        "notes": "Core office and professional builder for women."
+      },
+      {
+        "builder_id": "W_BUILD_003",
+        "gender": "women",
+        "mode": "one_piece_day_builder",
+        "occasion_tags": ["brunch", "resort", "day_event", "smart_daywear"],
+        "season_tags": ["spring", "summer", "all_season"],
+        "style_modes": ["easy", "feminine", "fresh", "clean"],
+        "formality": "casual_to_smart_casual",
+        "base_formula_source": ["W_OP_001", "W_OP_002"],
+        "color_logic_source": ["WCP_002", "WCP_003", "WCP_009", "WCP_010", "WCP_011"],
+        "shoe_logic_source": ["W_SHOE_001", "W_SHOE_003", "W_SHOE_008"],
+        "accessory_logic_source": ["W_ACC_001", "W_ACC_003"],
+        "layer_logic": [
+          "use blazer if place is city-smart or meeting-adjacent",
+          "use cardigan if the look should stay softer",
+          "use no layer if dress is already the hero"
+        ],
+        "body_balance_rules": [
+          "use belt or waist emphasis only if the silhouette needs definition",
+          "keep accessories lighter if the dress print is active"
+        ],
+        "comfort_rules": [
+          "prefer flats or sneakers for longer daywear",
+          "avoid delicate heels for resort or walking-heavy days"
+        ],
+        "output_shape": "one_piece + optional layer + shoe + bag + light jewellery",
+        "notes": "Easy feminine one-piece builder."
+      },
+      {
+        "builder_id": "W_BUILD_004",
+        "gender": "women",
+        "mode": "evening_builder",
+        "occasion_tags": ["dinner", "date", "cocktail", "party", "event"],
+        "season_tags": ["all_season"],
+        "style_modes": ["sleek", "elevated", "glam", "refined"],
+        "formality": "elevated",
+        "base_formula_source": ["W_TB_006", "W_TB_014", "W_OP_003"],
+        "color_logic_source": ["WCP_001", "WCP_006", "WCP_007", "WCP_008", "WCP_012"],
+        "shoe_logic_source": ["W_SHOE_004"],
+        "accessory_logic_source": ["W_ACC_004"],
+        "layer_logic": [
+          "use sharp blazer or shawl only if weather or venue requires it",
+          "avoid layers that reduce the clean evening line unless necessary"
+        ],
+        "body_balance_rules": [
+          "if earrings are statement, reduce necklace",
+          "if outfit is already high-shine, simplify accessories and shoes"
+        ],
+        "comfort_rules": [
+          "if user says no heels, route to pointed flats or dressy sandals",
+          "if event includes long standing, prefer stable heel shapes"
+        ],
+        "output_shape": "sleek base + dressy shoe + evening bag + controlled statement accessory",
+        "notes": "Women’s evening and event outfit builder."
+      },
+      {
+        "builder_id": "W_BUILD_005",
+        "gender": "women",
+        "mode": "indian_day_builder",
+        "occasion_tags": ["cultural_event", "family_day", "casual_indianwear", "festive_day"],
+        "season_tags": ["all_season"],
+        "style_modes": ["neat", "traditional", "easy", "elegant"],
+        "formality": "casual_to_semi_festive",
+        "base_formula_source": ["W_TB_007", "W_TB_015", "W_OP_004"],
+        "color_logic_source": ["WCP_002", "WCP_005", "WCP_009", "WCP_010", "WCP_012"],
+        "shoe_logic_source": ["W_SHOE_007"],
+        "accessory_logic_source": ["W_ACC_005"],
+        "layer_logic": [
+          "use dupatta as optional polish layer rather than mandatory weight",
+          "if kurta set is already coordinated, keep support styling lighter"
+        ],
+        "body_balance_rules": [
+          "keep bottoms cleaner if top has print or embroidery",
+          "use vertical dupatta drape for a cleaner longer line"
+        ],
+        "comfort_rules": [
+          "prefer juttis or sandals for long family events",
+          "avoid very heavy jewellery for daytime Indianwear"
+        ],
+        "output_shape": "kurta_or_set + bottom + dupatta_optional + shoe + small_traditional_accessories",
+        "notes": "Core Indian daywear builder for women."
+      },
+      {
+        "builder_id": "W_BUILD_006",
+        "gender": "women",
+        "mode": "festive_builder",
+        "occasion_tags": ["wedding_guest", "festive", "family_event", "traditionalwear"],
+        "season_tags": ["festive_season", "autumn", "winter", "all_season"],
+        "style_modes": ["celebratory", "traditional", "elevated", "fusion"],
+        "formality": "festive",
+        "base_formula_source": ["W_TB_013", "W_TB_007", "W_OP_004"],
+        "color_logic_source": ["WCP_006", "WCP_012", "WCP_003", "WCP_005"],
+        "shoe_logic_source": ["W_SHOE_007"],
+        "accessory_logic_source": ["W_ACC_005", "W_ACC_004"],
+        "layer_logic": [
+          "use dupatta, festive jacket, or blouse detailing as the main celebration element, not all three at once",
+          "if outfit is heavily embellished, simplify shoes and jewellery weight"
+        ],
+        "body_balance_rules": [
+          "keep one focal area only: earrings, neckline, or dupatta",
+          "if skirt or lehenga has volume, keep upper accessories cleaner"
+        ],
+        "comfort_rules": [
+          "prefer block heels or juttis for long wedding events",
+          "avoid fragile shoes on uneven venues"
+        ],
+        "output_shape": "festive base + traditional shoe + festive bag + hero accessory + support accessory",
+        "notes": "Women’s festive and wedding guest builder."
+      }
+    ]
+  },
+  "men": {
+    "builder_modes": [
+      {
+        "builder_id": "M_BUILD_001",
+        "gender": "men",
+        "mode": "core_daywear_builder",
+        "occasion_tags": ["daily", "casual_social", "travel", "weekend"],
+        "season_tags": ["all_season"],
+        "style_modes": ["clean", "reliable", "modern", "easy"],
+        "formality": "casual_to_smart_casual",
+        "base_formula_source": ["M_TB_003", "M_TB_004", "M_TB_005", "M_TB_009"],
+        "color_logic_source": ["MCP_002", "MCP_004", "MCP_005", "MCP_007", "MCP_010"],
+        "shoe_logic_source": ["M_SHOE_002", "M_SHOE_004", "M_SHOE_007"],
+        "accessory_logic_source": ["M_ACC_001", "M_ACC_002"],
+        "layer_logic": [
+          "use overshirt if outfit needs shape but not formality",
+          "skip layer if climate is hot and base already feels complete"
+        ],
+        "body_balance_rules": [
+          "keep fit clean before adding accessory complexity",
+          "if top has texture, keep bottom cleaner"
+        ],
+        "comfort_rules": [
+          "prefer clean sneakers for long walking days",
+          "prefer loafers for smart casual polish without stiffness"
+        ],
+        "output_shape": "top + bottom + optional layer + shoe + watch_or_small_accessory",
+        "notes": "Core casual menswear builder."
+      },
+      {
+        "builder_id": "M_BUILD_002",
+        "gender": "men",
+        "mode": "workwear_builder",
+        "occasion_tags": ["office", "meeting", "presentation", "business_casual"],
+        "season_tags": ["all_season"],
+        "style_modes": ["professional", "clean", "sharp", "reliable"],
+        "formality": "workwear",
+        "base_formula_source": ["M_TB_001", "M_TB_008", "M_LY_001"],
+        "color_logic_source": ["MCP_001", "MCP_003", "MCP_005", "MCP_006"],
+        "shoe_logic_source": ["M_SHOE_001", "M_SHOE_003"],
+        "accessory_logic_source": ["M_ACC_001", "M_ACC_003"],
+        "layer_logic": [
+          "use blazer when sharper authority is needed",
+          "prefer shirt-trouser clarity before adding extra detail"
+        ],
+        "body_balance_rules": [
+          "clean fit is more important than accessory complexity",
+          "match belt with shoe when formality rises"
+        ],
+        "comfort_rules": [
+          "use loafers for softer workwear, dress shoes for sharper workwear",
+          "avoid casual sneakers in presentation-led contexts"
+        ],
+        "output_shape": "shirt + tailored bottom + blazer_optional + formal_shoe + belt + watch + work_bag",
+        "notes": "Core office and business builder for men."
+      },
+      {
+        "builder_id": "M_BUILD_003",
+        "gender": "men",
+        "mode": "smart_social_builder",
+        "occasion_tags": ["brunch", "date", "smart_social", "resort"],
+        "season_tags": ["spring", "summer", "autumn"],
+        "style_modes": ["refined", "easy", "approachable", "premium_casual"],
+        "formality": "smart_casual",
+        "base_formula_source": ["M_TB_003", "M_TB_005", "M_TB_010", "M_OP_001"],
+        "color_logic_source": ["MCP_002", "MCP_004", "MCP_007", "MCP_008", "MCP_009"],
+        "shoe_logic_source": ["M_SHOE_001", "M_SHOE_007", "M_SHOE_002"],
+        "accessory_logic_source": ["M_ACC_001", "M_ACC_002"],
+        "layer_logic": [
+          "use unstructured jacket or overshirt if the look needs more polish",
+          "keep layering light in warm weather"
+        ],
+        "body_balance_rules": [
+          "use cleaner bottoms if top texture is prominent",
+          "avoid too many competing menswear details at once"
+        ],
+        "comfort_rules": [
+          "loafers increase polish, sneakers keep youthfulness and ease"
+        ],
+        "output_shape": "smart top + chino_or_clean_bottom + light_layer_optional + shoe + watch + bag_optional",
+        "notes": "Men’s refined social builder."
+      },
+      {
+        "builder_id": "M_BUILD_004",
+        "gender": "men",
+        "mode": "evening_builder",
+        "occasion_tags": ["dinner", "evening", "date", "semi_formal"],
+        "season_tags": ["all_season", "autumn", "winter"],
+        "style_modes": ["sleek", "strong", "elevated", "confident"],
+        "formality": "elevated",
+        "base_formula_source": ["M_TB_006", "M_TB_012", "M_LY_001"],
+        "color_logic_source": ["MCP_001", "MCP_006", "MCP_008", "MCP_011"],
+        "shoe_logic_source": ["M_SHOE_001", "M_SHOE_003"],
+        "accessory_logic_source": ["M_ACC_001", "M_ACC_003"],
+        "layer_logic": [
+          "use dark blazer only if it sharpens rather than overcomplicates",
+          "keep evening base sleek and low-noise"
+        ],
+        "body_balance_rules": [
+          "dark bottom anchors evening menswear most reliably",
+          "avoid overly casual shoes when the shirt or knit is already dressy"
+        ],
+        "comfort_rules": [
+          "loafers work when the mood is softer, formal shoes when the event is stricter"
+        ],
+        "output_shape": "sharp top + dark bottom + blazer_optional + evening_shoe + watch",
+        "notes": "Core men’s evening builder."
+      },
+      {
+        "builder_id": "M_BUILD_005",
+        "gender": "men",
+        "mode": "winter_builder",
+        "occasion_tags": ["winter_daywear", "office", "travel", "city_casual"],
+        "season_tags": ["winter", "autumn"],
+        "style_modes": ["rich", "seasonal", "masculine", "structured"],
+        "formality": "smart_casual",
+        "base_formula_source": ["M_TB_011", "M_LY_003"],
+        "color_logic_source": ["MCP_001", "MCP_006", "MCP_010", "MCP_011"],
+        "shoe_logic_source": ["M_SHOE_005"],
+        "accessory_logic_source": ["M_ACC_001", "M_ACC_003"],
+        "layer_logic": [
+          "coat or heavier outer layer becomes a primary visual anchor",
+          "winter outfits can take deeper color combinations and more texture"
+        ],
+        "body_balance_rules": [
+          "boots or stronger footwear help anchor heavier top layers",
+          "keep accessories tighter when outerwear already adds presence"
+        ],
+        "comfort_rules": [
+          "prioritise warmth, traction, and shoe durability in winter contexts"
+        ],
+        "output_shape": "base + winter_layer + grounded_shoe + simple_accessories",
+        "notes": "Cold-weather builder for men."
+      },
+      {
+        "builder_id": "M_BUILD_006",
+        "gender": "men",
+        "mode": "indian_festive_builder",
+        "occasion_tags": ["festive", "wedding", "family_event", "traditionalwear"],
+        "season_tags": ["all_season", "festive_season"],
+        "style_modes": ["traditional", "elevated", "polished"],
+        "formality": "festive",
+        "base_formula_source": ["M_TB_007", "M_TB_013", "M_OP_002"],
+        "color_logic_source": ["MCP_001", "MCP_002", "MCP_005", "MCP_012"],
+        "shoe_logic_source": ["M_SHOE_006"],
+        "accessory_logic_source": ["M_ACC_004"],
+        "layer_logic": [
+          "use either jacket emphasis or stole emphasis, not both as equal heroes",
+          "keep the festive structure clean"
+        ],
+        "body_balance_rules": [
+          "traditionalwear reads best when silhouette and accessories stay controlled",
+          "if kurta set is already rich in color, keep shoes and add-ons simpler"
+        ],
+        "comfort_rules": [
+          "prefer mojris or loafers that can last through long family functions"
+        ],
+        "output_shape": "kurta_or_set + bottom + traditional_shoe + watch + festive_layer_optional",
+        "notes": "Core Indian festive builder for men."
+      }
+    ]
+  },
+  "builder_tests": {
+    "safe_generation_checks": [
+      "Do not combine more than one bold decision unless explicitly requested.",
+      "Do not output impractical shoes for travel-heavy or walking-heavy events.",
+      "Do not over-accessorise embellished Indianwear.",
+      "Do not force body-balance language if user has not asked for it or is emotionally vulnerable.",
+      "Do not repeat the same base formula across all three options."
+    ],
+    "quality_checks": [
+      "Each outfit must feel complete, not just descriptive.",
+      "Each outfit must include a finishing logic: shoe, accessory, or layer.",
+      "Color should explain mood, not only matching.",
+      "If a layer is present, it must improve context, weather fit, or polish."
+    ]
+  },
+  "dev_notes": [
+    "This file is the orchestration layer for the styling brain.",
+    "It should not replace formula banks; it should assemble them.",
+    "Base formula decides outfit skeleton. Color decides emotional effect. Shoes decide practicality and polish. Accessories decide finish.",
+    "Use 2 safe + 1 bold by default unless user asks for a different format.",
+    "Future versions can add explicit weather, age, body-type, and wardrobe-inventory routing."
+  ]
+}

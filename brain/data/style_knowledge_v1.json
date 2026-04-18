@@ -1,0 +1,400 @@
+{
+  "_comment": "AHVI Style Knowledge v1 (Women + Men). Fashion intelligence (rules + recos). Not chat copy. Use with user profile (gender, body_type, height_bucket, proportions, undertone, style_vibe, fit_preference, occasion, weather).",
+
+  "meta": {
+    "version": "1.0.0",
+    "supported_genders": ["women", "men"],
+    "supported_body_types": {
+      "women": ["hourglass", "rectangle", "pear", "inverted_triangle", "apple"],
+      "men": ["trapezoid", "inverted_triangle", "triangle", "rectangle", "oval"]
+    },
+    "tone_guidelines": [
+      "Rules are options, never restrictions.",
+      "No body-shaming language.",
+      "Prioritise comfort, user preference, and occasion."
+    ]
+  },
+
+  "inputs_contract": {
+    "required_minimum": ["gender", "body_type"],
+    "optional": [
+      "height_bucket",
+      "proportions",
+      "skin_undertone",
+      "skin_depth",
+      "style_vibe",
+      "fit_preference",
+      "occasion",
+      "weather_bucket"
+    ],
+    "enums": {
+      "height_bucket": ["petite", "average", "tall"],
+      "skin_undertone": ["cool", "warm", "neutral", "olive"],
+      "skin_depth": ["fair", "light", "medium", "tan", "deep"],
+      "weather_bucket": ["hot_humid", "hot_dry", "mild", "cold", "rainy"],
+      "fit_preference": ["relaxed", "regular", "tailored", "bodycon", "modest"],
+      "style_vibe": ["minimal", "classic", "street", "smart_casual", "glam", "athleisure", "ethnic_fusion", "preppy"]
+    },
+    "proportions_enum": [
+      "long_torso",
+      "short_torso",
+      "long_legs",
+      "short_legs",
+      "broad_shoulders",
+      "narrow_shoulders",
+      "full_bust",
+      "small_bust",
+      "broad_hips",
+      "slim_hips",
+      "thick_thighs",
+      "slim_thighs"
+    ]
+  },
+
+  "principles": {
+    "goals": {
+      "balance": "Create balance between upper and lower proportions.",
+      "define_waist": "Optional. Use when user wants shape/definition.",
+      "elongate": "Use vertical lines, tonal looks, higher rises, clean hems.",
+      "soften": "Use drape, rounded necklines, softer fabrics to reduce sharpness.",
+      "structure": "Use tailoring, shoulder seams, and crisp fabrics to add shape."
+    },
+    "universal_rules": [
+      "Place brighter colors where the user wants focus.",
+      "Tonal/monochrome outfits elongate and look premium.",
+      "High contrast draws attention; low contrast feels sleek.",
+      "Near-face colors matter most (tops, collars, scarves, earrings).",
+      "Fit beats trends: shoulder seam, rise, hem length, and fabric quality matter most."
+    ],
+    "stylist_output_format": [
+      "Give 2–3 outfit routes (safe, elevated, bold).",
+      "Always include shoes + bag (or belt/watch for men) + 1–2 accessories.",
+      "Mention fit notes (rise, length, neckline, jacket length)."
+    ]
+  },
+
+  "color_knowledge": {
+    "undertone_palettes": {
+      "cool": {
+        "best_neutrals": ["bright white", "charcoal", "navy", "cool grey"],
+        "best_colors": ["cobalt", "emerald", "fuchsia", "berry", "lavender", "icy pink"],
+        "metallics": ["silver", "white gold"],
+        "avoid_or_use_carefully": ["mustard", "orange-heavy tones", "very warm beige"]
+      },
+      "warm": {
+        "best_neutrals": ["ivory", "cream", "camel", "warm beige", "chocolate"],
+        "best_colors": ["rust", "terracotta", "coral", "tomato red", "olive", "teal", "marigold"],
+        "metallics": ["gold", "rose gold", "bronze"],
+        "avoid_or_use_carefully": ["icy pastels", "blue-based pinks", "very cool greys"]
+      },
+      "neutral": {
+        "best_neutrals": ["soft white", "taupe", "navy", "mid grey"],
+        "best_colors": ["true red", "peach", "jade", "royal blue", "mauve", "forest green"],
+        "metallics": ["gold", "silver", "mixed metals"],
+        "avoid_or_use_carefully": ["extreme neons", "very muddy tones"]
+      },
+      "olive": {
+        "best_neutrals": ["off-white", "stone", "espresso", "deep navy"],
+        "best_colors": ["emerald", "teal", "burgundy", "aubergine", "rust", "deep coral"],
+        "metallics": ["gold", "antique gold", "bronze"],
+        "avoid_or_use_carefully": ["ashy beige", "very pale yellows", "chalky pastels"]
+      }
+    },
+
+    "universal_color_moves": {
+      "elongate": ["tonal dressing", "same-color top+bottom", "dark base + mid-tone top"],
+      "highlight_upper": ["lighter/brighter tops", "prints near face", "statement earrings/scarf"],
+      "highlight_lower": ["lighter pants/skirts", "colored shoes", "interesting belts"],
+      "minimise_focus": ["matte fabrics", "darker tones in area", "simple silhouettes"]
+    }
+  },
+
+  "category_knowledge": {
+    "women": {
+      "tops": {
+        "necklines": ["v-neck", "scoop", "square", "sweetheart", "wrap", "high neck", "boat neck"],
+        "sleeves": ["cap", "short", "3/4", "full", "flutter", "puff", "raglan"],
+        "fit_terms": ["fitted", "semi-fitted", "relaxed", "cropped", "tucked", "peplum"]
+      },
+      "bottoms": {
+        "pants_fits": ["straight", "wide-leg", "bootcut", "flare", "cigarette", "tapered", "mom", "skinny"],
+        "rises": ["high-rise", "mid-rise"],
+        "shorts": ["tailored", "denim", "bermuda", "paperbag"],
+        "skirts": ["a-line", "pencil", "wrap", "pleated", "bias-cut", "mini", "midi", "maxi"]
+      },
+      "dresses": ["wrap", "fit-and-flare", "a-line", "sheath", "shift", "slip", "bodycon", "empire"],
+      "sets": ["co-ord set", "matching set", "kurta set", "suit set"],
+      "outerwear": ["blazer", "denim jacket", "cropped jacket", "longline coat", "shrug", "cardigan"],
+      "shoes": ["sneakers", "loafers", "mules", "block heels", "strappy heels", "ballet flats", "boots", "sandals"],
+      "accessories": ["earrings", "necklace", "bracelet", "watch", "belt", "scarf", "bag", "sunglasses", "hair accessory"]
+    },
+
+    "men": {
+      "tops": {
+        "types": ["t-shirt", "polo", "shirt", "overshirt", "kurta", "sweater", "hoodie"],
+        "necklines": ["crew", "v-neck", "polo collar", "mandarin collar"],
+        "fits": ["slim", "regular", "relaxed", "boxy (controlled)"],
+        "fabric_moves": ["structured cotton", "oxford", "linen", "knit", "lightweight wool"]
+      },
+      "bottoms": {
+        "pants_fits": ["straight", "tapered", "relaxed taper", "wide (street)", "slim (controlled)"],
+        "rises": ["mid-rise"],
+        "shorts": ["tailored", "chino", "denim", "athletic", "bermuda"],
+        "jeans": ["straight", "tapered", "relaxed taper", "slim-straight"]
+      },
+      "outerwear": ["blazer", "bomber", "denim jacket", "field jacket", "overshirt", "long coat"],
+      "shoes": ["sneakers", "loafers", "derbies", "oxfords", "chelsea boots", "sandals"],
+      "accessories": ["watch", "belt", "cap", "sunglasses", "bracelet", "chain (subtle)", "bag/backpack"]
+    }
+  },
+
+  "women": {
+    "body_types": {
+      "hourglass": {
+        "goals": ["define_waist", "clean_silhouette"],
+        "best": {
+          "tops": ["wrap tops", "fitted knits", "bodysuits", "tailored shirts", "waist-length jackets"],
+          "pants": ["high-rise straight", "bootcut", "flare", "cigarette", "structured wide-leg"],
+          "skirts": ["pencil", "a-line", "wrap", "bias-cut midi"],
+          "shorts": ["high-rise tailored", "mid-thigh", "paperbag (light)"],
+          "dresses": ["wrap", "fit-and-flare", "sheath", "bodycon (if desired)"],
+          "sets": ["co-ords with waist definition", "matching blazer sets", "kurta sets with fitted waist"],
+          "outerwear": ["cropped blazer", "waist-length jacket", "belted trench"],
+          "shoes": ["block heels", "mules", "pointed-toe flats", "sleek sneakers"],
+          "accessories": ["belts", "structured bags", "statement earrings"]
+        },
+        "fit_notes": [
+          "Prefer high or mid-high rise to define waist.",
+          "Tuck or half-tuck works well.",
+          "Avoid shapeless oversized tops without balancing the waist."
+        ],
+        "caution": ["ultra-low rise bottoms", "very bulky layers at waist"]
+      },
+
+      "rectangle": {
+        "goals": ["define_waist (optional)", "add_curves", "create_shape"],
+        "best": {
+          "tops": ["peplum", "wrap", "ruffle/texture tops", "square neck", "cropped jacket", "layered looks"],
+          "pants": ["high-rise wide-leg", "straight", "paperbag waist", "cargo (controlled)", "mom jeans (structured)"],
+          "skirts": ["a-line", "pleated", "wrap", "mini with structure"],
+          "shorts": ["paperbag", "tailored with pleats", "A-line shorts"],
+          "dresses": ["fit-and-flare", "wrap", "empire", "belted shirt dress"],
+          "sets": ["co-ords with contrast (light top/dark bottom)", "belted sets"],
+          "outerwear": ["cropped blazers", "belted blazers", "structured denim jacket"],
+          "shoes": ["chunky sneakers", "strappy heels", "boots"],
+          "accessories": ["belts", "layered necklaces", "statement bags"]
+        },
+        "fit_notes": [
+          "Use belts, peplum, or tucked tops to create waist definition.",
+          "Texture/prints add dimension.",
+          "Cropped lengths help shape."
+        ],
+        "caution": ["ultra-straight shapeless shift looks if user wants definition"]
+      },
+
+      "pear": {
+        "goals": ["balance_upper", "highlight_face_and_shoulders", "clean_hip_line"],
+        "best": {
+          "tops": ["boat neck", "square neck", "structured shoulders", "statement sleeves", "bright tops", "layered necklaces"],
+          "pants": ["high-rise straight", "bootcut", "flare", "dark wash jeans", "tailored trousers"],
+          "skirts": ["a-line", "wrap", "bias-cut", "midi with movement"],
+          "shorts": ["mid-thigh", "slightly relaxed leg", "tailored", "avoid ultra-tight hems"],
+          "dresses": ["fit-and-flare", "wrap", "a-line", "empire (if comfy)"],
+          "sets": ["lighter/brighter top + darker bottom co-ords", "structured top co-ords"],
+          "outerwear": ["cropped jackets", "shoulder-structured blazers", "waist-length layers"],
+          "shoes": ["pointed flats", "block heels", "low-profile sneakers"],
+          "accessories": ["statement earrings", "scarves", "bags worn higher (shoulder/crossbody higher)"]
+        },
+        "fit_notes": [
+          "Bring attention up: neckline, sleeves, color near face.",
+          "Prefer bottoms that skim, not cling, through hips/thighs.",
+          "Bootcut/flare balances beautifully."
+        ],
+        "caution": ["very clingy light-colored bottoms", "low-rise pants that cut across hips"]
+      },
+
+      "inverted_triangle": {
+        "goals": ["balance_lower", "soften_shoulders", "add_weight_to_bottom"],
+        "best": {
+          "tops": ["v-neck", "scoop neck", "raglan sleeves", "drapey fabrics", "simple tops"],
+          "pants": ["wide-leg", "palazzo", "flare", "light or printed bottoms", "pleated trousers"],
+          "skirts": ["a-line", "pleated", "wrap", "midi with volume"],
+          "shorts": ["paperbag", "pleated", "A-line shorts", "lighter colors"],
+          "dresses": ["fit-and-flare", "a-line", "wrap with softer shoulders"],
+          "sets": ["simple top + statement bottom co-ords", "dark top + light bottom"],
+          "outerwear": ["open-front layers", "longline (light) without heavy shoulders"],
+          "shoes": ["chunky sneakers", "ankle-strap heels", "boots"],
+          "accessories": ["bags with some volume", "belts to define waist if desired"]
+        },
+        "fit_notes": [
+          "Keep shoulders clean and simple; add interest to lower half.",
+          "Avoid heavy shoulder padding unless user loves it.",
+          "A-line silhouettes work consistently."
+        ],
+        "caution": ["very high neck + structured shoulders combo", "extremely skinny bottoms with bulky tops"]
+      },
+
+      "apple": {
+        "goals": ["elongate", "create_vertical_lines", "define_waist (optional)", "spotlight_legs_or_neckline"],
+        "best": {
+          "tops": ["v-neck", "wrap (soft)", "tunic tops", "flowy blouses", "structured but not tight shirts"],
+          "pants": ["mid/high-rise straight", "bootcut", "flare", "tailored wide-leg (drape)", "dark wash jeans"],
+          "skirts": ["a-line", "wrap", "bias midi", "skirts that sit smooth at waist"],
+          "shorts": ["mid-thigh", "relaxed leg", "tailored with stretch"],
+          "dresses": ["empire", "wrap", "a-line", "shift (structured)", "column dress with jacket"],
+          "sets": ["tonal co-ords", "longline top + straight bottom", "kurta sets with straight pants"],
+          "outerwear": ["longline blazer", "open-front cardigan", "duster jacket"],
+          "shoes": ["pointed flats", "low block heels", "sleek sneakers"],
+          "accessories": ["long necklaces", "scarves", "structured medium bags"]
+        },
+        "fit_notes": [
+          "Vertical layers (open blazer/cardigan) are your best friend.",
+          "Choose fabrics that skim and drape, not cling.",
+          "Tonal outfits look especially sleek."
+        ],
+        "caution": ["very tight clingy tops", "bulky cropped layers that end at widest point"]
+      }
+    }
+  },
+
+  "men": {
+    "body_types": {
+      "trapezoid": {
+        "goals": ["highlight_structure", "clean_lines", "avoid_excess_bulk"],
+        "best": {
+          "tops": ["well-fitted tees", "polo", "oxford shirts", "crewneck knits", "overshirt (clean)"],
+          "pants": ["straight chinos", "tapered chinos", "straight jeans", "relaxed taper"],
+          "shorts": ["tailored shorts", "chino shorts (mid-thigh)"],
+          "outerwear": ["blazers", "bombers", "denim jackets", "overshirts"],
+          "shoes": ["white sneakers", "loafers", "derbies"],
+          "accessories": ["watch", "belt", "sunglasses"]
+        },
+        "fit_notes": [
+          "Shoulder seams must land correctly.",
+          "Avoid super-skinny fits; go for clean tailored."
+        ],
+        "caution": ["excessively boxy oversized fits if aiming sharp"]
+      },
+
+      "inverted_triangle": {
+        "goals": ["balance_lower", "avoid_extra_bulk_up_top", "clean_silhouette"],
+        "best": {
+          "tops": ["regular-fit tees", "minimal prints", "open collars", "knits without bulk"],
+          "pants": ["straight", "relaxed taper", "pleated trousers (light)", "avoid super-skinny"],
+          "shorts": ["slightly relaxed shorts", "tailored with room"],
+          "outerwear": ["unstructured blazers", "minimal bomber", "overshirt (light)"],
+          "shoes": ["chunkier sneakers", "boots (adds balance)"],
+          "accessories": ["watch", "belt", "crossbody bag (small)"]
+        },
+        "fit_notes": [
+          "Keep top clean; add visual weight below (pants fit, footwear).",
+          "Avoid heavy shoulder padding."
+        ],
+        "caution": ["very tight pants with bulky hoodies/jackets"]
+      },
+
+      "triangle": {
+        "goals": ["balance_upper", "structure_shoulders", "elongate"],
+        "best": {
+          "tops": ["structured shirts", "overshirts", "blazers (light structure)", "darker tops", "vertical stripes"],
+          "pants": ["straight", "dark jeans", "mid-rise chinos", "avoid ultra-slim taper that clings"],
+          "shorts": ["straight shorts with room", "avoid tight hems"],
+          "outerwear": ["structured blazer", "field jacket", "denim jacket (clean)"],
+          "shoes": ["sleek sneakers", "loafers", "derbies"],
+          "accessories": ["watch", "structured belt", "sunglasses"]
+        },
+        "fit_notes": [
+          "Add structure on shoulders and chest (but not tight).",
+          "Prefer darker bottoms and clean lines."
+        ],
+        "caution": ["skin-tight tees", "low-rise pants"]
+      },
+
+      "rectangle": {
+        "goals": ["add_shape", "create_dimension", "layer_smartly"],
+        "best": {
+          "tops": ["layered tees + overshirt", "knits", "textured shirts", "polo", "henley"],
+          "pants": ["tapered", "straight", "pleated trousers (light)", "relaxed taper jeans"],
+          "shorts": ["tailored", "slightly structured"],
+          "outerwear": ["bombers", "overshirts", "blazers", "denim jackets"],
+          "shoes": ["sneakers", "boots", "loafers"],
+          "accessories": ["watch", "bracelet", "cap (optional)"]
+        },
+        "fit_notes": [
+          "Texture + layering adds dimension.",
+          "Aim for shoulders aligned and sleeves clean."
+        ],
+        "caution": ["very flat one-note outfits without layering if user wants shape"]
+      },
+
+      "oval": {
+        "goals": ["elongate", "clean_vertical_lines", "comfort_with_structure"],
+        "best": {
+          "tops": ["v-neck/henley", "open collar shirts", "structured polos", "darker tops", "vertical stripes"],
+          "pants": ["straight", "mid-rise", "dark jeans", "tailored trousers (drape)"],
+          "shorts": ["mid-thigh to knee", "straight cut", "avoid overly tight"],
+          "outerwear": ["unstructured blazer", "longline overshirt", "open jacket"],
+          "shoes": ["sleek sneakers", "loafers"],
+          "accessories": ["watch", "minimal chain", "sunglasses"]
+        },
+        "fit_notes": [
+          "Prefer structured fabrics that skim, not cling.",
+          "Open layers create vertical lines.",
+          "Tonal looks (same family colors) look sharp."
+        ],
+        "caution": ["tight clingy tees", "ultra-skinny pants"]
+      }
+    }
+  },
+
+  "accessory_rules": {
+    "women": {
+      "general": [
+        "If outfit is simple, go statement earrings or a bold bag.",
+        "If outfit has prints, keep jewelry minimal and clean.",
+        "Belts add definition — place at narrowest point if desired."
+      ],
+      "body_type_moves": {
+        "pear": ["statement earrings", "interesting neckline", "shorter necklaces to bring focus up"],
+        "inverted_triangle": ["bags with volume", "belts + interesting bottoms"],
+        "apple": ["long necklaces/scarves to create vertical line"],
+        "rectangle": ["belts + layered necklaces for dimension"],
+        "hourglass": ["belts + structured bag for polish"]
+      }
+    },
+    "men": {
+      "general": [
+        "One anchor accessory: watch OR chain OR bracelet (not all at once).",
+        "Belts should match shoe tone for formal looks.",
+        "Sunglasses and clean shoes elevate instantly."
+      ]
+    }
+  },
+
+  "shoe_rules": {
+    "women": {
+      "elongate": ["pointed-toe flats", "nude-tone heels", "sleek sneakers"],
+      "balance": ["chunky sneakers", "boots", "ankle-strap heels (adds stability)"],
+      "comfort_hot_weather": ["flat sandals", "mules", "espadrilles"]
+    },
+    "men": {
+      "smart": ["loafers", "derbies", "clean sneakers"],
+      "casual": ["sneakers", "sandals (clean)", "boots"],
+      "balance_lower": ["chunkier sneakers/boots for inverted triangle"]
+    }
+  },
+
+  "outfit_builder_hints": {
+    "_comment": "Use these to assemble suggestions. The generator should pick 1 route + alternates based on body_type + vibe + occasion.",
+    "women_routes": {
+      "safe": ["tonal outfit", "wrap top + straight pants", "a-line skirt + fitted top"],
+      "elevated": ["blazer set", "fit-and-flare dress", "silk/satin skirt + knit"],
+      "bold": ["statement bottom + simple top", "monochrome bright", "structured corset-style top (if desired)"]
+    },
+    "men_routes": {
+      "safe": ["clean tee + straight jeans", "polo + chinos", "shirt + straight trousers"],
+      "elevated": ["unstructured blazer + tee", "knit + pleated trouser (light)", "overshirt + clean pants"],
+      "bold": ["tonal set", "statement jacket", "texture layering + clean sneakers"]
+    }
+  }
+}

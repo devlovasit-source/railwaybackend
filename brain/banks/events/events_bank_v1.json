@@ -1,0 +1,1460 @@
+{
+  "version": "1.1",
+  "templates": 
+[
+  {
+    "key": "pasupu_function_telugu_home_40pax",
+    "event_type": "pasupu",
+    "style": "telugu_traditional_home",
+    "people_count": 40,
+    "cards": [
+      { "title": "Setup", "items": ["Kolam + mango leaf toran", "Brass lamps", "Turmeric bowls + kumkum", "Seating for elders"] },
+      { "title": "Ritual Items", "items": ["Pasupu", "Kumkum", "Rice", "Coconut", "Flowers", "Betel leaves", "Saree/blouse gift tray"] },
+      { "title": "Dress Code", "items": ["Bride: half saree/light silk", "Guests: silk sarees/kurta set", "Comfort flats"] },
+      { "title": "Flow", "items": ["Welcome", "Pasupu + blessings", "Photos", "Tiffin/coffee", "Return gifts"] }
+    ],
+    "linked_menu_key": "telugu_pasupu_tiffin_veg",
+    "linked_packing_key": "pasupu_bride_ultra_pack"
+  },
+  {
+    "key": "vratham_house_pooja_south_indian_30pax",
+    "event_type": "vratham",
+    "style": "south_indian_home_pooja",
+    "people_count": 30,
+    "cards": [
+      { "title": "Pooja Setup", "items": ["Pooja mandap corner", "Brass lamps", "Flowers + garlands", "Prasadam table"] },
+      { "title": "Ritual Checklist", "items": ["Kalash", "Coconuts", "Fruits", "Ghee lamp", "Incense", "Camphor", "Betel leaves"] },
+      { "title": "Guest Comfort", "items": ["Seating mats", "Fans/cooling", "Water station", "Kids corner"] }
+    ],
+    "linked_menu_key": "vratham_menu_60pax",
+    "linked_packing_key": "vratham_pack_list"
+  },
+  {
+    "key": "engagement_sagai_modern_stage_120pax",
+    "event_type": "engagement",
+    "style": "modern_stage",
+    "people_count": 120,
+    "cards": [
+      { "title": "Theme", "items": ["Neutral luxe + florals", "Stage + couple chairs", "Family photo line"] },
+      { "title": "Program Flow", "items": ["Welcome drinks", "Ring exchange", "Family photos", "Dinner + speeches"] },
+      { "title": "Dress Code", "items": ["Indian festive / cocktail ethnic", "Soft glam makeup", "Comfort footwear"] }
+    ],
+    "linked_menu_key": "delhi_modern_reception_fusion_mixed",
+    "linked_packing_key": "engagement_guest_pack_list"
+  },
+  {
+    "key": "roka_ceremony_intimate_home_30pax",
+    "event_type": "roka",
+    "style": "home_intimate",
+    "people_count": 30,
+    "cards": [
+      { "title": "Decor", "items": ["Floral corner", "Sweet trays", "Family seating", "Photo wall"] },
+      { "title": "Ritual Items", "items": ["Roka gifts", "Shagun envelopes", "Sweets", "Thali items"] },
+      { "title": "Flow", "items": ["Blessings", "Gift exchange", "Photos", "High tea"] }
+    ],
+    "linked_menu_key": "gujarati_mehendi_farsan_veg",
+    "linked_packing_key": "roka_family_host_pack_list"
+  },
+
+  {
+    "key": "sangeet_afterparty_ultra_180pax",
+    "event_type": "afterparty",
+    "style": "ultra_club_lounge",
+    "people_count": 180,
+    "cards": [
+      { "title": "Vibe", "items": ["Dark luxe lounge", "Neon signage", "Bottle-service style tables (optional)", "Photo booth"] },
+      { "title": "Music", "items": ["DJ set list", "Late-night hype", "Confetti moment (optional)"] },
+      { "title": "Food", "items": ["Late-night bites station", "Mini sliders", "Dessert jars", "Hydration shots"] },
+      { "title": "Dress Code", "items": ["Black chic / metallic", "Comfort heels/loafers", "Carry flats option"] }
+    ],
+    "linked_menu_key": "biryani_focus_cocktail_mixed",
+    "linked_packing_key": "afterparty_guest_pack_list"
+  },
+
+  {
+    "key": "wedding_day_telugu_muhurtham_traditional_250pax",
+    "event_type": "wedding_day",
+    "style": "telugu_traditional_muhurtham",
+    "people_count": 250,
+    "cards": [
+      { "title": "Mandap & Decor", "items": ["Jasmine + marigold canopy", "Banana stems", "Mango leaf toran", "Brass lamps"] },
+      { "title": "Ritual Cues", "items": ["Jeelakarra bellam", "Talambralu", "Kanyadaanam", "Mangalsutra moment"] },
+      { "title": "Bride Look", "items": ["Kanjeevaram silk", "Temple jewelry", "Jasmine gajra", "Long braid"] },
+      { "title": "Guest Experience", "items": ["Tiffin counter (morning)", "Filter coffee station", "Prasadam packs"] }
+    ],
+    "linked_menu_key": "tamil_brahmin_wedding_day_sequence_veg",
+    "linked_packing_key": "wedding_bride_ultra_pack"
+  },
+
+  {
+    "key": "pellichoopulu_telugu_intimate_30pax",
+    "event_type": "pellichoopulu",
+    "style": "telugu_home_intimate",
+    "people_count": 30,
+    "cards": [
+      { "title": "Setup", "items": ["Fresh flowers", "Snack + coffee table", "Family seating", "Photo corner"] },
+      { "title": "Flow", "items": ["Introductions", "Blessings", "Sweets exchange", "Photos"] },
+      { "title": "Dress Code", "items": ["Elegant ethnic", "Light jewelry", "Comfort footwear"] }
+    ],
+    "linked_menu_key": "telugu_pellikoduku_breakfast_mixed",
+    "linked_packing_key": "pellichoopulu_guest_pack_list"
+  },
+
+  {
+    "key": "mehendi_elite_palace_courtyard_220pax",
+    "event_type": "mehendi",
+    "style": "elite_palace_courtyard",
+    "people_count": 220,
+    "cards": [
+      { "title": "Decor Direction", "items": ["Mirror-work umbrellas", "Diwans + bolsters", "Hanging mogra garlands", "Hand-painted signage"] },
+      { "title": "Microtheme Add-ons", "items": ["Perfume/attar bar", "Hand fan station", "Photo booth with film frames"] },
+      { "title": "Entertainment", "items": ["Folk dancers", "Live percussion", "Mehendi artist lounge"] },
+      { "title": "Bride Look", "items": ["Pastel lehenga / sharara", "Floral + polki mix", "Soft glam makeup"] }
+    ],
+    "linked_menu_key": "telugu_mehendi_tiffin_veg",
+    "linked_packing_key": "mehendi_bride_ultra_pack"
+  },
+
+  {
+    "key": "sangeet_elite_runway_glam_300pax",
+    "event_type": "sangeet",
+    "style": "runway_glam",
+    "people_count": 300,
+    "cards": [
+      { "title": "Stage & Lighting", "items": ["Runway aisle", "LED wall", "Spotlight cues", "Fog/confetti moment (optional)"] },
+      { "title": "Program", "items": ["MC cues", "Family performance blocks", "Couple performance", "DJ set"] },
+      { "title": "Guest Experience", "items": ["Mocktail bar", "VIP lounge zone", "Late-night bites"] },
+      { "title": "Dress Code", "items": ["Black tie Indian", "Sequins/metallic accents", "Comfort footwear plan"] }
+    ],
+    "linked_menu_key": "delhi_modern_reception_fusion_mixed",
+    "linked_packing_key": "sangeet_guest_ultra_pack"
+  },
+
+  {
+    "key": "cocktail_elite_old_money_200pax",
+    "event_type": "cocktail",
+    "style": "old_money_luxe",
+    "people_count": 200,
+    "cards": [
+      { "title": "Vibe", "items": ["Neutral luxe", "Candle pathways", "Lounge clusters", "Signature bar back"] },
+      { "title": "Food Plan", "items": ["Canapés", "Global counter (pasta/sushi optional)", "Dessert studio"] },
+      { "title": "Dress Code", "items": ["Old-money cocktail", "Gold minimal jewelry", "Sleek hair"] }
+    ],
+    "linked_menu_key": "western_rehearsal_dinner_plated_mixed",
+    "linked_packing_key": "cocktail_guest_ultra_pack"
+  },
+
+  {
+    "key": "reception_elite_crystal_ballroom_500pax",
+    "event_type": "reception",
+    "style": "elite_crystal_ballroom",
+    "people_count": 500,
+    "cards": [
+      { "title": "Decor", "items": ["Crystal chandeliers", "White + gold florals", "Long floral runway", "Ceiling installs"] },
+      { "title": "Show Flow", "items": ["Grand entry", "Photo line", "Toasts", "Dinner service", "Cake moment"] },
+      { "title": "Guest Experience", "items": ["Valet + signage", "Dessert studio", "Premium lounge zones"] }
+    ],
+    "linked_menu_key": "delhi_modern_reception_fusion_mixed",
+    "linked_packing_key": "reception_bride_ultra_pack"
+  },
+
+  {
+    "key": "nikah_intimate_ivory_120pax",
+    "event_type": "nikah",
+    "style": "ivory_emerald_minimal",
+    "people_count": 120,
+    "cards": [
+      { "title": "Setup", "items": ["Nikah signing table", "Prayer space", "Family seating", "Minimal florals"] },
+      { "title": "Guest Experience", "items": ["Attar station", "Dates + drinks", "Dessert bar"] },
+      { "title": "Dress Code", "items": ["Elegant modest wear", "Soft glam", "Statement perfume"] }
+    ],
+    "linked_menu_key": "mughlai_nikah_elegant_mixed",
+    "linked_packing_key": "nikah_guest_pack_list"
+  },
+
+  {
+    "key": "walima_grand_dinner_300pax",
+    "event_type": "walima",
+    "style": "grand_dinner",
+    "people_count": 300,
+    "cards": [
+      { "title": "Decor", "items": ["White florals + gold accents", "Long tables (optional)", "Stage + photo line"] },
+      { "title": "Flow", "items": ["Dinner service", "Family photos", "Dessert studio"] },
+      { "title": "Dress Code", "items": ["Formal modest", "Classic jewelry", "Comfort shoes"] }
+    ],
+    "linked_menu_key": "hyderabadi_walima_biryani_showcase_mixed",
+    "linked_packing_key": "walima_guest_pack_list"
+  },
+
+  {
+    "key": "anand_karaj_gurudwara_200pax",
+    "event_type": "anand_karaj",
+    "style": "gurudwara_classic",
+    "people_count": 200,
+    "cards": [
+      { "title": "Guest Notes", "items": ["Head covering reminder", "Modest attire", "No flashy makeup inside"] },
+      { "title": "Flow", "items": ["Ceremony", "Photos outside", "Langar/meal plan", "Reception plan"] },
+      { "title": "Logistics", "items": ["Shoe racks", "Parking plan", "Water station"] }
+    ],
+    "linked_menu_key": "sikh_anand_karaj_langar_veg",
+    "linked_packing_key": "anand_karaj_guest_pack_list"
+  },
+
+  {
+    "key": "church_wedding_classic_150pax",
+    "event_type": "church_wedding",
+    "style": "classic_white_greenery",
+    "people_count": 150,
+    "cards": [
+      { "title": "Setup", "items": ["Aisle florals", "Seating plan", "Signage", "Music cues"] },
+      { "title": "Flow", "items": ["Ceremony", "Photos", "Tea/cake", "Reception transition"] },
+      { "title": "Dress Code", "items": ["Formal", "Muted tones", "Comfort heels/loafers"] }
+    ],
+    "linked_menu_key": "christian_church_wedding_tea_cake",
+    "linked_packing_key": "church_wedding_guest_pack_list"
+  },
+
+  {
+    "key": "jewish_wedding_chuppah_modern_120pax",
+    "event_type": "jewish_wedding",
+    "style": "modern_chuppah_neutral",
+    "people_count": 120,
+    "cards": [
+      { "title": "Setup", "items": ["Chuppah", "Neutral florals", "Seating etiquette signage"] },
+      { "title": "Moments", "items": ["Ceremony cues", "Glass breaking", "First dance", "Family photo list"] },
+      { "title": "Reception Flow", "items": ["Cocktail hour", "Dinner", "Dance set"] }
+    ],
+    "linked_menu_key": "western_modern_welcome_dinner_mixed",
+    "linked_packing_key": "jewish_wedding_guest_pack_list"
+  },
+
+  {
+    "key": "baby_shower_seemantham_south_indian_60pax",
+    "event_type": "baby_shower",
+    "style": "seemantham_traditional_south",
+    "people_count": 60,
+    "cards": [
+      { "title": "Ritual Setup", "items": ["Seemantham seating", "Haldi-kumkum thali", "Flowers + garlands", "Gift table"] },
+      { "title": "Program Flow", "items": ["Blessings", "Rituals", "Photos", "Lunch/tea", "Return gifts"] },
+      { "title": "Comfort", "items": ["Pillows", "Hydration", "Snacks", "Quiet corner"] }
+    ],
+    "linked_menu_key": "baby_shower_menu_traditional_veg_50pax",
+    "linked_packing_key": "baby_shower_traditional_items_checklist"
+  },
+
+  {
+    "key": "naming_ceremony_home_traditional_30pax",
+    "event_type": "naming_ceremony",
+    "style": "home_traditional",
+    "people_count": 30,
+    "cards": [
+      { "title": "Setup", "items": ["Pooja corner", "Baby seating + cushions", "Photo backdrop", "Gift table"] },
+      { "title": "Checklist", "items": ["Pandit/elder coordination", "Name board", "Prasadam", "Return gifts"] },
+      { "title": "Guest Comfort", "items": ["Quiet area", "Diaper station", "Hand sanitizer"] }
+    ],
+    "linked_menu_key": "baby_shower_menu_light_veg_30pax",
+    "linked_packing_key": "naming_ceremony_host_pack_list"
+  },
+
+  {
+    "key": "housewarming_griha_pravesh_50pax",
+    "event_type": "housewarming",
+    "style": "griha_pravesh_traditional",
+    "people_count": 50,
+    "cards": [
+      { "title": "Setup", "items": ["Mango leaf toran", "Rangoli", "Pooja corner", "Shoe area signage"] },
+      { "title": "Pooja Checklist", "items": ["Kalash", "Coconut", "Camphor", "Flowers", "Prasadam"] },
+      { "title": "Hosting", "items": ["Seating plan", "Water station", "Kids corner", "Trash management"] }
+    ],
+    "linked_menu_key": "pan_indian_wedding_day_safe_mixed",
+    "linked_packing_key": "housewarming_host_pack_list"
+  },
+
+  {
+    "key": "birthday_dinner_restaurant_surprise_12pax",
+    "event_type": "birthday_dinner",
+    "style": "restaurant_surprise",
+    "people_count": 12,
+    "cards": [
+      { "title": "Plan", "items": ["Book table", "Coordinate cake", "Surprise cue", "Friend photographer"] },
+      { "title": "Outfit Direction", "items": ["Smart casual / cocktail", "One statement accessory", "Comfort footwear"] },
+      { "title": "Flow", "items": ["Arrive early", "Surprise moment", "Cake cut", "Photos"] }
+    ],
+    "linked_menu_key": "birthday_dinner_menu_modern_15pax",
+    "linked_packing_key": "birthday_party_guest_pack_list"
+  },
+
+  {
+    "key": "anniversary_dinner_rooftop_citylights_6pax",
+    "event_type": "anniversary",
+    "style": "rooftop_citylights",
+    "people_count": 6,
+    "cards": [
+      { "title": "Ambience", "items": ["Candlelit table", "Warm lighting", "Photo corner", "Soft playlist"] },
+      { "title": "Menu Plan", "items": ["Shared starters", "Main platter", "Dessert", "Mocktails"] },
+      { "title": "Moments", "items": ["Toast", "Photo sequence", "Gift exchange"] }
+    ],
+    "linked_menu_key": "western_modern_welcome_dinner_mixed",
+    "linked_packing_key": "date_night_pack_list"
+  },
+
+  {
+    "key": "valentines_day_home_romcom_2pax",
+    "event_type": "valentines_day",
+    "style": "home_romcom",
+    "people_count": 2,
+    "cards": [
+      { "title": "Setup", "items": ["Candles", "Fairy lights", "Movie setup", "Snack tray"] },
+      { "title": "Food", "items": ["Easy starter", "One main", "Dessert cups", "Mocktails"] },
+      { "title": "Moments", "items": ["Handwritten note", "Playlist", "Photo moment"] }
+    ],
+    "linked_menu_key": "anniversary_menu_home_2pax",
+    "linked_packing_key": "anniversary_date_night_kit_home"
+  },
+
+  {
+    "key": "dinner_party_home_modern_18pax",
+    "event_type": "dinner_party",
+    "style": "home_modern",
+    "people_count": 18,
+    "cards": [
+      { "title": "Hosting", "items": ["Table setup", "Serving plan", "Playlist", "Lighting"] },
+      { "title": "Menu Structure", "items": ["2 starters", "1 main", "1 side", "1 dessert", "Mocktail bar"] },
+      { "title": "Prep Timeline", "items": ["T-2: shopping", "T-1: prep", "T-0: finish + host"] }
+    ],
+    "linked_menu_key": "western_modern_welcome_dinner_mixed",
+    "linked_packing_key": "dinner_party_host_pack_list"
+  },
+
+  {
+    "key": "baby_shower_luxury_hotel_120pax",
+    "event_type": "baby_shower",
+    "style": "luxury_hotel",
+    "people_count": 120,
+    "cards": [
+      { "title": "Decor", "items": ["White + blush florals", "Custom signage", "Dessert studio", "Photo wall"] },
+      { "title": "Program", "items": ["Welcome", "Games", "Blessings", "Photos", "Lunch + desserts"] },
+      { "title": "Guest Experience", "items": ["Mocktail bar", "Seating zones", "Kids corner"] }
+    ],
+    "linked_menu_key": "telugu_haldi_brunch_veg",
+    "linked_packing_key": "baby_shower_host_ultra_pack"
+  },
+
+  {
+    "key": "engagement_timeline_14d",
+    "event_type": "engagement",
+    "T_minus_days": [
+      { "days": 14, "tasks": ["Finalize venue + guest count", "Theme lock", "Invite send"] },
+      { "days": 7, "tasks": ["Outfit selection", "Decorator brief", "Menu lock"] },
+      { "days": 3, "tasks": ["Cake + photographer confirm", "Seating plan", "Rings safety checklist"] },
+      { "days": 1, "tasks": ["Steam outfits", "Pack essentials kit", "Confirm timings"] }
+    ]
+  },
+  {
+    "key": "mehendi_timeline_10d",
+    "event_type": "mehendi",
+    "T_minus_days": [
+      { "days": 10, "tasks": ["Mehendi artist booking", "Theme + decor lock", "Song playlist draft"] },
+      { "days": 5, "tasks": ["Outfit + jewelry finalize", "Seating plan", "Food counters selection"] },
+      { "days": 2, "tasks": ["Henna cones backup", "Wipes/tissues", "Photo booth props"] },
+      { "days": 1, "tasks": ["Set up seating", "Charge devices", "Confirm artist arrival"] }
+    ]
+  },
+  {
+    "key": "haldi_timeline_7d",
+    "event_type": "haldi",
+    "T_minus_days": [
+      { "days": 7, "tasks": ["Haldi paste plan", "Decor palette lock", "Brunch menu lock"] },
+      { "days": 3, "tasks": ["Towels + backup outfits", "Waterproof makeup plan", "Music/DJ confirm"] },
+      { "days": 1, "tasks": ["Prep haldi bowls", "Set up seating", "Hydration station"] }
+    ]
+  },
+  {
+    "key": "sangeet_timeline_14d",
+    "event_type": "sangeet",
+    "T_minus_days": [
+      { "days": 14, "tasks": ["Stage + DJ booking", "Performance list + rehearsal slots", "Theme lock"] },
+      { "days": 7, "tasks": ["MC script cues", "Playlist final", "Outfits + shoes plan"] },
+      { "days": 3, "tasks": ["Lighting + sound checks", "Video cues", "Late-night bites plan"] },
+      { "days": 1, "tasks": ["Dress rehearsal", "Pack emergency kits", "Confirm run-of-show"] }
+    ]
+  },
+  {
+    "key": "reception_timeline_21d",
+    "event_type": "reception",
+    "T_minus_days": [
+      { "days": 21, "tasks": ["Ballroom/venue finalize", "Guest list lock", "Photo line plan"] },
+      { "days": 14, "tasks": ["Decor + stage final", "Menu lock + dessert studio", "Seating map"] },
+      { "days": 7, "tasks": ["Entry song + cue list", "Makeup/hair trials", "Outfit alterations"] },
+      { "days": 1, "tasks": ["Confirm vendors", "Pack bride/groom kits", "Print signage"] }
+    ]
+  },
+  {
+    "key": "housewarming_timeline_10d",
+    "event_type": "housewarming",
+    "T_minus_days": [
+      { "days": 10, "tasks": ["Pooja timing confirm", "Invite list", "Cleaning plan"] },
+      { "days": 3, "tasks": ["Prasadam/menu lock", "Seating + shoe zone setup", "Return gifts"] },
+      { "days": 1, "tasks": ["Pooja items checklist", "Water + snacks station", "Trash management"] }
+    ]
+  },
+
+  {
+    "key": "sangeet_guest_ultra_pack",
+    "cards": [
+      { "title": "Outfit", "items": ["Primary outfit", "Backup outfit (lighter)", "Dupatta/shawl", "Undergarments + shapewear"] },
+      { "title": "Footwear", "items": ["Dance-friendly shoes", "Backup flats", "Blister pads", "Heel grips"] },
+      { "title": "Accessories", "items": ["Statement earrings", "Clutch", "Hair accessories", "Extra bobby pins"] },
+      { "title": "Beauty Touch-ups", "items": ["Mini perfume", "Lip color", "Powder", "Blotting paper", "Setting spray"] },
+      { "title": "Emergency Kit", "items": ["Safety pins", "Fashion tape", "Mini sewing kit", "Stain remover pen"] }
+    ]
+  },
+  {
+    "key": "cocktail_guest_ultra_pack",
+    "cards": [
+      { "title": "Outfit", "items": ["Cocktail outfit", "Warm layer (shawl/jacket)", "Backup top/tee"] },
+      { "title": "Footwear", "items": ["Heels/loafers", "Foldable flats", "Band-aids"] },
+      { "title": "Grooming", "items": ["Perfume", "Deo", "Comb", "Oil blot sheets"] },
+      { "title": "Essentials", "items": ["ID", "Cards/cash", "Phone charger", "Mints", "Water bottle"] }
+    ]
+  },
+  {
+    "key": "reception_bride_ultra_pack",
+    "cards": [
+      { "title": "Outfit Core", "items": ["Reception outfit", "Blouse backup hooks checked", "Dupatta/pallu pins", "Petticoat/inner slip"] },
+      { "title": "Jewelry", "items": ["Necklace set", "Earrings", "Rings", "Nose pin", "Extra earrings"] },
+      { "title": "Hair & Makeup", "items": ["Setting spray", "Lip kit", "Touch-up palette", "Hair spray", "Extra lashes"] },
+      { "title": "Comfort", "items": ["Flat sandals", "Water bottle straw", "Pain relief spray", "Snacks"] },
+      { "title": "Emergency", "items": ["Safety pins", "Double tape", "Needle thread", "Stain remover pen"] }
+    ]
+  },
+  {
+    "key": "afterparty_guest_pack_list",
+    "cards": [
+      { "title": "Late-night kit", "items": ["Phone charger", "Mints", "Perfume", "Band-aids"] },
+      { "title": "Comfort", "items": ["Foldable flats", "Hair ties", "Blotting paper"] },
+      { "title": "Safety", "items": ["Water", "Taxi/app plan", "Emergency contact note"] }
+    ]
+  },
+  {
+    "key": "nikah_guest_pack_list",
+    "cards": [
+      { "title": "Outfit", "items": ["Modest formal outfit", "Stole/scarf", "Comfort layer"] },
+      { "title": "Grooming", "items": ["Attar/perfume", "Comb", "Minimal jewelry"] },
+      { "title": "Essentials", "items": ["Prayer needs (if any)", "Mints", "Phone charger"] }
+    ]
+  },
+  {
+    "key": "walima_guest_pack_list",
+    "cards": [
+      { "title": "Outfit", "items": ["Formal modest wear", "Backup scarf/stole"] },
+      { "title": "Footwear", "items": ["Comfort formal shoes", "Band-aids"] },
+      { "title": "Essentials", "items": ["Perfume", "Wallet", "Phone charger"] }
+    ]
+  },
+  {
+    "key": "anand_karaj_guest_pack_list",
+    "cards": [
+      { "title": "Ceremony Etiquette", "items": ["Head covering", "Modest attire", "Comfort flats"] },
+      { "title": "Essentials", "items": ["Water", "Phone silent mode reminder", "Minimal makeup kit"] }
+    ]
+  },
+  {
+    "key": "church_wedding_guest_pack_list",
+    "cards": [
+      { "title": "Outfit", "items": ["Formal outfit", "Light shawl/jacket"] },
+      { "title": "Footwear", "items": ["Comfort heels/loafers", "Band-aids"] },
+      { "title": "Essentials", "items": ["Mints", "Mini perfume", "Phone charger"] }
+    ]
+  },
+  {
+    "key": "housewarming_host_pack_list",
+    "cards": [
+      { "title": "Hosting", "items": ["Extra trash bags", "Cleaning wipes", "Serving spoons", "Tissues"] },
+      { "title": "Pooja", "items": ["Camphor", "Incense", "Flowers", "Prasadam containers"] },
+      { "title": "Guest Comfort", "items": ["Water station", "Extra chairs", "Hand sanitizer"] }
+    ]
+  },
+  {
+    "key": "baby_shower_host_ultra_pack",
+    "cards": [
+      { "title": "Decor + Setup", "items": ["Signage", "Balloon kit", "Backdrop hooks", "Photo props"] },
+      { "title": "Mom-to-be Comfort", "items": ["Pillows", "Hydration", "Light snacks", "Quiet corner"] },
+      { "title": "Program", "items": ["Games props", "Wishes cards", "Name jar", "Return gifts"] }
+    ]
+  },
+
+  {
+    "key": "microtheme_old_money_neutrals",
+    "event_type": "microtheme",
+    "style": "old_money_neutrals",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Ivory", "Taupe", "Warm beige", "Soft gold", "Deep espresso"] },
+      { "title": "Decor", "items": ["Neutral linens", "Candle clusters", "Greenery garlands", "Minimal florals"] },
+      { "title": "Lighting", "items": ["Warm pin spots", "Candle pathways", "Soft diffusion"] },
+      { "title": "Music", "items": ["Jazz lounge", "Soft house", "Instrumental classics"] },
+      { "title": "Outfit Direction", "items": ["Sleek silhouettes", "Quiet luxury jewelry", "Clean hair"] }
+    ],
+    "linked_menu_key": "western_rehearsal_dinner_plated_mixed",
+    "linked_packing_key": "old_money_pack_list"
+  },
+  {
+    "key": "microtheme_celestial_midnight",
+    "event_type": "microtheme",
+    "style": "celestial_midnight",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Midnight blue", "Black", "Silver", "Icy lilac", "Star white"] },
+      { "title": "Decor", "items": ["Star projection", "Mirror balls", "Metallic drapes", "Constellation signage"] },
+      { "title": "Lighting", "items": ["Spot beams", "Cool haze", "LED constellations"] },
+      { "title": "Outfit Direction", "items": ["Metallics", "Sequins", "Crystal accessories", "Glossy glam"] }
+    ],
+    "linked_menu_key": "biryani_focus_cocktail_mixed",
+    "linked_packing_key": "celestial_pack_list"
+  },
+  {
+    "key": "microtheme_palace_opulence",
+    "event_type": "microtheme",
+    "style": "palace_opulence",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Deep red", "Antique gold", "Emerald", "Ivory", "Brass"] },
+      { "title": "Decor", "items": ["Gold candelabras", "Velvet drapes", "Mass florals", "Royal seating"] },
+      { "title": "Music", "items": ["Shehnai cues", "Sufi set", "Orchestral intro"] },
+      { "title": "Outfit Direction", "items": ["Zardozi", "Polki", "Velvet shawls", "Structured blouses"] }
+    ],
+    "linked_menu_key": "rajasthani_sangeet_folk_veg",
+    "linked_packing_key": "royal_pack_list"
+  },
+  {
+    "key": "microtheme_tropical_resort_white",
+    "event_type": "microtheme",
+    "style": "tropical_resort_white",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["All white", "Sage", "Palm green", "Sand", "Sunset peach"] },
+      { "title": "Decor", "items": ["Palm leaves", "White cabanas", "Wicker seating", "Sea-shell accents"] },
+      { "title": "Outfit Direction", "items": ["Whites + linens", "Gold minimal jewelry", "Beach waves"] }
+    ],
+    "linked_menu_key": "goan_welcome_dinner_mixed",
+    "linked_packing_key": "resort_white_pack_list"
+  },
+
+  {
+    "key": "microtheme_mirrorwork_rajasthani_pop",
+    "event_type": "microtheme",
+    "style": "mirrorwork_rajasthani_pop",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Hot pink", "Marigold", "Turquoise", "Lime", "Mirror silver"] },
+      { "title": "Decor", "items": ["Bandhani drapes", "Mirror umbrellas", "Tassels", "Low diwans"] },
+      { "title": "Outfit Direction", "items": ["Lehenga/sharara", "Oxidized + kundan mix", "Braid + paranda"] }
+    ],
+    "linked_menu_key": "gujarati_mehendi_farsan_veg",
+    "linked_packing_key": "mehendi_guest_pack_list"
+  },
+
+  {
+    "key": "microtheme_modern_minimal_blackwhite",
+    "event_type": "microtheme",
+    "style": "modern_minimal_blackwhite",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Black", "White", "Stone grey", "Chrome"] },
+      { "title": "Decor", "items": ["Monochrome signage", "Acrylic panels", "Clean florals", "LED lines"] },
+      { "title": "Outfit Direction", "items": ["Monochrome fits", "Sleek hair", "Minimal jewelry"] }
+    ],
+    "linked_menu_key": "western_modern_welcome_dinner_mixed",
+    "linked_packing_key": "minimal_pack_list"
+  },
+
+  {
+    "key": "microtheme_blush_pearl",
+    "event_type": "microtheme",
+    "style": "blush_pearl",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Blush", "Pearl white", "Champagne", "Rose gold"] },
+      { "title": "Decor", "items": ["Pearl balloons", "Soft florals", "Candle clusters", "Photo wall"] },
+      { "title": "Outfit Direction", "items": ["Pastels", "Pearl jewelry", "Soft glam makeup"] }
+    ],
+    "linked_menu_key": "baby_shower_menu_light_veg_30pax",
+    "linked_packing_key": "baby_shower_guest_pack_list"
+  },
+
+  {
+    "key": "microtheme_temples_and_brass",
+    "event_type": "microtheme",
+    "style": "temples_and_brass",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Ivory", "Brass", "Marigold", "Leaf green"] },
+      { "title": "Decor", "items": ["Brass lamps", "Banana leaves", "Temple bells (props)", "Kolam entrance"] },
+      { "title": "Outfit Direction", "items": ["Silk sarees", "Temple jewelry", "Jasmine flowers"] }
+    ],
+    "linked_menu_key": "tamil_brahmin_wedding_day_sequence_veg",
+    "linked_packing_key": "wedding_guest_pack_3day_south_indian"
+  },
+
+  {
+    "key": "microtheme_couture_runway",
+    "event_type": "microtheme",
+    "style": "couture_runway",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Black", "Champagne", "Metallic gold", "Deep burgundy"] },
+      { "title": "Decor", "items": ["Runway aisle", "Spotlights", "Mirror panels", "Fashion-week signage"] },
+      { "title": "Outfit Direction", "items": ["High drama fits", "Statement jewelry", "Bold glam"] }
+    ],
+    "linked_menu_key": "delhi_modern_reception_fusion_mixed",
+    "linked_packing_key": "afterparty_guest_pack_list"
+  },
+
+  {
+    "key": "microtheme_lotus_lagoon",
+    "event_type": "microtheme",
+    "style": "lotus_lagoon",
+    "people_count": 0,
+    "cards": [
+      { "title": "Color Palette", "items": ["Lotus pink", "Water green", "Ivory", "Gold"] },
+      { "title": "Decor", "items": ["Floating florals", "Soft drapes", "Candle pathways", "Water-bowl centerpieces"] },
+      { "title": "Outfit Direction", "items": ["Pastel sarees/lehenga", "Gold minimal jewelry", "Dewy makeup"] }
+    ],
+    "linked_menu_key": "telugu_haldi_brunch_veg",
+    "linked_packing_key": "haldi_pool_pack_list"
+  },
+
+
+    {
+      "key": "baby_shower_home_pastel_elegant_30pax",
+      "event_type": "baby_shower",
+      "style": "home",
+      "people_count": 30,
+      "cards": [
+        { "title": "Theme & Decor", "items": ["Pastel balloon arch", "Floral welcome board", "Diaper cake corner", "Photo backdrop"] },
+        { "title": "Games & Activities", "items": ["Wishes cards", "Baby trivia", "Guess the baby item", "Name suggestions jar"] },
+        { "title": "Food & Drinks", "items": ["Mini sandwiches", "Fruit cups", "Mocktails", "Dessert jars"] },
+        { "title": "Timeline", "items": ["T-10: invites + theme lock", "T-3: decor + props", "T-1: grocery + prep", "T-0: setup 2 hrs before"] }
+      ],
+      "linked_menu_key": "baby_shower_menu_light_veg_30pax",
+      "linked_packing_key": "baby_shower_host_kit_home"
+    },
+    {
+      "key": "baby_shower_traditional_indian_godh_bharai_50pax",
+      "event_type": "baby_shower",
+      "style": "traditional",
+      "people_count": 50,
+      "cards": [
+        { "title": "Theme & Ritual Setup", "items": ["Godh Bharai seating", "Haldi-kumkum thali", "Floral hair garlands", "Gift table + return gifts"] },
+        { "title": "Dress Code", "items": ["Saree/Anarkali for guests", "Pastel silk saree for mom-to-be", "Comfortable footwear"] },
+        { "title": "Program Flow", "items": ["Welcome + blessings", "Rituals", "Photos", "Lunch/tea", "Return gifts"] },
+        { "title": "Checklist", "items": ["Pandit/elder coordination", "Thali items", "Safety + comfort: pillows, water, snacks"] }
+      ],
+      "linked_menu_key": "baby_shower_menu_traditional_veg_50pax",
+      "linked_packing_key": "baby_shower_traditional_items_checklist"
+    },
+
+    {
+      "key": "birthday_party_kids_cartoon_theme_home_20pax",
+      "event_type": "birthday_party",
+      "style": "home",
+      "people_count": 20,
+      "cards": [
+        { "title": "Theme & Decor", "items": ["Cartoon cutouts", "Balloon bunches", "Cake table centerpiece", "Party hats + banners"] },
+        { "title": "Games", "items": ["Treasure hunt", "Musical chairs", "Pin the tail", "Sticker station"] },
+        { "title": "Food", "items": ["Mini pizzas", "Sandwiches", "Juice boxes", "Cupcakes"] },
+        { "title": "Return Gifts", "items": ["Mini art kit", "Bubbles", "Stickers", "Chocolates"] }
+      ],
+      "linked_menu_key": "kids_party_menu_20pax",
+      "linked_packing_key": "kids_party_host_kit_home"
+    },
+    {
+      "key": "birthday_party_adult_glam_black_gold_restaurant_15pax",
+      "event_type": "birthday_party",
+      "style": "restaurant",
+      "people_count": 15,
+      "cards": [
+        { "title": "Theme & Vibe", "items": ["Black & gold glam", "Candlelit tables", "Photo wall", "Playlist: upbeat + lounge"] },
+        { "title": "Outfit Guide", "items": ["Cocktail fits", "Statement accessories", "Comfortable heels/loafers"] },
+        { "title": "Plan", "items": ["Table booking", "Cake order", "Surprise moment", "Photo/video friend"] },
+        { "title": "Budget Split", "items": ["Food & drinks", "Cake", "Decor props", "Return transport"] }
+      ],
+      "linked_menu_key": "birthday_dinner_menu_modern_15pax",
+      "linked_packing_key": "birthday_party_guest_pack_list"
+    },
+
+    {
+      "key": "anniversary_dinner_home_romantic_2pax",
+      "event_type": "anniversary",
+      "style": "home",
+      "people_count": 2,
+      "cards": [
+        { "title": "Ambience", "items": ["Fairy lights", "Candles", "Fresh flowers", "Soft playlist"] },
+        { "title": "Dinner Plan", "items": ["1 starter", "1 main", "1 dessert", "1 drink/mocktail"] },
+        { "title": "Moments", "items": ["Handwritten note", "Photo slideshow", "Gift exchange"] },
+        { "title": "Timeline", "items": ["T-2: groceries", "T-0: set up 45 min before", "Serve in courses"] }
+      ],
+      "linked_menu_key": "anniversary_menu_home_2pax",
+      "linked_packing_key": "anniversary_date_night_kit_home"
+    },
+    {
+      "key": "valentines_day_date_night_restaurant_2pax",
+      "event_type": "valentines_day",
+      "style": "restaurant",
+      "people_count": 2,
+      "cards": [
+        { "title": "Booking & Plan", "items": ["Reserve early", "Request best table", "Confirm dessert/cake"] },
+        { "title": "Outfit Ideas", "items": ["Red/black accents", "Minimal jewelry", "Comfortable footwear"] },
+        { "title": "After Plan", "items": ["Dessert spot", "Long drive", "Photo moment"] }
+      ],
+      "linked_menu_key": "valentines_menu_restaurant_2pax",
+      "linked_packing_key": "date_night_pack_list"
+    },
+
+    {
+      "key": "holi_party_rooftop_colour_blast_40pax",
+      "event_type": "holi_party",
+      "style": "outdoor",
+      "people_count": 40,
+      "cards": [
+        { "title": "Setup", "items": ["Organic colors", "Water buckets (optional)", "Speaker + playlist", "Towels + changing area"] },
+        { "title": "Dress Code", "items": ["White kurta/tee", "Old clothes", "Sunglasses", "Hair oil pre-holi"] },
+        { "title": "Food", "items": ["Thandai", "Gujiya", "Chaat", "Snacks + hydration station"] },
+        { "title": "Safety", "items": ["Skin-friendly colors", "Eye care", "First aid", "Slip-proof area"] }
+      ],
+      "linked_menu_key": "holi_menu_snacks_40pax",
+      "linked_packing_key": "holi_party_pack_list"
+    },
+
+    {
+      "key": "diwali_party_home_luxe_gold_25pax",
+      "event_type": "diwali_party",
+      "style": "home",
+      "people_count": 25,
+      "cards": [
+        { "title": "Decor", "items": ["Diyas + fairy lights", "Rangoli corner", "Marigold strings", "Scented candles"] },
+        { "title": "Dress Code", "items": ["Festive Indian", "Gold accents", "Comfort juttis"] },
+        { "title": "Food", "items": ["Chaat counter", "Mini thalis", "Mithai platter", "Mocktail bar"] },
+        { "title": "Host Checklist", "items": ["Gift/return gifts", "Playlist", "Photo spot", "Extra chargers + seating"] }
+      ],
+      "linked_menu_key": "diwali_menu_mix_25pax",
+      "linked_packing_key": "diwali_host_kit_home"
+    },
+
+    {
+      "key": "navratri_garba_night_traditional_80pax",
+      "event_type": "navratri_party",
+      "style": "traditional",
+      "people_count": 80,
+      "cards": [
+        { "title": "Setup", "items": ["Garba circle area", "Dandiya sticks", "Sound + mic", "Water station"] },
+        { "title": "Dress Code", "items": ["Chaniya choli / kediyu", "Dupatta pins", "Comfort flats"] },
+        { "title": "Program Flow", "items": ["Aarti", "Garba sets", "Dandiya", "Prize rounds"] },
+        { "title": "Food", "items": ["Fasting-friendly options", "Fruit + makhana", "Tea/coffee"] }
+      ],
+      "linked_menu_key": "navratri_menu_fasting_80pax",
+      "linked_packing_key": "navratri_garba_pack_list"
+    },
+
+    {
+      "key": "eid_dinner_home_elegant_20pax",
+      "event_type": "eid_dinner",
+      "style": "home",
+      "people_count": 20,
+      "cards": [
+        { "title": "Ambience", "items": ["Elegant table setting", "Warm lighting", "Incense/attar corner"] },
+        { "title": "Dress Code", "items": ["Traditional ethnic wear", "Soft glam makeup", "Statement perfume"] },
+        { "title": "Food", "items": ["Starter platter", "Main feast", "Sheer khurma/dessert", "Drinks"] },
+        { "title": "Guest Comfort", "items": ["Prayer space if needed", "Kids corner", "Extra seating"] }
+      ],
+      "linked_menu_key": "eid_menu_20pax",
+      "linked_packing_key": "eid_guest_pack_list"
+    },
+
+    {
+      "key": "christmas_dinner_home_cozy_red_green_12pax",
+      "event_type": "christmas_dinner",
+      "style": "home",
+      "people_count": 12,
+      "cards": [
+        { "title": "Decor", "items": ["Tree + ornaments", "Red-green table setup", "Candles", "Christmas playlist"] },
+        { "title": "Food", "items": ["Roast/veg bake", "Sides", "Dessert", "Hot cocoa station"] },
+        { "title": "Activities", "items": ["Secret Santa", "Photo corner", "Games"] }
+      ],
+      "linked_menu_key": "christmas_menu_12pax",
+      "linked_packing_key": "christmas_host_kit_home"
+    },
+
+    {
+      "key": "onam_sadya_home_30pax",
+      "event_type": "onam",
+      "style": "traditional",
+      "people_count": 30,
+      "cards": [
+        { "title": "Theme & Setup", "items": ["Pookalam (flower rangoli)", "Banana leaf seating", "Traditional music"] },
+        { "title": "Dress Code", "items": ["Kasavu saree/mundu", "Gold jewelry (optional)", "Comfort flats"] },
+        { "title": "Sadya Plan", "items": ["Order/cook sadya items", "Serve sequence", "Payasam station"] }
+      ],
+      "linked_menu_key": "onam_sadya_menu_30pax",
+      "linked_packing_key": "onam_host_kit_home"
+    },
+
+    {
+      "key": "pongal_bhogi_home_traditional_20pax",
+      "event_type": "pongal",
+      "style": "traditional",
+      "people_count": 20,
+      "cards": [
+        { "title": "Setup", "items": ["Kolam", "Sugarcane decor", "Brass lamps"] },
+        { "title": "Food", "items": ["Sakkarai pongal", "Ven pongal", "Filter coffee", "Vadai"] },
+        { "title": "Dress", "items": ["Saree/veshti", "Jasmine flowers", "Comfort sandals"] }
+      ],
+      "linked_menu_key": "pongal_menu_20pax",
+      "linked_packing_key": "pongal_guest_pack_list"
+    },
+
+    {
+      "key": "baisakhi_party_punjabi_dhol_60pax",
+      "event_type": "baisakhi_party",
+      "style": "traditional",
+      "people_count": 60,
+      "cards": [
+        { "title": "Vibe", "items": ["Dhol + bhangra", "Bright phulkari decor", "Photo wall"] },
+        { "title": "Dress Code", "items": ["Bright Punjabi suits", "Pagdi/dupatta", "Juttis"] },
+        { "title": "Food", "items": ["Chole bhature", "Lassi", "Snacks"] }
+      ],
+      "linked_menu_key": "baisakhi_menu_60pax",
+      "linked_packing_key": "baisakhi_pack_list"
+    },
+
+    {
+      "key": "wedding_theme_hindu_north_indian_royal_marwari",
+      "event_type": "wedding_theme",
+      "style": "north_indian_hindu",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Royal Marwari", "Deep red + gold", "Temple bells + marigolds"] },
+        { "title": "Decor Notes", "items": ["Mandap with florals", "Traditional seating", "Grand entry"] },
+        { "title": "Music & Moments", "items": ["Shehnai cues", "Varmala stage", "Family photo checklist"] },
+        { "title": "Guest Experience", "items": ["Welcome thali", "Mithai counter", "Return gifts: perfumes/boxes"] }
+      ],
+      "linked_menu_key": "wedding_menu_north_indian_royal",
+      "linked_packing_key": "wedding_guest_pack_3day_north_indian"
+    },
+    {
+      "key": "wedding_theme_hindu_south_indian_telugu_traditional",
+      "event_type": "wedding_theme",
+      "style": "south_indian_hindu_telugu",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Telugu traditional", "Jasmine + banana leaves", "Gold + ivory palette"] },
+        { "title": "Decor Notes", "items": ["Banana stems at entrance", "Mango leaves toran", "Brass lamps"] },
+        { "title": "Ritual Highlights", "items": ["Jeelakarra bellam", "Talambralu", "Kanyadaanam cues"] },
+        { "title": "Guest Experience", "items": ["South Indian tiffin counter", "Filter coffee", "Prasadam packs"] }
+      ],
+      "linked_menu_key": "wedding_menu_south_indian_telugu",
+      "linked_packing_key": "wedding_guest_pack_3day_south_indian"
+    },
+    {
+      "key": "wedding_theme_hindu_south_indian_tamil_brahmin",
+      "event_type": "wedding_theme",
+      "style": "south_indian_hindu_tamil",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Tamil Brahmin classic", "White + maroon accents", "Minimal floral elegance"] },
+        { "title": "Decor Notes", "items": ["Kolam entrance", "Brass kuthuvilakku", "Traditional backdrop"] },
+        { "title": "Ritual Highlights", "items": ["Kashi yatra moment", "Oonjal", "Saptapadi cues"] },
+        { "title": "Guest Experience", "items": ["Banana leaf meals", "Coffee station", "Traditional snacks"] }
+      ],
+      "linked_menu_key": "wedding_menu_south_indian_tamil",
+      "linked_packing_key": "wedding_guest_pack_3day_south_indian"
+    },
+    {
+      "key": "wedding_theme_hindu_south_indian_malayali_kerala",
+      "event_type": "wedding_theme",
+      "style": "south_indian_hindu_malayali",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Kerala temple classic", "Kasavu palette", "Pookalam accents"] },
+        { "title": "Decor Notes", "items": ["Coconut + banana leaf decor", "Floral canopy", "Warm lamps"] },
+        { "title": "Guest Experience", "items": ["Sadya-style buffet", "Payasam bar", "Banana chips counter"] }
+      ],
+      "linked_menu_key": "wedding_menu_kerala_sadya",
+      "linked_packing_key": "wedding_guest_pack_3day_south_indian"
+    },
+
+    {
+      "key": "wedding_theme_hindu_bengali_classic",
+      "event_type": "wedding_theme",
+      "style": "east_indian_hindu_bengali",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Bengali classic", "Red + white", "Shola decor accents"] },
+        { "title": "Decor Notes", "items": ["Topor/mukut corner", "Alta station", "Traditional mandap"] },
+        { "title": "Moments", "items": ["Subho drishti", "Sindoor daan", "Photo checklist"] }
+      ],
+      "linked_menu_key": "wedding_menu_bengali",
+      "linked_packing_key": "wedding_guest_pack_3day_east_indian"
+    },
+
+    {
+      "key": "wedding_theme_northeast_assamese_traditional",
+      "event_type": "wedding_theme",
+      "style": "northeast_indian_assamese",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Assamese traditional", "Eri silk vibes", "Earthy florals"] },
+        { "title": "Decor Notes", "items": ["Bamboo elements", "Local flowers", "Warm lighting"] },
+        { "title": "Guest Experience", "items": ["Regional cuisine corner", "Tea station", "Cultural music set"] }
+      ],
+      "linked_menu_key": "wedding_menu_northeast_assamese",
+      "linked_packing_key": "wedding_guest_pack_3day_northeast"
+    },
+
+    {
+      "key": "wedding_theme_muslim_nikah_elegant",
+      "event_type": "wedding_theme",
+      "style": "muslim_nikah",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Elegant nikah", "Ivory + emerald palette", "Minimal luxe florals"] },
+        { "title": "Program Notes", "items": ["Nikah signing setup", "Prayer space", "Family seating"] },
+        { "title": "Guest Experience", "items": ["Attar station", "Dessert bar", "Welcome drinks"] }
+      ],
+      "linked_menu_key": "wedding_menu_muslim_nikah",
+      "linked_packing_key": "wedding_guest_pack_3day_formal"
+    },
+    {
+      "key": "wedding_theme_sikh_anand_karaj_classic",
+      "event_type": "wedding_theme",
+      "style": "sikh_anand_karaj",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Anand Karaj classic", "White + gold", "Gurudwara decor etiquette"] },
+        { "title": "Guest Notes", "items": ["Head covering reminder", "Modest attire", "No flashy makeup inside"] },
+        { "title": "Flow", "items": ["Ceremony cues", "Langar/meal plan", "Photo moments outside"] }
+      ],
+      "linked_menu_key": "wedding_menu_sikh_reception",
+      "linked_packing_key": "wedding_guest_pack_3day_north_indian"
+    },
+    {
+      "key": "wedding_theme_christian_church_elegant",
+      "event_type": "wedding_theme",
+      "style": "christian_church",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Church wedding elegant", "White + greenery", "Classic florals"] },
+        { "title": "Program Flow", "items": ["Ceremony timing", "Reception plan", "Speech/toast list"] },
+        { "title": "Guest Experience", "items": ["Seating plan", "Dessert table", "Dance playlist"] }
+      ],
+      "linked_menu_key": "wedding_menu_christian_reception",
+      "linked_packing_key": "wedding_guest_pack_3day_formal"
+    },
+    {
+      "key": "wedding_theme_jewish_traditional",
+      "event_type": "wedding_theme",
+      "style": "jewish_wedding",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Traditional Jewish wedding", "Chuppah setup", "Elegant neutral palette"] },
+        { "title": "Program Notes", "items": ["Ceremony cues", "Seating etiquette", "Reception flow"] },
+        { "title": "Moments", "items": ["Glass-breaking moment", "First dance", "Family photos checklist"] }
+      ],
+      "linked_menu_key": "wedding_menu_jewish_reception",
+      "linked_packing_key": "wedding_guest_pack_3day_formal"
+    },
+    {
+      "key": "wedding_theme_western_modern_minimal",
+      "event_type": "wedding_theme",
+      "style": "western_modern",
+      "people_count": 0,
+      "cards": [
+        { "title": "Theme", "items": ["Modern minimal", "White + greenery", "Clean typography signage"] },
+        { "title": "Decor Notes", "items": ["Minimal florals", "Candles", "Neutral linens"] },
+        { "title": "Guest Experience", "items": ["Cocktail hour", "Photo booth", "Dance set"] }
+      ],
+      "linked_menu_key": "wedding_menu_western_modern",
+      "linked_packing_key": "wedding_guest_pack_3day_formal"
+    }
+  ],
+
+  "timelines": [
+    {
+      "key": "baby_shower_timeline_14d",
+      "event_type": "baby_shower",
+      "T_minus_days": [
+        { "days": 14, "tasks": ["Guest list", "Theme", "Invite"] },
+        { "days": 7, "tasks": ["Decor order", "Menu lock", "Games prep"] },
+        { "days": 1, "tasks": ["Clean space", "Prep snacks", "Charge camera"] }
+      ]
+    },
+    {
+      "key": "birthday_party_timeline_7d",
+      "event_type": "birthday_party",
+      "T_minus_days": [
+        { "days": 7, "tasks": ["Theme lock", "Guest list + invites", "Order cake"] },
+        { "days": 3, "tasks": ["Decor + return gifts", "Playlist + games list"] },
+        { "days": 1, "tasks": ["Prep snacks", "Clear space", "Charge camera + speakers"] }
+      ]
+    },
+    {
+      "key": "diwali_party_timeline_10d",
+      "event_type": "diwali_party",
+      "T_minus_days": [
+        { "days": 10, "tasks": ["Invite list", "Menu plan", "Decor shortlist"] },
+        { "days": 3, "tasks": ["Cleaning/home reset", "Order sweets", "Stock drinks"] },
+        { "days": 1, "tasks": ["Rangoli prep", "Table setup", "Music + photo spot"] }
+      ]
+    },
+    {
+      "key": "wedding_guest_timeline_14d",
+      "event_type": "wedding_guest",
+      "T_minus_days": [
+        { "days": 14, "tasks": ["Confirm itinerary", "Finalize outfits", "Book salon slots if needed"] },
+        { "days": 7, "tasks": ["Accessories + footwear check", "Travel documents", "Emergency kit"] },
+        { "days": 1, "tasks": ["Steam outfits", "Pack jewelry safely", "Charge devices"] }
+      ]
+    }
+  ],
+
+  "packing_for_events": [
+    {
+      "key": "wedding_guest_3_functions",
+      "cards": [
+        { "title": "Outfits", "items": ["Sangeet", "Wedding", "Reception", "Travel comfort set"] },
+        { "title": "Accessories", "items": ["Earrings", "Clutch", "Bangles", "Hair pins"] },
+        { "title": "Emergency kit", "items": ["Safety pins", "Fashion tape", "Bandaids", "Mini perfume"] }
+      ]
+    },
+    {
+      "key": "festival_guest_pack_list",
+      "cards": [
+        { "title": "Clothes", "items": ["Festive outfit", "Comfort ethnic", "Light layer/shawl"] },
+        { "title": "Footwear", "items": ["Juttis/flats", "Backup sandals"] },
+        { "title": "Extras", "items": ["Bindi/kajal", "Compact powder", "Mini perfume"] }
+      ]
+    },
+    {
+      "key": "holi_party_pack_list",
+      "cards": [
+        { "title": "Wear", "items": ["White/old clothes", "Comfort sandals", "Sunglasses"] },
+        { "title": "Skin & Hair", "items": ["Hair oil", "Sunscreen", "Face wash", "Moisturizer"] },
+        { "title": "Protect", "items": ["Phone waterproof pouch", "Towel", "Extra clothes"] }
+      ]
+    },
+    {
+      "key": "date_night_pack_list",
+      "cards": [
+        { "title": "Must-haves", "items": ["Phone + charger", "Wallet", "Mints"] },
+        { "title": "Touch-ups", "items": ["Mini perfume", "Lip color", "Blotting paper"] },
+        { "title": "Comfort", "items": ["Band-aids", "Hair pins", "Safety pin"] }
+      ]
+    },
+{
+  "key": "mehendi_bride_garden_boho_100pax",
+  "event_type": "mehendi",
+  "style": "boho_garden",
+  "people_count": 100,
+  "cards": [
+    { "title": "Theme & Decor", "items": ["Marigold hangings", "Low seating cushions", "Bright drapes", "Floral umbrellas"] },
+    { "title": "Bride Look", "items": ["Light lehenga / sharara", "Floral jewelry", "Open hair or braid", "Minimal makeup"] },
+    { "title": "Activities", "items": ["Mehendi artists", "Live dhol", "Photo booth", "Welcome drinks station"] },
+    { "title": "Flow", "items": ["Bride entry", "Family mehendi", "Snacks service", "Dance segment"] }
+  ],
+  "linked_menu_key": "mehendi_menu_light_100pax",
+  "linked_packing_key": "mehendi_bride_pack_list"
+},
+{
+  "key": "mehendi_intimate_home_40pax",
+  "event_type": "mehendi",
+  "style": "home_intimate",
+  "people_count": 40,
+  "cards": [
+    { "title": "Setup", "items": ["Rangoli corner", "Floor cushions", "Fairy lights", "Mehendi table"] },
+    { "title": "Food", "items": ["Chaat counter", "Mocktails", "Desserts", "Finger food"] },
+    { "title": "Checklist", "items": ["Henna cones", "Tissues", "Wet wipes", "Extra chairs"] }
+  ],
+  "linked_menu_key": "mehendi_menu_home_40pax",
+  "linked_packing_key": "mehendi_guest_pack_list"
+},
+{
+  "key": "sangeet_glam_stage_200pax",
+  "event_type": "sangeet",
+  "style": "glam_stage",
+  "people_count": 200,
+  "cards": [
+    { "title": "Theme", "items": ["LED stage", "Mirror + sequin decor", "Spotlights", "Grand entry tunnel"] },
+    { "title": "Program Flow", "items": ["Family performances", "Bride-groom dance", "Open dance floor", "After-party DJ"] },
+    { "title": "Bride Look", "items": ["Statement lehenga", "Comfort heels", "Bold makeup", "Light dupatta drape"] },
+    { "title": "Coordination", "items": ["Rehearsal slots", "MC cues", "Song playlist list"] }
+  ],
+  "linked_menu_key": "sangeet_menu_grand_200pax",
+  "linked_packing_key": "sangeet_bride_pack_list"
+},
+{
+  "key": "haldi_traditional_marigold_80pax",
+  "event_type": "haldi",
+  "style": "traditional_marigold",
+  "people_count": 80,
+  "cards": [
+    { "title": "Decor", "items": ["Marigold backdrop", "Brass pots", "Banana leaves", "Yellow drapes"] },
+    { "title": "Bride Outfit", "items": ["Yellow saree/lehenga", "Floral jewelry", "No heavy makeup"] },
+    { "title": "Ritual Flow", "items": ["Family applies haldi", "Photos", "Snacks + sweets"] },
+    { "title": "Essentials", "items": ["Turmeric paste bowls", "Towels", "Coconut water", "Backup outfit"] }
+  ],
+  "linked_menu_key": "haldi_menu_traditional_80pax",
+  "linked_packing_key": "haldi_bride_pack_list"
+},
+{
+  "key": "pellikuturu_traditional_telugu_60pax",
+  "event_type": "pellikuturu",
+  "style": "telugu_traditional",
+  "people_count": 60,
+  "cards": [
+    { "title": "Decor", "items": ["Mango leaf torans", "Brass lamps", "Turmeric bowls", "Kolam entrance"] },
+    { "title": "Bride Look", "items": ["Half saree / silk saree", "Gold jewelry", "Jasmine flowers"] },
+    { "title": "Ritual Items", "items": ["Pasupu", "Kumkum", "Coconut", "Rice"] },
+    { "title": "Program Flow", "items": ["Blessings", "Ritual bath prep", "Lunch", "Photos"] }
+  ],
+  "linked_menu_key": "pellikuturu_menu_60pax",
+  "linked_packing_key": "pellikuturu_bride_pack_list"
+},
+{
+  "key": "pellikoduku_traditional_telugu_60pax",
+  "event_type": "pellikoduku",
+  "style": "telugu_traditional",
+  "people_count": 60,
+  "cards": [
+    { "title": "Setup", "items": ["Ritual seating", "Turmeric bowls", "Priest coordination"] },
+    { "title": "Groom Look", "items": ["Traditional dhoti", "Angavastram", "Minimal jewelry"] },
+    { "title": "Checklist", "items": ["Turmeric", "Coconut water", "Flowers", "Backup dhoti"] }
+  ],
+  "linked_menu_key": "pellikoduku_menu_60pax",
+  "linked_packing_key": "pellikoduku_groom_pack_list"
+},
+{
+  "key": "cocktail_night_modern_luxe_150pax",
+  "event_type": "cocktail",
+  "style": "modern_luxe",
+  "people_count": 150,
+  "cards": [
+    { "title": "Theme", "items": ["Black & gold", "Bar counter highlight", "Live DJ", "Lounge seating"] },
+    { "title": "Dress Code", "items": ["Cocktail gowns", "Sharp suits", "Statement heels"] },
+    { "title": "Flow", "items": ["Welcome drinks", "Couple entry", "Toast", "Dance floor open"] }
+  ],
+  "linked_menu_key": "cocktail_menu_150pax",
+  "linked_packing_key": "cocktail_guest_pack_list"
+},
+{
+  "key": "wedding_reception_grand_ballroom_300pax",
+  "event_type": "reception",
+  "style": "grand_ballroom",
+  "people_count": 300,
+  "cards": [
+    { "title": "Decor", "items": ["Crystal chandeliers", "Floral stage", "Grand seating plan"] },
+    { "title": "Bride Look", "items": ["Reception gown / heavy saree", "Statement jewelry", "Elegant hairstyle"] },
+    { "title": "Program Flow", "items": ["Couple entry", "Photo line", "Dinner service", "Cake cutting"] }
+  ],
+  "linked_menu_key": "reception_menu_grand_300pax",
+  "linked_packing_key": "reception_bride_pack_list"
+},
+{
+  "key": "rehearsal_dinner_intimate_40pax",
+  "event_type": "rehearsal_dinner",
+  "style": "intimate_western",
+  "people_count": 40,
+  "cards": [
+    { "title": "Venue Setup", "items": ["Long table seating", "Candles", "Name cards"] },
+    { "title": "Program", "items": ["Speeches", "Family introductions", "Toast rehearsal"] },
+    { "title": "Dress Code", "items": ["Smart casual", "Light cocktail attire"] }
+  ],
+  "linked_menu_key": "rehearsal_dinner_menu_40pax",
+  "linked_packing_key": "rehearsal_dinner_pack_list"
+},
+{
+  "key": "haldi_poolside_modern_120pax",
+  "event_type": "haldi",
+  "style": "poolside_modern",
+  "people_count": 120,
+  "cards": [
+    { "title": "Theme", "items": ["Yellow + white palette", "Pool float decor", "Floral cabanas"] },
+    { "title": "Bride Look", "items": ["Ruffled lehenga", "Floral tiara", "Minimal waterproof makeup"] },
+    { "title": "Flow", "items": ["Haldi ceremony", "Water splash fun", "DJ + brunch"] }
+  ],
+  "linked_menu_key": "haldi_brunch_menu_120pax",
+  "linked_packing_key": "haldi_pool_pack_list"
+},
+{
+  "key": "mehendi_rajasthani_colourful_150pax",
+  "event_type": "mehendi",
+  "style": "rajasthani_colourful",
+  "people_count": 150,
+  "cards": [
+    { "title": "Decor", "items": ["Bandhani drapes", "Mirror work umbrellas", "Bright tassels", "Low diwans"] },
+    { "title": "Entertainment", "items": ["Folk dancers", "Live dhol", "Photobooth with props"] },
+    { "title": "Bride Look", "items": ["Multicolour lehenga", "Kundan jewelry", "Braided hairstyle"] }
+  ],
+  "linked_menu_key": "mehendi_menu_rajasthani_150pax",
+  "linked_packing_key": "mehendi_bride_pack_list"
+},
+{
+  "key": "vratham_south_indian_60pax",
+  "event_type": "vratham",
+  "style": "south_indian_traditional",
+  "people_count": 60,
+  "cards": [
+    { "title": "Setup", "items": ["Banana leaf decor", "Brass lamps", "Kolam entrance"] },
+    { "title": "Ritual Items", "items": ["Coconut", "Turmeric", "Flowers", "Betel leaves"] },
+    { "title": "Dress Code", "items": ["Silk saree", "Dhoti + angavastram"] }
+  ],
+  "linked_menu_key": "vratham_menu_60pax",
+  "linked_packing_key": "vratham_pack_list"
+},
+{
+  "key": "roka_ceremony_north_indian_80pax",
+  "event_type": "roka",
+  "style": "north_indian_traditional",
+  "people_count": 80,
+  "cards": [
+    { "title": "Decor", "items": ["Floral stage", "Marigold garlands", "Sweet trays display"] },
+    { "title": "Program", "items": ["Family blessings", "Ring exchange", "Photo session"] },
+    { "title": "Dress Code", "items": ["Elegant ethnic", "Light festive jewelry"] }
+  ],
+  "linked_menu_key": "roka_menu_80pax",
+  "linked_packing_key": "roka_pack_list"
+},
+{
+  "key": "engagement_modern_lounge_120pax",
+  "event_type": "engagement",
+  "style": "modern_lounge",
+  "people_count": 120,
+  "cards": [
+    { "title": "Theme", "items": ["Monochrome decor", "Live saxophone", "Cocktail bar"] },
+    { "title": "Couple Entry", "items": ["Spotlight walk-in", "Ring moment", "Champagne toast"] },
+    { "title": "Dress Code", "items": ["Cocktail gowns", "Tuxedos"] }
+  ],
+  "linked_menu_key": "engagement_menu_modern_120pax",
+  "linked_packing_key": "engagement_pack_list"
+},
+{
+  "key": "karwa_chauth_dinner_home_20pax",
+  "event_type": "karwa_chauth",
+  "style": "traditional_home",
+  "people_count": 20,
+  "cards": [
+    { "title": "Setup", "items": ["Thali decor", "Moon-view terrace prep", "Candles"] },
+    { "title": "Dress Code", "items": ["Red saree", "Heavy bangles", "Sindoor + bindi"] },
+    { "title": "Dinner Plan", "items": ["Light starter", "Main thali", "Dessert"] }
+  ],
+  "linked_menu_key": "karwa_chauth_menu_20pax",
+  "linked_packing_key": "karwa_chauth_pack_list"
+},
+{
+  "key": "iftar_party_home_40pax",
+  "event_type": "ramzan_iftar",
+  "style": "traditional_home",
+  "people_count": 40,
+  "cards": [
+    { "title": "Setup", "items": ["Dates station", "Prayer mats", "Soft lighting"] },
+    { "title": "Food", "items": ["Dates", "Samosas", "Fruit chaat", "Biryani", "Sheer khurma"] },
+    { "title": "Flow", "items": ["Azaan break fast", "Dinner service", "Family gathering"] }
+  ],
+  "linked_menu_key": "iftar_menu_40pax",
+  "linked_packing_key": "iftar_pack_list"
+},
+{
+  "key": "new_years_eve_glam_200pax",
+  "event_type": "new_year_party",
+  "style": "glam_nightclub",
+  "people_count": 200,
+  "cards": [
+    { "title": "Theme", "items": ["Silver + black decor", "Confetti cannons", "Countdown LED wall"] },
+    { "title": "Dress Code", "items": ["Sequins", "Bold makeup", "Statement heels"] },
+    { "title": "Flow", "items": ["Dinner", "Live DJ", "Countdown", "After-party"] }
+  ],
+  "linked_menu_key": "nye_menu_200pax",
+  "linked_packing_key": "nye_party_pack_list"
+},
+{
+  "key": "namkaran_traditional_home_50pax",
+  "event_type": "naming_ceremony",
+  "style": "traditional_home",
+  "people_count": 50,
+  "cards": [
+    { "title": "Ritual Setup", "items": ["Cradle decor", "Priest items", "Flower garlands"] },
+    { "title": "Program", "items": ["Name whisper ritual", "Blessings", "Lunch"] },
+    { "title": "Return Gifts", "items": ["Sweets box", "Mini idols", "Customized baby tags"] }
+  ],
+  "linked_menu_key": "namkaran_menu_50pax",
+  "linked_packing_key": "namkaran_pack_list"
+},
+{
+  "key": "graduation_party_modern_60pax",
+  "event_type": "graduation",
+  "style": "modern_home",
+  "people_count": 60,
+  "cards": [
+    { "title": "Decor", "items": ["Photo memory wall", "Black + gold theme", "Certificate frame display"] },
+    { "title": "Program", "items": ["Speech", "Toast", "Cake cutting"] },
+    { "title": "Food", "items": ["Snacks buffet", "Drinks station"] }
+  ],
+  "linked_menu_key": "graduation_menu_60pax",
+  "linked_packing_key": "graduation_pack_list"
+},
+{
+  "key": "corporate_annual_party_300pax",
+  "event_type": "corporate_party",
+  "style": "formal_gala",
+  "people_count": 300,
+  "cards": [
+    { "title": "Theme", "items": ["Formal gala", "Award ceremony stage", "Brand backdrop"] },
+    { "title": "Program", "items": ["CEO speech", "Awards", "Dinner service", "Dance"] },
+    { "title": "Dress Code", "items": ["Formal suits", "Evening gowns"] }
+  ],
+  "linked_menu_key": "corporate_menu_300pax",
+  "linked_packing_key": "corporate_party_pack_list"
+},
+{
+  "key": "destination_wedding_goa_beach_200pax",
+  "event_type": "destination_wedding",
+  "style": "beach_luxe",
+  "people_count": 200,
+  "cards": [
+    { "title": "Theme", "items": ["Beach mandap", "White + coral palette", "Sunset vows"] },
+    { "title": "Guest Comfort", "items": ["Welcome hampers", "Sun hats", "Hydration station"] },
+    { "title": "Program Flow", "items": ["Welcome dinner", "Mehendi brunch", "Beach wedding", "After-party"] }
+  ],
+  "linked_menu_key": "goa_destination_menu",
+  "linked_packing_key": "destination_wedding_pack_list"
+},
+{
+  "key": "microtheme_boho_earthy",
+  "event_type": "microtheme",
+  "style": "boho_earthy",
+  "people_count": 0,
+  "cards": [
+    { "title": "Color Palette", "items": ["Terracotta", "Muted mustard", "Olive green", "Ivory"] },
+    { "title": "Decor Elements", "items": ["Macrame backdrops", "Dried pampas grass", "Low wooden tables", "Jute runners"] },
+    { "title": "Lighting", "items": ["Fairy lights", "Warm lanterns", "Candle clusters"] },
+    { "title": "Outfit Direction", "items": ["Flowy silhouettes", "Oxidised jewelry", "Braided hairstyles"] }
+  ],
+  "linked_menu_key": "boho_menu_style",
+  "linked_packing_key": "boho_style_pack"
+},
+{
+  "key": "microtheme_vintage_royal",
+  "event_type": "microtheme",
+  "style": "vintage_royal",
+  "people_count": 0,
+  "cards": [
+    { "title": "Color Palette", "items": ["Burgundy", "Emerald", "Antique gold", "Deep navy"] },
+    { "title": "Decor", "items": ["Velvet drapes", "Crystal chandeliers", "Gold candelabras", "Vintage frames"] },
+    { "title": "Music", "items": ["Classical instrumental", "Sufi live band"] },
+    { "title": "Outfit Direction", "items": ["Heavy zardozi", "Kundan sets", "Structured blouses"] }
+  ],
+  "linked_menu_key": "royal_menu_style",
+  "linked_packing_key": "royal_pack_list"
+},
+{
+  "key": "microtheme_minimal_white",
+  "event_type": "microtheme",
+  "style": "minimal_modern",
+  "people_count": 0,
+  "cards": [
+    { "title": "Color Palette", "items": ["White", "Beige", "Sage", "Muted blush"] },
+    { "title": "Decor", "items": ["Clean florals", "Acrylic signage", "Neutral linens"] },
+    { "title": "Lighting", "items": ["Soft diffused lighting", "Candle pathways"] },
+    { "title": "Outfit Direction", "items": ["Monochrome outfits", "Minimal jewelry", "Sleek hairstyles"] }
+  ],
+  "linked_menu_key": "minimal_menu_style",
+  "linked_packing_key": "minimal_pack_list"
+},
+{
+  "key": "mehendi_bride_ultra_pack",
+  "event_type": "packing",
+  "style": "mehendi_bride",
+  "people_count": 0,
+  "cards": [
+    { "title": "Primary Outfit", "items": ["Lehenga/sharara", "Blouse (backup hooks checked)", "Dupatta 1", "Dupatta 2 optional"] },
+    { "title": "Jewelry", "items": ["Floral jewelry full set", "Backup earrings", "Nose pin optional"] },
+    { "title": "Beauty Kit", "items": ["Lip balm", "Compact", "Setting spray", "Mini mirror"] },
+    { "title": "Comfort & Practical", "items": ["Wet wipes", "Tissues", "Phone charger", "Water bottle with straw"] },
+    { "title": "Emergency Kit", "items": ["Safety pins", "Double tape", "Band-aids", "Stain remover pen"] }
+  ],
+  "linked_menu_key": "",
+  "linked_packing_key": ""
+},
+{
+  "key": "wedding_groom_ultra_pack",
+  "event_type": "packing",
+  "style": "groom_wedding",
+  "people_count": 0,
+  "cards": [
+    { "title": "Main Outfit", "items": ["Sherwani/coat suit", "Dupatta/stole", "Pagdi with backup pin"] },
+    { "title": "Footwear", "items": ["Mojaris", "Backup comfortable shoes"] },
+    { "title": "Groom Kit", "items": ["Perfume", "Mints", "Handkerchief", "Hair product"] },
+    { "title": "Ceremony Items", "items": ["Sehra", "Kalgi", "Ritual thread"] }
+  ],
+  "linked_menu_key": "",
+  "linked_packing_key": ""
+},
+{
+  "key": "wedding_guest_3day_ultra_pack",
+  "event_type": "packing",
+  "style": "guest_wedding_multi",
+  "people_count": 0,
+  "cards": [
+    { "title": "Outfits", "items": ["Mehendi outfit", "Sangeet outfit", "Wedding outfit", "Reception outfit"] },
+    { "title": "Accessories", "items": ["Matching jewelry per outfit", "Clutches", "Hair accessories"] },
+    { "title": "Footwear", "items": ["Heels", "Flats", "Comfort sandals"] },
+    { "title": "Beauty", "items": ["Makeup kit", "Hair tools", "Setting spray"] },
+    { "title": "Emergency Kit", "items": ["Safety pins", "Fashion tape", "Band-aids", "Mini perfume"] }
+  ],
+  "linked_menu_key": "",
+  "linked_packing_key": ""
+},
+{
+  "key": "luxury_wedding_udaipur_palace",
+  "event_type": "wedding_theme",
+  "style": "luxury_palace_royal",
+  "people_count": 400,
+  "cards": [
+    { "title": "Venue Style", "items": ["Heritage palace", "Lake backdrop", "Grand mandap under dome"] },
+    { "title": "Decor", "items": ["Crystal chandeliers", "Thousands of roses", "Elephant welcome procession"] },
+    { "title": "Bride Look", "items": ["Custom couture lehenga", "Polki heirloom jewelry", "Velvet dupatta"] },
+    { "title": "Guest Experience", "items": ["Luxury hampers", "Personal butlers", "Live Sufi night"] }
+  ],
+  "linked_menu_key": "luxury_royal_menu",
+  "linked_packing_key": "luxury_destination_pack"
+},
+{
+  "key": "luxury_maldives_beach_wedding",
+  "event_type": "destination_wedding",
+  "style": "ultra_luxe_beach",
+  "people_count": 150,
+  "cards": [
+    { "title": "Theme", "items": ["All-white beach mandap", "Glass aisle over water", "Sunset vows"] },
+    { "title": "Guest Experience", "items": ["Luxury villas", "Welcome spa vouchers", "Private yacht dinner"] },
+    { "title": "Dress Code", "items": ["Ivory tones", "Minimal gold accents", "Flowy silhouettes"] }
+  ],
+  "linked_menu_key": "luxury_beach_menu",
+  "linked_packing_key": "luxury_beach_pack"
+},
+{
+  "key": "luxury_jaipur_rajputana",
+  "event_type": "wedding_theme",
+  "style": "rajputana_royal",
+  "people_count": 350,
+  "cards": [
+    { "title": "Theme", "items": ["Pink City palace", "Shehnai entrance", "Horse procession"] },
+    { "title": "Decor", "items": ["Marble mandap", "Gold drapes", "Live classical musicians"] },
+    { "title": "Bride Look", "items": ["Heavy zardozi lehenga", "Matha patti", "Rajputana nath"] },
+    { "title": "Experience", "items": ["Fireworks show", "Royal dinner spread", "Live folk dancers"] }
+  ],
+  "linked_menu_key": "rajputana_menu",
+  "linked_packing_key": "royal_palace_pack"
+}
+
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "destination_bases": [
+    {
+      "key": "beach_tropical",
+      "cards": [
+        { "title": "Clothes", "items": ["Swimwear", "Linen shirts", "Shorts", "Maxi dress"] },
+        { "title": "Essentials", "items": ["Sunscreen SPF50", "Sunglasses", "After-sun aloe"] }
+      ]
+    }
+  ],
+  "weather_layers": [
+    { "key": "rainy", "add_items": ["Umbrella", "Quick-dry pants", "Waterproof pouch"] },
+    { "key": "winter", "add_items": ["Thermals", "Gloves", "Lip balm"] }
+  ],
+  "activity_layers": [
+    { "key": "work_trip", "add_items": ["Laptop charger", "Formal shoes", "Blazer"] },
+    { "key": "hiking", "add_items": ["Trekking shoes", "Cap", "Hydration bottle"] }
+  ],
+  "trip_templates": [
+    { "key": "weekend_2d_relaxed", "days": 2, "pace": "relaxed", "structure": ["morning", "afternoon", "evening"] }
+  ]
+}

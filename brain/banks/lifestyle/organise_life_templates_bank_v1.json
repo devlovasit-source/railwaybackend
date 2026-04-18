@@ -1,0 +1,79 @@
+{
+  "version": "1.0",
+  "description": "Life admin templates for AHVI Organise mode.",
+  "areas": [
+    {
+      "key": "groceries",
+      "label": "Groceries",
+      "default_tasks": [
+        "Plan meals",
+        "Make list",
+        "Order / shop",
+        "Put away + prep"
+      ]
+    },
+    {
+      "key": "bills",
+      "label": "Bills & Expenses",
+      "default_tasks": [
+        "List recurring bills",
+        "Set due dates",
+        "Pay",
+        "File receipt"
+      ]
+    },
+    {
+      "key": "medicines",
+      "label": "Medicines",
+      "default_tasks": [
+        "Add medicine",
+        "Set time",
+        "Refill reminder",
+        "Track compliance"
+      ]
+    },
+    {
+      "key": "skincare",
+      "label": "Skincare",
+      "default_tasks": [
+        "AM routine",
+        "PM routine",
+        "Weekly exfoliation",
+        "Sunscreen habit"
+      ]
+    },
+    {
+      "key": "home",
+      "label": "Home",
+      "default_tasks": [
+        "Laundry",
+        "Cleaning",
+        "Trash",
+        "Refills (soap/tissues)"
+      ]
+    }
+  ],
+  "task_card_schema_hint": {
+    "type": "task_board",
+    "cards": [
+      {
+        "kind": "today",
+        "title": "Today",
+        "items": [
+          "..."
+        ]
+      },
+      {
+        "kind": "this_week",
+        "title": "This week",
+        "items": [
+          "..."
+        ]
+      }
+    ],
+    "cta": {
+      "primary": "Mark done",
+      "secondary": "Add task"
+    }
+  }
+}

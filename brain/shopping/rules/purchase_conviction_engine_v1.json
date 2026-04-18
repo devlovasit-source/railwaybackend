@@ -1,0 +1,215 @@
+{
+  "purchase_conviction_engine_v1": {
+    "version": "1.0",
+    "description": "Shopping persuasion + outfit-combo generator that convinces the user to buy by showing at least 3 wearable combos based on what they own (wardrobe-first) or what they want (style-goal fallback). Works across bags/shoes/jackets/tops/bottoms/dresses/accessories. Output is short, friendly, and confidence-boosting, never pushy.",
+    "entrypoints": {
+      "trigger_when_any_of": [
+        "signals.context_mode == 'shopping'",
+        "signals.user_asks_should_i_buy == true",
+        "signals.user_asks_worth_it == true",
+        "signals.user_shares_product_link == true",
+        "signals.user_shares_product_image == true",
+        "signals.user_says_buying_item == true"
+      ],
+      "required_inputs": ["product_candidate"],
+      "optional_inputs": ["user_profile", "wardrobe_index", "recent_outfits", "season", "occasion", "budget", "brand_affinity"]
+    },
+    "product_candidate_schema": {
+      "id": "string",
+      "category": {
+        "type": "enum",
+        "allowed": [
+          "bag",
+          "shoe",
+          "jacket_layer",
+          "top",
+          "bottom",
+          "dress",
+          "indian_wear",
+          "accessory",
+          "jewelry"
+        ]
+      },
+      "subtype": "string",
+      "color_family": "string",
+      "primary_color": "string",
+      "secondary_colors": ["string"],
+      "material": "string",
+      "finish": { "type": "enum", "allowed": ["matte", "glossy", "metallic", "textured", "unknown"] },
+      "print_pattern": { "type": "enum", "allowed": ["solid", "striped", "floral", "geometric", "animal", "other", "unknown"] },
+      "formality": { "type": "enum", "allowed": ["casual", "smart_casual", "semi_formal", "formal", "festive", "unknown"] },
+      "wearability_tags": ["string"],
+      "price": { "amount": "number", "currency": "string" }
+    },
+    "wardrobe_index_schema_min": {
+      "coverage_score": "number",
+      "items": [
+        {
+          "wardrobe_id": "string",
+          "category_group": "string",
+          "subcategory": "string",
+          "colors": ["string"],
+          "pattern": "string",
+          "formality": "string",
+          "season_tags": ["string"],
+          "style_tags": ["string"],
+          "compatible_slots": ["string"]
+        }
+      ]
+    },
+    "decision_order": [
+      "safety_and_tone_gates",
+      "resolve_shopping_intent",
+      "wardrobe_availability_check",
+      "generate_3_combos (wardrobe_first)",
+      "fallback_generate_3_combos (style_goal_first)",
+      "add_why_it_works (short)",
+      "add_purchase_confidence_line",
+      "optional_add_alt_if_uncertain",
+      "close_with_question"
+    ],
+    "safety_and_tone_gates": {
+      "never": [
+        "shame",
+        "pushy upsell",
+        "insulting tone",
+        "body commentary",
+        "guilt language"
+      ],
+      "if_emotion_state_vulnerable": {
+        "tone": "gentle_supportive",
+        "suppress": ["hard_sell", "price_justification_pressure"],
+        "prefer": ["comfort", "confidence", "simple_next_step"]
+      }
+    },
+    "resolve_shopping_intent": {
+      "intent_types": {
+        "should_i_buy": {
+          "goal": "help decide purchase by showing versatility + fit with wardrobe",
+          "output_mode": "conviction_3_combos"
+        },
+        "style_with_it": {
+          "goal": "show what to wear it with (3 combos minimum)",
+          "output_mode": "conviction_3_combos"
+        },
+        "compare_options": {
+          "goal": "compare 2-3 products based on wardrobe compatibility and use cases",
+          "output_mode": "comparison_plus_combos"
+        }
+      }
+    },
+    "wardrobe_availability_check": {
+      "coverage_thresholds": {
+        "good": 0.6,
+        "okay": 0.35,
+        "low": 0.15
+      },
+      "routing": {
+        "if_coverage_good": "wardrobe_first",
+        "if_coverage_okay": "wardrobe_first_with_questions",
+        "if_coverage_low": "style_goal_first"
+      },
+      "questions_if_needed": [
+        "Where do you see yourself wearing this most—work, casual, date, festive?",
+        "Do you want this to be a daily staple or an occasional statement?"
+      ]
+    },
+    "combo_generation": {
+      "min_combos": 3,
+      "default_mix": "2_safe_1_elevated",
+      "combo_slots": ["base_outfit", "shoe", "bag_or_accessory", "finisher", "occasion_fit"],
+      "rules": {
+        "each_combo_one_sentence": true,
+        "no_repeat_base": true,
+        "respect_constraints": ["no_heels", "prefer_covered", "heat_sensitive"],
+        "keep_it_real": "Use items from wardrobe_index when available. If missing, use generic placeholders (e.g., 'white tee', 'straight jeans') and mark as 'if you have'."
+      },
+      "wardrobe_first_strategy": {
+        "step_1_pick_anchor_items": "Choose 2-4 wardrobe items that match product color/formality and user's style tags.",
+        "step_2_build_safe_combos": "Create 2 combos using high-likelihood staples from wardrobe.",
+        "step_3_build_elevated_combo": "Create 1 combo with one premium touch (structure/texture/shine) but still wearable.",
+        "step_4_validate": [
+          "no clashing prints unless user has high print tolerance",
+          "limit hero pieces: only 1 hero per combo",
+          "monsoon: avoid suede, avoid floor hems",
+          "summer: breathable bias, minimal layers"
+        ]
+      },
+      "style_goal_first_strategy": {
+        "when_to_use": "When wardrobe coverage is low or wardrobe access unavailable.",
+        "ask_one_question_if_missing": "What vibe are you buying this for—work, everyday, date, festive, or travel?",
+        "generate_based_on": ["personal_style", "occasion", "place", "season"],
+        "use_starter_staples": [
+          "clean jeans / straight trousers",
+          "neutral top",
+          "simple layer (blazer/overshirt/denim jacket)",
+          "clean shoe"
+        ]
+      }
+    },
+    "persuasion_layer": {
+      "why_it_works_templates": [
+        "This works because it ties into your existing {anchor_color_or_category} pieces and gives you repeatable outfits.",
+        "The best part: it upgrades basics without making your wardrobe harder to style.",
+        "This is the kind of piece that makes multiple outfits feel intentional."
+      ],
+      "purchase_confidence_lines": [
+        "If you want a piece you’ll actually use, this one earns its keep.",
+        "This isn’t a one-outfit item — it’s a multiplier.",
+        "This is a smart buy if you want max wears with minimum effort."
+      ],
+      "if_uncertain_add_alternative": {
+        "trigger_when": "signals.user_uncertain == true OR signals.price_sensitive == true",
+        "line": "If you’re unsure, look for the same vibe in a more neutral {color_or_finish} — it’ll match even more outfits."
+      }
+    },
+    "output_formats": {
+      "conviction_3_combos": {
+        "structure": [
+          "reaction_starter (warm, excited but not pushy)",
+          "3_combos_block (2 safe + 1 elevated)",
+          "why_it_works (1 line)",
+          "confidence_line (1 line)",
+          "question_close (1 question)"
+        ],
+        "combo_line_template": "• {combo_label}: {base_outfit} + {shoe} + {product_candidate} + {finisher} ({occasion_fit})"
+      },
+      "comparison_plus_combos": {
+        "structure": [
+          "short_comparison (2-3 bullets max)",
+          "best_pick_recommendation (1 line)",
+          "3_combos_block for best pick",
+          "question_close"
+        ]
+      }
+    },
+    "integration_points": {
+      "uses": [
+        "pairing_matrix_bank_v1 for occasion/place defaults",
+        "seasonal_combinations_bank_v1 for season validation",
+        "print_pattern_bank_v1 for clash prevention",
+        "fabric_texture_bank_v1 for premium feel language",
+        "tone_engine.json for age-based lingo selection"
+      ],
+      "recommended_new_files": [
+        "shopping_router_map_v1.json",
+        "wardrobe_tag_normalizer_v1.json",
+        "shopping_test_set_v1.json"
+      ]
+    },
+    "test_assertions": {
+      "must": [
+        "Always produce at least 3 combos when user requests styling for a product (unless user explicitly asks for fewer).",
+        "Combos must reference product_candidate explicitly (bag/shoe/etc).",
+        "If wardrobe data exists, at least 2 combos must include wardrobe-derived items.",
+        "No rude language or pressure selling.",
+        "End with a single choice question."
+      ],
+      "must_not": [
+        "More than 1 upgrade suggestion per combo sentence",
+        "More than 1 finisher per combo",
+        "Overly long explanations"
+      ]
+    }
+  }
+}

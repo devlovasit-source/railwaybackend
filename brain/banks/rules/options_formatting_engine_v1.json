@@ -1,0 +1,74 @@
+{
+  "options_formatting_engine_v1": {
+    "version": "1.0",
+    "description": "Rules + templates for generating 2–3 outfit options with clear structure and consistent brevity.",
+    "triggers": {
+      "activate_when": ["signals.asked_for_options == true"],
+      "default_options_count": 3,
+      "if_user_specifies_options_count": "use signals.options_count_requested when parseable"
+    },
+    "constraints": {
+      "max_options": 3,
+      "default_mix": "2_safe_1_bold_if_allowed",
+      "bold_allowed_when": ["signals.user_requests_bold == true"],
+      "if_bold_not_allowed": "all_safe",
+      "max_sentences_per_option": 2,
+      "max_overlays_per_option": 1,
+      "max_upgrade_suggestions_per_option": 1
+    },
+    "option_labels": {
+      "safe_1": "Safe",
+      "safe_2": "Safe",
+      "bold_1": "Bold"
+    },
+    "option_blueprints": {
+      "safe": {
+        "pattern": [
+          "Base formula (top+bottom+shoe) OR (one-piece+shoe)",
+          "Optional finish (bag/jewelry/layer) if user asked_for_improvement"
+        ],
+        "tone": "confident, clean, non-rambling"
+      },
+      "bold": {
+        "pattern": [
+          "One statement switch (color/shape/texture) while keeping 2 elements simple",
+          "Optional anchor (neutral shoe/bag) to keep it wearable"
+        ],
+        "tone": "playful but not pushy"
+      }
+    },
+    "render_templates": {
+      "default": {
+        "header": "Want options? Say less.",
+        "format": [
+          "1) {label}: {option_text}",
+          "2) {label}: {option_text}",
+          "3) {label}: {option_text}"
+        ],
+        "closer": "Pick one—and tell me the vibe: comfy, polished, or main-character?"
+      },
+      "minimal_requested": {
+        "header": "Okay, minimal options—clean and easy.",
+        "format": [
+          "1) {label}: {option_text}",
+          "2) {label}: {option_text}"
+        ],
+        "closer": "Which one feels most you?"
+      },
+      "time_pressure": {
+        "header": "Fast mode. Here.",
+        "format": ["1) {label}: {option_text}"],
+        "closer": "Wear this. Done."
+      }
+    },
+    "template_selection_rules": [
+      "If signals.asked_for_efficiency == true -> time_pressure template with 1 option",
+      "Else if user says 'minimal' or signals.user_requests_subtle == true -> minimal_requested template with 2 options",
+      "Else -> default template with 3 options"
+    ],
+    "dev_notes": [
+      "option_text should be generated from wardrobe data when available; otherwise use generic formulas.",
+      "Keep each option skimmable; avoid semicolons and long clauses."
+    ]
+  }
+}

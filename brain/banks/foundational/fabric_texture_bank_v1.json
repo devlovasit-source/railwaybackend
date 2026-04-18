@@ -1,0 +1,91 @@
+{
+  "styling_intelligence": {
+    "fabric_texture_bank_v1": {
+      "version": "1.0",
+      "description": "Fabric + texture intelligence to make styling feedback sound premium. Focuses on drape, structure, finish (matte/shine), and how fabrics read on camera/in real life.",
+      "categories": {
+        "positive_premium_signals": [
+          "That fabric reads expensive—clean drape, no fuss.",
+          "The texture adds quiet richness without trying too hard.",
+          "This finish looks premium and intentional.",
+          "The fabric movement gives it that elevated feel.",
+          "This texture contrast is doing a lot of work—in a good way.",
+          "The material looks structured enough to hold shape nicely.",
+          "This fabric choice makes the whole outfit feel more refined.",
+          "The finish is clean—nothing looks flimsy or noisy.",
+          "This texture reads ‘thoughtful’ not random.",
+          "That fabric has a nice weight to it, which looks polished."
+        ],
+        "positive_drape_structure": [
+          "The drape is smooth, so the silhouette reads clean.",
+          "This holds structure well—it keeps the look sharp.",
+          "The fabric falls nicely, which makes it feel effortless.",
+          "That material has good shape memory—stays neat.",
+          "The fabric weight gives the outfit a confident outline.",
+          "This skims instead of clinging, which looks very polished.",
+          "The structure makes the look feel intentional.",
+          "That drape creates a soft, elegant line.",
+          "This fabric makes layering look cleaner.",
+          "This reads crisp and composed."
+        ],
+        "positive_shine_matte_balance": [
+          "The shine level is controlled—elevated, not loud.",
+          "That matte finish makes it feel modern and expensive.",
+          "The subtle sheen adds a dressy edge without overdoing it.",
+          "This finish photographs really cleanly.",
+          "The mix of matte + a hint of shine is very premium.",
+          "That satin/shine moment works because the rest is simple.",
+          "The finish looks smooth and high-quality.",
+          "This texture catches light in a flattering way.",
+          "The shine is giving ‘special occasion’ in a soft way.",
+          "This matte texture makes the look feel grounded and chic."
+        ],
+        "constructive_fabric_noise_or_cheap_read": [
+          "The base works, but the fabric is reading a little ‘noisy’ on camera.",
+          "This looks good—just slightly flimsy in the finish.",
+          "The texture is adding a bit more chaos than the outfit needs.",
+          "The fabric is making the look feel less polished than it could.",
+          "This finish is slightly crumple-prone, so it can look untidy fast.",
+          "The shine level is a touch high, so it can read louder than intended.",
+          "The fabric is clinging in a way that breaks the clean line.",
+          "The material looks a bit thin for the vibe you’re going for.",
+          "The texture is competing with the silhouette a little.",
+          "This would look more premium with a cleaner fabric finish."
+        ],
+        "refinement_suggestions": [
+          "If you swap one piece to a heavier/cleaner fabric, the whole look levels up.",
+          "Keeping one texture as the hero and the rest matte will make it feel expensive.",
+          "A quick steam will instantly make this read more premium.",
+          "If the fabric is shiny, pair it with a matte shoe/bag so it feels balanced.",
+          "If the fabric is clingy, adding a structured layer can clean up the line.",
+          "Try one textured piece max—everything else smooth and simple.",
+          "If you want it sharper, choose a fabric that holds shape (denim, suiting, crisp cotton).",
+          "If you want it softer, choose a fabric with drape (viscose, crepe, soft knit).",
+          "A clean lining/inner layer can make this sit better and look pricier.",
+          "If you reduce wrinkles and tidy hems, this looks instantly elevated."
+        ],
+        "fabric_vocab_soft_tags": [
+          "crisp cotton energy",
+          "linen-but-make-it-neat",
+          "soft knit comfort",
+          "structured suiting vibe",
+          "denim clean structure",
+          "satin shine moment",
+          "crepe drape polish",
+          "tweed texture richness",
+          "leather sharp finish",
+          "chiffon light float"
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 fabric insight. Add 1 refinement only if user asks to elevate or says it feels off.",
+        "avoid": [
+          "Sounding like you’re insulting quality/price.",
+          "Overly technical textile talk unless user asks."
+        ],
+        "tone_integration": "Reaction → Fabric/texture observation → Optional refinement → Invitation closer."
+      }
+    }
+  }
+}

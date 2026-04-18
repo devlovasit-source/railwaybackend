@@ -1,0 +1,104 @@
+{
+  "styling_intelligence": {
+    "menswear_fit_details_bank_v1": {
+      "version": "1.0",
+      "description": "Menswear polish intelligence: fit checkpoints, break/taper guidance, collar behavior, shoe hierarchy, and premium finishing logic.",
+      "categories": {
+        "fit_checkpoints_positive": [
+          "Shoulders look clean—this reads tailored even if it’s casual.",
+          "The sleeve length looks on point—very polished.",
+          "The torso fit is balanced: not clingy, not floating.",
+          "The trouser line looks clean—nice structure.",
+          "The overall fit reads intentional, not accidental.",
+          "This is a sharp fit without looking try-hard.",
+          "The proportions top-to-bottom feel really balanced.",
+          "The shirt sits cleanly—no weird pulling.",
+          "The pant shape supports the outfit well.",
+          "This fit gives that ‘quiet confidence’ menswear vibe."
+        ],
+        "fit_checkpoints_constructive": [
+          "This is close—shoulders look fine, but the torso could be a touch cleaner.",
+          "Sleeves feel slightly long/short; one small tweak would sharpen it.",
+          "The pant line is good, but the taper could be cleaner.",
+          "The fit is slightly loose in one area, so the silhouette reads softer than needed.",
+          "The shirt is pulling slightly—could be a size/fit tweak.",
+          "The trouser break is a bit heavy; it’s making the bottom look less sharp.",
+          "The top is clean but the bottom is a little bulky right now.",
+          "The proportions are good—just needs one fit refinement to feel premium.",
+          "The collar/neck area feels slightly messy; clean collar makes a big difference.",
+          "It’s working, but a cleaner fit through one zone would elevate it fast."
+        ],
+        "trouser_break_guidance": [
+          "No break (or very minimal break) reads the sharpest and most modern.",
+          "A slight break is the safest—clean and wearable.",
+          "A full break can look classic, but only if the rest is structured.",
+          "If the break is bunching a lot, hemming slightly will make it look premium.",
+          "If you want it sleeker, reduce the break and keep the shoe clean.",
+          "If you want it relaxed, keep the break but avoid heavy stacking.",
+          "Cuffing once can clean up the line without tailoring.",
+          "Slim/straight trousers look best with minimal break.",
+          "Wider trousers can handle a little break if the drape is clean.",
+          "A clean hem instantly makes the outfit look expensive."
+        ],
+        "taper_and_silhouette": [
+          "Straight fit reads classic and clean.",
+          "Slight taper reads modern without looking tight.",
+          "Heavy taper reads very sharp but can feel less relaxed.",
+          "If the ankle is too wide, the shoe gets lost—slight taper helps.",
+          "If the ankle is too tight, the fit can feel restrictive—straight works better.",
+          "For premium vibes: clean line from knee to hem.",
+          "If you want more height: keep the line straight and the shoe low-profile.",
+          "If you want more structure: pair straight trousers with a structured top layer.",
+          "If the silhouette feels boxy, add one structured layer or cleaner taper.",
+          "A balanced silhouette is always the win—no extremes needed."
+        ],
+        "collar_and_shirt_polish": [
+          "A crisp collar instantly makes it look premium.",
+          "If the collar is soft, keeping it neat/open reads intentional.",
+          "A slightly open collar reads confident and clean.",
+          "If the collar is collapsing, a stiffer fabric or undershirt can help it sit better.",
+          "If the shirt is wrinkling a lot, a quick steam is the easiest upgrade.",
+          "Clean placket + tidy cuffs = instant polish.",
+          "Rolling sleeves once (neatly) reads intentional and relaxed.",
+          "If the shirt is long, a partial tuck can clean up proportions fast.",
+          "If the shirt is short, leaving it untucked looks cleaner than a messy tuck.",
+          "Neck/shoulder cleanliness is the menswear ‘expensive’ signal."
+        ],
+        "shoe_hierarchy_polish": [
+          "Dressiest: sleek leather shoe (oxford/derby) → most formal.",
+          "Smart-polished: loafer → easy premium.",
+          "Clean casual: minimalist sneaker → modern and sharp.",
+          "Relaxed: chunky sneaker → casual, needs a cleaner outfit line to stay polished.",
+          "Sandals/slides can work, but the outfit has to be very clean and intentional.",
+          "If you want it more premium fast: upgrade the shoe shape first.",
+          "A cleaner shoe instantly upgrades even basic outfits.",
+          "Match shoe tone with belt/watch strap for a cohesive finish.",
+          "If the outfit is loud, keep shoes clean and quiet.",
+          "If the outfit is simple, one premium shoe can be the hero."
+        ],
+        "menswear_finishing_touches": [
+          "A clean watch is the easiest ‘put together’ signal.",
+          "Matching belt + shoe tone makes it feel intentional.",
+          "One structured layer (overshirt/jacket) instantly upgrades basics.",
+          "Tidy hems and clean sneakers make everything look expensive.",
+          "Steam the shirt, clean the shoe—done.",
+          "Keep accessories minimal: one hero piece max.",
+          "A crisp tee (heavier cotton) reads more premium than a thin one.",
+          "A clean haircut/trim finish elevates the outfit without effort.",
+          "Texture contrast (one) adds richness: knit + denim, suiting + tee, etc.",
+          "If you do one thing: clean shoe + clean collar."
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 menswear insight. Add 1 refinement only if user asks to elevate or says it feels off.",
+        "avoid": [
+          "Overly harsh fit criticism.",
+          "Macho stereotypes.",
+          "Tailoring lectures unless user asks."
+        ],
+        "tone_integration": "Reaction → Menswear polish observation → Optional refinement → Invitation closer."
+      }
+    }
+  }
+}

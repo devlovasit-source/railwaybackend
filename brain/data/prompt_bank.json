@@ -1,0 +1,19 @@
+{
+  "daily_checkin": [
+    "What’s the vibe today?",
+    "Comfort-first or polish-first?",
+    "What’s the weather like?",
+    "Is this a low-energy or high-energy day?"
+  ],
+  "packing_prompts": [
+    "How many days are we packing for?",
+    "Mostly day events or nights out?",
+    "Do you want outfit repeats?",
+    "Are heels required or optional?"
+  ],
+  "planning_prompts": [
+    "What’s the one non-negotiable today?",
+    "What time do you need to leave?",
+    "Do you want a focused day or flexible flow?"
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "version": "1.0",
+  "description": "Trip + event planning templates for AHVI Plan mode (board-first).",
+  "trip_templates": [
+    {
+      "key": "weekend_city",
+      "label": "Weekend City Break",
+      "sections": [
+        {
+          "kind": "must_dos",
+          "title": "Must-dos",
+          "items": [
+            "Iconic landmark",
+            "Local market/food street",
+            "One museum/gallery",
+            "Sunset viewpoint"
+          ]
+        },
+        {
+          "kind": "food",
+          "title": "Food plan",
+          "items": [
+            "Signature local breakfast",
+            "One famous caf\u00e9",
+            "One street-food crawl",
+            "One nice dinner"
+          ]
+        },
+        {
+          "kind": "logistics",
+          "title": "Logistics",
+          "items": [
+            "Airport/rail transfers",
+            "Hotel check-in/out",
+            "Local transport app",
+            "Offline maps"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "beach_relax",
+      "label": "Beach + Chill",
+      "sections": [
+        {
+          "kind": "activities",
+          "title": "Activities",
+          "items": [
+            "Beach time",
+            "Water sports (optional)",
+            "Sunset dinner",
+            "One day trip"
+          ]
+        },
+        {
+          "kind": "selfcare",
+          "title": "Self-care",
+          "items": [
+            "Hydrate",
+            "SPF reapply",
+            "Light skincare",
+            "Early sleep"
+          ]
+        },
+        {
+          "kind": "budget",
+          "title": "Budget cues",
+          "items": [
+            "Cab/auto",
+            "Food",
+            "Experiences",
+            "Shopping buffer"
+          ]
+        }
+      ]
+    }
+  ],
+  "event_templates": [
+    {
+      "key": "house_party",
+      "label": "House Party Plan",
+      "sections": [
+        {
+          "kind": "guest",
+          "title": "Guests",
+          "items": [
+            "Invite list",
+            "Dietary prefs",
+            "Start time"
+          ]
+        },
+        {
+          "kind": "menu",
+          "title": "Menu",
+          "items": [
+            "1 signature drink",
+            "2 snacks",
+            "1 main",
+            "Dessert"
+          ]
+        },
+        {
+          "kind": "setup",
+          "title": "Setup",
+          "items": [
+            "Music playlist",
+            "Ice",
+            "Cups/plates",
+            "Lights"
+          ]
+        },
+        {
+          "kind": "timeline",
+          "title": "Timeline",
+          "items": [
+            "T-2h prep",
+            "T-30m setup",
+            "Party",
+            "Cleanup"
+          ]
+        }
+      ]
+    }
+  ]
+}

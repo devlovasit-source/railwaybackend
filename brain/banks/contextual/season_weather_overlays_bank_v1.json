@@ -1,0 +1,45 @@
+{
+  "styling_intelligence": {
+    "season_weather_overlays_bank_v1": {
+      "version": "1.0",
+      "description": "Climate-aware styling overlays for practical adaptation without sacrificing polish.",
+      "usage_rules": {
+        "include_when_any_of": [
+          "signals.user_mentions_weather == true",
+          "signals.user_mentions_season == true"
+        ],
+        "max_overlays_per_response": 1
+      },
+      "categories": {
+        "summer_heat": [
+          "The silhouette feels breathable for summer.",
+          "Lightweight fabrics will keep this comfortable.",
+          "Keeping the palette lighter helps in heat.",
+          "This works well for warmer days.",
+          "The structure is clean without trapping heat."
+        ],
+        "monsoon": [
+          "Keep the fabrics structured so they don’t collapse in humidity.",
+          "A closed shoe might work better in rain.",
+          "A darker base can handle weather shifts better.",
+          "Avoid overly delicate fabrics for this setting.",
+          "A practical layer would help here."
+        ],
+        "winter_layering": [
+          "Layering can add structure and depth here.",
+          "A longer outer layer would create clean vertical lines.",
+          "Texture mixing works beautifully in winter.",
+          "A tonal coat would elevate this instantly.",
+          "Keep the base clean and let the layer do the work."
+        ],
+        "mild_weather": [
+          "This works perfectly for transitional weather.",
+          "A light layer will make it adaptable.",
+          "The structure feels seasonally balanced.",
+          "This silhouette handles mild weather well.",
+          "Keeping it flexible makes sense here."
+        ]
+      }
+    }
+  }
+}

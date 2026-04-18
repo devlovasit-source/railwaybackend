@@ -1,0 +1,129 @@
+{
+  "styling_intelligence": {
+    "balance_focal_point_bank_v1": {
+      "version": "1.1",
+      "description": "Modular balance, visual weight, and focal point observation fragments. Designed for short, confident, conversational styling feedback that feels intuitive—not analytical.",
+      "categories": {
+        "positive_balance": [
+          "The visual weight feels evenly distributed.",
+          "There’s a clear focal point, which works well.",
+          "Nothing is overpowering the rest of the look.",
+          "The elements feel balanced.",
+          "The accessories don’t compete with the outfit.",
+          "There’s a strong center of attention here.",
+          "The statement piece is doing its job.",
+          "The look feels anchored.",
+          "The details are supporting each other nicely.",
+          "It feels cohesive from top to bottom.",
+          "Everything feels placed on purpose.",
+          "The look feels balanced without feeling boring.",
+          "Your eye moves through the outfit smoothly.",
+          "The outfit feels styled, not cluttered.",
+          "The focus is clear and it reads confident.",
+          "The outfit feels balanced—nothing is overpowering.",
+          "The visual weight is distributed really nicely.",
+          "It feels styled but still clean and easy.",
+          "Your eye knows exactly where to land.",
+          "The details feel coordinated, not competing.",
+          "This has a strong presence without feeling loud.",
+          "Everything feels intentional and placed on purpose.",
+          "The look feels grounded and confident.",
+          "The accessories support the outfit instead of stealing it.",
+          "This reads cohesive from head to toe."
+        ],
+        "positive_focal_point": [
+          "The jacket naturally draws the eye.",
+          "The shoes anchor the look well.",
+          "The bag adds just enough emphasis.",
+          "The neckline creates a nice focus.",
+          "The silhouette itself becomes the statement.",
+          "The earrings give the look a strong finishing touch.",
+          "The color placement creates a nice focal point.",
+          "The belt detail pulls the outfit together.",
+          "The layering creates a clean point of interest.",
+          "The texture adds a subtle statement without overpowering it.",
+          "The outer layer is acting as the hero piece.",
+          "The shoe choice anchors the outfit beautifully.",
+          "The bag is giving the look direction.",
+          "The neckline creates a strong visual center.",
+          "The texture contrast adds quiet emphasis.",
+          "The contrast detail is doing the spotlight work.",
+          "The color blocking creates a clear visual anchor.",
+          "The proportions themselves become the statement.",
+          "The accessory placement feels intentional and controlled.",
+          "The structure is naturally pulling the focus together."
+        ],
+        "constructive_competing_elements": [
+          "There isn’t a clear focal point yet.",
+          "The accessories are slightly competing.",
+          "Too many elements are asking for attention.",
+          "The eye doesn’t know where to land.",
+          "The statement piece gets a bit lost.",
+          "There’s more visual weight at the bottom.",
+          "The upper half feels heavier than the lower half.",
+          "The bold pieces are competing with each other.",
+          "It needs one hero element.",
+          "The look feels slightly scattered.",
+          "It’s a little busy in one area.",
+          "The focus keeps shifting, so it doesn’t feel settled.",
+          "One detail is overpowering the rest of the outfit.",
+          "The outfit needs a clearer main character piece.",
+          "It’s close—just slightly over-styled right now.",
+          "The eye keeps bouncing instead of settling.",
+          "The statement element is competing with another detail.",
+          "There’s slightly too much happening at once.",
+          "The focal point isn’t clearly defined yet.",
+          "The visual emphasis feels split between pieces.",
+          "The bold elements are overlapping in energy.",
+          "One zone is carrying more weight than the rest.",
+          "The outfit feels a touch visually crowded.",
+          "The emphasis is a bit diffused right now.",
+          "It needs one cleaner decision to settle the look."
+        ],
+        "refinement_suggestions": [
+          "Removing one accessory would simplify it.",
+          "Letting one piece stand out would strengthen it.",
+          "Switching to subtler accessories would help.",
+          "Choosing one statement element would sharpen it.",
+          "Balancing the top and bottom visually would elevate it.",
+          "Reducing one bold detail would clean it up.",
+          "Adding a grounding piece could anchor it.",
+          "Keeping everything else minimal would let this shine.",
+          "Softening one strong element would create harmony.",
+          "Introducing a subtle layer could add structure.",
+          "Pick one hero piece and keep the rest quiet.",
+          "If you simplify the accessories, the outfit will look more premium.",
+          "A cleaner bag or shoe choice would reduce visual noise.",
+          "Keeping either the top or bottom simple will make it feel more balanced.",
+          "If you remove one competing detail, the whole look will click.",
+          "Choose one focal point and let the rest support it.",
+          "If you quiet one strong element, everything will harmonize better.",
+          "A single anchor piece (bag/shoe/jacket) will make it feel complete.",
+          "If you simplify one side of the outfit, the balance improves instantly.",
+          "Reducing visual clutter will make it feel more intentional."
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 balance or focal observation. Add 1 refinement only when improvement is requested or implied.",
+        "constructive_policy": {
+          "only_use_constructive_when": [
+            "signals.asked_for_improvement == true",
+            "signals.expressed_dissatisfaction == true",
+            "signals.asked_be_honest == true"
+          ],
+          "avoid_when": [
+            "signals.expressed_confidence == true AND signals.asked_for_improvement != true",
+            "signals.emotion_state == vulnerable"
+          ]
+        },
+        "avoid": [
+          "Stacking multiple critiques in a short response.",
+          "Using technical design jargon.",
+          "Sounding overly analytical unless the user asks for a deeper breakdown."
+        ],
+        "tone_integration": "Fragments must be wrapped inside AHVI's response structure (Reaction → Observation → Optional refinement → Invitation). Keep it natural and confident."
+      }
+    }
+  }
+}

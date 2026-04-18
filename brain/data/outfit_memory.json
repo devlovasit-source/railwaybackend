@@ -1,0 +1,782 @@
+{
+  "users": {
+    "u_test": {
+      "recent_outfits": [
+        {
+          "top": {
+            "id": "t1",
+            "name": "Blue Shirt",
+            "type": "shirt",
+            "color": "blue",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "b1",
+            "name": "Black Trousers",
+            "type": "trousers",
+            "color": "black",
+            "fabric": "wool",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "s1",
+            "name": "White Sneakers",
+            "type": "sneakers",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "casual",
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "t1|b1|s1",
+          "score": 16.0,
+          "score_breakdown": {
+            "weather_match": 6.0,
+            "occasion_match": 6.0,
+            "style_dna_match": 4.0,
+            "feedback_adjustment": 0.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": 0.0
+          }
+        },
+        {
+          "top": {
+            "id": "t2",
+            "name": "White Tshirt",
+            "type": "tshirt",
+            "color": "white",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "b2",
+            "name": "Blue Jeans",
+            "type": "jeans",
+            "color": "blue",
+            "fabric": "denim",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "s1",
+            "name": "White Sneakers",
+            "type": "sneakers",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "casual",
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "t2|b2|s1",
+          "score": 13.5,
+          "score_breakdown": {
+            "weather_match": 6.0,
+            "occasion_match": 2.0,
+            "style_dna_match": 5.5,
+            "feedback_adjustment": 0.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": 0.0
+          }
+        },
+        {
+          "top": {
+            "id": "t1",
+            "name": "Blue Shirt",
+            "type": "shirt",
+            "color": "blue",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "b2",
+            "name": "Blue Jeans",
+            "type": "jeans",
+            "color": "blue",
+            "fabric": "denim",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "s1",
+            "name": "White Sneakers",
+            "type": "sneakers",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "casual",
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "t1|b2|s1",
+          "score": 7.5,
+          "score_breakdown": {
+            "weather_match": 6.0,
+            "occasion_match": 4.0,
+            "style_dna_match": 5.5,
+            "feedback_adjustment": 0.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": -8.0
+          }
+        }
+      ],
+      "liked_outfits": [],
+      "disliked_outfits": []
+    },
+    "arch_user": {
+      "recent_outfits": [
+        {
+          "top": {
+            "id": "1",
+            "name": "Blue Shirt",
+            "type": "shirt",
+            "color": "blue",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "3",
+            "name": "Black Trousers",
+            "type": "trousers",
+            "color": "black",
+            "fabric": "wool",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "5",
+            "name": "Sneakers",
+            "type": "shoes",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "office",
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "1|3|5",
+          "score": 13.0,
+          "score_breakdown": {
+            "weather_match": 6.0,
+            "occasion_match": 6.0,
+            "style_dna_match": 0.0,
+            "feedback_adjustment": 0.0,
+            "style_graph_bonus": 1.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": 0.0
+          }
+        },
+        {
+          "top": {
+            "id": "2",
+            "name": "White Tshirt",
+            "type": "tshirt",
+            "color": "white",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "4",
+            "name": "Blue Jeans",
+            "type": "jeans",
+            "color": "blue",
+            "fabric": "denim",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "5",
+            "name": "Sneakers",
+            "type": "shoes",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "office",
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "2|4|5",
+          "score": 9.0,
+          "score_breakdown": {
+            "weather_match": 6.0,
+            "occasion_match": 2.0,
+            "style_dna_match": 0.0,
+            "feedback_adjustment": 0.0,
+            "style_graph_bonus": 1.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": 0.0
+          }
+        },
+        {
+          "top": {
+            "id": "2",
+            "name": "White Tshirt",
+            "type": "tshirt",
+            "color": "white",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "3",
+            "name": "Black Trousers",
+            "type": "trousers",
+            "color": "black",
+            "fabric": "wool",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "5",
+            "name": "Sneakers",
+            "type": "shoes",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "office",
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "2|3|5",
+          "score": 3.0,
+          "score_breakdown": {
+            "weather_match": 6.0,
+            "occasion_match": 4.0,
+            "style_dna_match": 0.0,
+            "feedback_adjustment": 0.0,
+            "style_graph_bonus": 1.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": -8.0
+          }
+        }
+      ],
+      "liked_outfits": [],
+      "disliked_outfits": []
+    },
+    "u1": {
+      "recent_outfits": [
+        {
+          "top": {
+            "id": "1",
+            "name": "Blue Shirt",
+            "type": "shirt",
+            "color": "blue",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "3",
+            "name": "Black Trousers",
+            "type": "trousers",
+            "color": "black",
+            "fabric": "wool",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "5",
+            "name": "Sneakers",
+            "type": "shoes",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "office",
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "1|3|5",
+          "score": 17.0,
+          "score_breakdown": {
+            "weather_match": 7.5,
+            "occasion_match": 8.0,
+            "style_dna_match": 0.5,
+            "feedback_adjustment": 0.0,
+            "style_graph_bonus": 1.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": 0.0
+          }
+        },
+        {
+          "top": {
+            "id": "2",
+            "name": "White Tshirt",
+            "type": "tshirt",
+            "color": "white",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "4",
+            "name": "Blue Jeans",
+            "type": "jeans",
+            "color": "blue",
+            "fabric": "denim",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "5",
+            "name": "Sneakers",
+            "type": "shoes",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "office",
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "2|4|5",
+          "score": 11.5,
+          "score_breakdown": {
+            "weather_match": 7.5,
+            "occasion_match": 3.0,
+            "style_dna_match": 0.0,
+            "feedback_adjustment": 0.0,
+            "style_graph_bonus": 1.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": 0.0
+          }
+        },
+        {
+          "top": {
+            "id": "2",
+            "name": "White Tshirt",
+            "type": "tshirt",
+            "color": "white",
+            "fabric": "cotton",
+            "occasion_tags": [
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "bottom": {
+            "id": "3",
+            "name": "Black Trousers",
+            "type": "trousers",
+            "color": "black",
+            "fabric": "wool",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "shoes": {
+            "id": "5",
+            "name": "Sneakers",
+            "type": "shoes",
+            "color": "white",
+            "fabric": "leather",
+            "occasion_tags": [
+              "office",
+              "casual"
+            ],
+            "weather_tags": [
+              "warm"
+            ]
+          },
+          "combo_id": "2|3|5",
+          "score": 7.0,
+          "score_breakdown": {
+            "weather_match": 7.5,
+            "occasion_match": 6.0,
+            "style_dna_match": 0.5,
+            "feedback_adjustment": 0.0,
+            "style_graph_bonus": 1.0,
+            "repetition_penalty": -0.0,
+            "compatibility_penalty": -8.0
+          }
+        }
+      ],
+      "liked_outfits": [],
+      "disliked_outfits": []
+    },
+    "demo_user": {
+      "recent_outfits": [
+        {
+          "top": {
+            "id": "t1",
+            "name": "White Shirt",
+            "type": "shirt",
+            "color": "white",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "bottom": {
+            "id": "b1",
+            "name": "Navy Trousers",
+            "type": "trousers",
+            "color": "navy",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "shoes": {
+            "id": "s1",
+            "name": "Black Loafers",
+            "type": "shoes",
+            "color": "black",
+            "fabric": "",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "outerwear": {
+            "id": "o1",
+            "name": "Gray Blazer",
+            "type": "blazer",
+            "color": "gray",
+            "fabric": "",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "combo_id": "t1|b1|s1|o1",
+          "score": 6.1,
+          "ml_features": {
+            "occasion_rules": 4.0,
+            "color_intelligence": 0.8,
+            "layering": -0.4,
+            "style_graph": 1.5,
+            "memory": 0.2,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "score_breakdown": {
+            "occasion_rules": 4.0,
+            "color_intelligence": 0.8,
+            "layering": -0.4,
+            "style_graph": 1.5,
+            "memory": 0.2,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "ml_score": 0.9943,
+          "rank_score": 105.535
+        },
+        {
+          "top": {
+            "id": "t1",
+            "name": "White Shirt",
+            "type": "shirt",
+            "color": "white",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "bottom": {
+            "id": "b1",
+            "name": "Navy Trousers",
+            "type": "trousers",
+            "color": "navy",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "shoes": {
+            "id": "s1",
+            "name": "Black Loafers",
+            "type": "shoes",
+            "color": "black",
+            "fabric": "",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "outerwear": {},
+          "combo_id": "t1|b1|s1",
+          "score": 5.8,
+          "ml_features": {
+            "occasion_rules": 3.0,
+            "color_intelligence": 0.8,
+            "layering": 0.3,
+            "style_graph": 1.5,
+            "memory": 0.2,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "score_breakdown": {
+            "occasion_rules": 3.0,
+            "color_intelligence": 0.8,
+            "layering": 0.3,
+            "style_graph": 1.5,
+            "memory": 0.2,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "ml_score": 0.9915,
+          "rank_score": 104.951
+        },
+        {
+          "top": {
+            "id": "t1",
+            "name": "White Shirt",
+            "type": "shirt",
+            "color": "white",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "bottom": {
+            "id": "b1",
+            "name": "Navy Trousers",
+            "type": "trousers",
+            "color": "navy",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "shoes": {
+            "id": "s1",
+            "name": "Black Loafers",
+            "type": "shoes",
+            "color": "black",
+            "fabric": "",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "outerwear": {
+            "id": "o1",
+            "name": "Gray Blazer",
+            "type": "blazer",
+            "color": "gray",
+            "fabric": "",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "combo_id": "t1|b1|s1|o1",
+          "score": 7.9,
+          "ml_features": {
+            "occasion_rules": 4.0,
+            "color_intelligence": 0.8,
+            "layering": -0.4,
+            "style_graph": 1.5,
+            "memory": 2.0,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "score_breakdown": {
+            "occasion_rules": 4.0,
+            "color_intelligence": 0.8,
+            "layering": -0.4,
+            "style_graph": 1.5,
+            "memory": 2.0,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "ml_score": 0.9987,
+          "rank_score": 107.765
+        },
+        {
+          "top": {
+            "id": "t1",
+            "name": "White Shirt",
+            "type": "shirt",
+            "color": "white",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "bottom": {
+            "id": "b1",
+            "name": "Navy Trousers",
+            "type": "trousers",
+            "color": "navy",
+            "fabric": "cotton",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "shoes": {
+            "id": "s1",
+            "name": "Black Loafers",
+            "type": "shoes",
+            "color": "black",
+            "fabric": "",
+            "style": "",
+            "occasion_tags": [
+              "office"
+            ],
+            "weather_tags": [],
+            "layerable": false
+          },
+          "outerwear": {},
+          "combo_id": "t1|b1|s1",
+          "score": 7.6,
+          "ml_features": {
+            "occasion_rules": 3.0,
+            "color_intelligence": 0.8,
+            "layering": 0.3,
+            "style_graph": 1.5,
+            "memory": 2.0,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "score_breakdown": {
+            "occasion_rules": 3.0,
+            "color_intelligence": 0.8,
+            "layering": 0.3,
+            "style_graph": 1.5,
+            "memory": 2.0,
+            "feedback": 0.0,
+            "semantic_relevance": 0.0
+          },
+          "ml_score": 0.998,
+          "rank_score": 107.397
+        }
+      ],
+      "liked_outfits": [],
+      "disliked_outfits": []
+    }
+  }
+}

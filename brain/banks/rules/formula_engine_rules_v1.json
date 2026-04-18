@@ -1,0 +1,88 @@
+{
+  "formula_engine_rules_v1": {
+    "version": "1.0",
+    "description": "Generates reusable outfit formulas (not full outfits) that feel personal, confidence-boosting, and easy to execute. Works with or without wardrobe access.",
+    "triggers": {
+      "activate_when_any_of": [
+        "signals.user_requests_formula == true",
+        "signals.user_requests_outfit_formulas == true",
+        "user_prompt contains any of: 'formula', 'uniform', 'go-to looks', 'outfit templates', 'repeatable outfits', 'what should I wear often'"
+      ],
+      "default_formulas_count": 3,
+      "max_formulas_count": 5
+    },
+    "global_constraints": {
+      "max_sentences_per_formula": 2,
+      "max_questions_after_output": 2,
+      "avoid": [
+        "strict rules",
+        "body shaming",
+        "hard labels ('you are X style')",
+        "overly trend-driven instructions",
+        "multiple upgrades per formula unless asked"
+      ]
+    },
+    "formula_mix_policy": {
+      "default_mix": "2_safe_1_bold_if_allowed",
+      "bold_allowed_when": [
+        "signals.user_requests_bold == true",
+        "signals.user_requests_experiment == true"
+      ],
+      "if_bold_not_allowed": "all_safe"
+    },
+    "inputs": {
+      "profile_fields_used": ["gender", "dob", "preferred_language", "country"],
+      "optional_context": [
+        "signals.occasion_key",
+        "signals.user_constraint_comfort",
+        "signals.user_constraint_no_heels",
+        "signals.user_style_keywords",
+        "signals.weather_or_season"
+      ],
+      "wardrobe_access": {
+        "if_available": "use top categories that exist in wardrobe inventory",
+        "if_not_available": "use generic category formulas and ask for 2 anchor items after output"
+      }
+    },
+    "routing": {
+      "choose_formula_pack_when": [
+        {
+          "when": "signals.user_mentions_occasion == true",
+          "use_pack": "occasion_formulas"
+        },
+        {
+          "when": "signals.user_constraint_comfort == true OR signals.user_constraint_no_heels == true",
+          "use_pack": "comfort_formulas"
+        },
+        {
+          "when": "signals.user_requests_minimal == true OR signals.user_requests_subtle == true",
+          "use_pack": "minimal_formulas"
+        },
+        {
+          "when": "profile.gender == male",
+          "use_pack": "menswear_formulas"
+        }
+      ],
+      "fallback_pack": "general_formulas"
+    },
+    "output_structure": {
+      "layer": "layer_2_expandable_depth",
+      "template": "Formula mode: Reaction -> 3 formulas -> 1 optional micro-upgrade -> closer question",
+      "formatting": {
+        "numbered_list": true,
+        "labels": ["Safe", "Safe", "Bold"],
+        "keep_skimmable": true
+      }
+    },
+    "polish_rules": {
+      "default_include_polish": true,
+      "max_polish_fragments": 1,
+      "when_user_says_make_it_expensive": "attach 1 polish_intentionality refinement suggestion after formulas"
+    },
+    "dev_notes": [
+      "Formulas are reusable 'templates' like: 'fitted top + wide leg + clean sneaker + structured bag'.",
+      "If occasion is present, keep formulas aligned to occasion without sounding strict.",
+      "If user is vulnerable, suppress bold formulas and keep tone soothing and simple."
+    ]
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "version": "1.2",
+  "currency": "INR",
+
+  "tier_keys": ["budget", "mid", "premium", "ultra"],
+
+  "venue_types": ["home", "banquet", "luxury_venue", "farmhouse", "resort_destination"],
+
+  "tiers": [
+    {
+      "key": "budget",
+      "label": "Budget",
+      "per_guest_ranges": {
+        "home": { "min": 350, "max": 900 },
+        "banquet": { "min": 700, "max": 1400 },
+        "luxury_venue": { "min": 1200, "max": 2200 },
+        "farmhouse": { "min": 900, "max": 1800 },
+        "resort_destination": { "min": 1800, "max": 3200 }
+      },
+      "what_changes": [
+        "Simpler decor (DIY, lights, balloons, basic florals)",
+        "Limited menu variety (2 starters, 2 mains, 1 dessert)",
+        "No live counters; buffet only",
+        "Basic photography (friend/one shooter)"
+      ],
+      "capabilities": {
+        "decor_level": "simple",
+        "floral_density": "low",
+        "menu_complexity": "low",
+        "live_counters": { "min": 0, "max": 0 },
+        "bar": "none_or_soft_drinks",
+        "photo_video": "basic",
+        "entertainment": "playlist_or_basic_dj",
+        "guest_experience": "standard"
+      },
+      "upgrades": [
+        "One signature photo corner",
+        "One live counter (chaat OR dosa OR pasta)",
+        "Better lighting (warm fairy + spots)"
+      ]
+    },
+    {
+      "key": "mid",
+      "label": "Mid",
+      "per_guest_ranges": {
+        "home": { "min": 900, "max": 1800 },
+        "banquet": { "min": 1400, "max": 2600 },
+        "luxury_venue": { "min": 2200, "max": 3800 },
+        "farmhouse": { "min": 2000, "max": 3800 },
+        "resort_destination": { "min": 3200, "max": 5500 }
+      },
+      "what_changes": [
+        "Better florals + defined stage/backdrop",
+        "Menu variety (3 starters, 3 mains, 2 desserts)",
+        "1–2 live counters",
+        "Professional photo + short reels coverage"
+      ],
+      "capabilities": {
+        "decor_level": "structured",
+        "floral_density": "medium",
+        "menu_complexity": "medium",
+        "live_counters": { "min": 1, "max": 2 },
+        "bar": "mocktail_station",
+        "photo_video": "professional_photo_plus_reels",
+        "entertainment": "dj_basic_fx_optional",
+        "guest_experience": "elevated"
+      },
+      "upgrades": [
+        "Custom signage set",
+        "Welcome drink station",
+        "Return gifts (mid-tier)"
+      ]
+    },
+    {
+      "key": "premium",
+      "label": "Premium",
+      "per_guest_ranges": {
+        "home": { "min": 1800, "max": 3200 },
+        "banquet": { "min": 2600, "max": 4800 },
+        "luxury_venue": { "min": 3800, "max": 6500 },
+        "farmhouse": { "min": 4200, "max": 7500 },
+        "resort_destination": { "min": 6500, "max": 11000 }
+      },
+      "what_changes": [
+        "Designer decor + layered florals",
+        "Menu variety (4 starters, 4 mains, 3 desserts)",
+        "2–3 live counters + mocktail bar",
+        "Pro photo + video + highlight edit"
+      ],
+      "capabilities": {
+        "decor_level": "designer",
+        "floral_density": "high",
+        "menu_complexity": "high",
+        "live_counters": { "min": 2, "max": 3 },
+        "bar": "mocktail_bar_or_limited_alcohol_optional",
+        "photo_video": "photo_video_highlight_edit",
+        "entertainment": "dj_plus_performance_optional",
+        "guest_experience": "premium"
+      },
+      "upgrades": [
+        "Performance (dhol/sufi/live band)",
+        "Personalized hampers",
+        "Better seating + lounge zones"
+      ]
+    },
+    {
+      "key": "ultra",
+      "label": "Ultra Luxury",
+      "per_guest_ranges": {
+        "home": { "min": 3200, "max": 7000 },
+        "banquet": { "min": 4800, "max": 10000 },
+        "luxury_venue": { "min": 6500, "max": 18000 },
+        "farmhouse": { "min": 9000, "max": 22000 },
+        "resort_destination": { "min": 12000, "max": 35000 }
+      },
+      "what_changes": [
+        "Celebrity/designer decor + large installs",
+        "Chef-curated menu + multiple cuisines",
+        "4+ live counters + premium bar (optional)",
+        "Full-scale production: lights/sound/stage"
+      ],
+      "capabilities": {
+        "decor_level": "celebrity_designer",
+        "floral_density": "very_high",
+        "menu_complexity": "chef_curated_multi_cuisine",
+        "live_counters": { "min": 4, "max": 8 },
+        "bar": "premium_bar_optional",
+        "photo_video": "cinematic_crew_teasers_sameday_edit_optional",
+        "entertainment": "headline_performance_optional",
+        "guest_experience": "ultra_luxury"
+      },
+      "upgrades": [
+        "Butler service",
+        "Luxury gift hampers",
+        "Destination experiences"
+      ]
+    }
+  ],
+
+  "budget_builders": [
+    {
+      "key": "estimate_total_simple",
+      "inputs": ["guest_count", "tier_key", "venue_type"],
+      "formula": "guest_count * avg(per_guest_ranges[venue_type])"
+    },
+    {
+      "key": "estimate_total_with_multipliers",
+      "inputs": [
+        "guest_count",
+        "tier_key",
+        "venue_type",
+        "city_tier",
+        "season",
+        "day_part",
+        "guest_count_band",
+        "event_type",
+        "event_function"
+      ],
+      "formula": "estimate_total_simple * city_multiplier[city_tier] * season_multiplier[season] * day_part_multiplier[day_part] * guest_count_band_multiplier[guest_count_band] * event_type_multiplier[event_type] * function_multiplier[event_function]"
+    }
+  ],
+
+  "cost_buckets": {
+    "default_percent_split": [
+      { "key": "venue_food", "label": "Venue + Food", "min_pct": 45, "max_pct": 65 },
+      { "key": "decor_florals", "label": "Decor + Florals", "min_pct": 10, "max_pct": 25 },
+      { "key": "photo_video", "label": "Photo + Video", "min_pct": 6, "max_pct": 12 },
+      { "key": "makeup_styling", "label": "Makeup + Styling", "min_pct": 3, "max_pct": 8 },
+      { "key": "entertainment", "label": "DJ/Entertainment", "min_pct": 2, "max_pct": 10 },
+      { "key": "logistics", "label": "Logistics + Transport", "min_pct": 2, "max_pct": 8 },
+      { "key": "invites_stationery", "label": "Invites + Stationery", "min_pct": 1, "max_pct": 4 },
+      { "key": "return_gifts", "label": "Return Gifts", "min_pct": 2, "max_pct": 10 },
+      { "key": "misc_buffer", "label": "Buffer/Misc", "min_pct": 3, "max_pct": 8 }
+    ],
+    "tier_overrides_pct": {
+      "budget": {
+        "decor_florals": { "min_pct": 6, "max_pct": 14 },
+        "photo_video": { "min_pct": 2, "max_pct": 6 },
+        "misc_buffer": { "min_pct": 4, "max_pct": 10 }
+      },
+      "mid": {
+        "decor_florals": { "min_pct": 10, "max_pct": 20 },
+        "photo_video": { "min_pct": 5, "max_pct": 10 }
+      },
+      "premium": {
+        "decor_florals": { "min_pct": 14, "max_pct": 28 },
+        "photo_video": { "min_pct": 7, "max_pct": 14 },
+        "entertainment": { "min_pct": 4, "max_pct": 12 }
+      },
+      "ultra": {
+        "decor_florals": { "min_pct": 18, "max_pct": 35 },
+        "photo_video": { "min_pct": 8, "max_pct": 18 },
+        "entertainment": { "min_pct": 5, "max_pct": 18 },
+        "logistics": { "min_pct": 4, "max_pct": 12 }
+      }
+    }
+  },
+
+  "multipliers": {
+    "city_multiplier": {
+      "tier_1_metro": 1.2,
+      "tier_2_city": 1.0,
+      "tier_3_town": 0.85,
+      "destination_hotspot": 1.35
+    },
+    "season_multiplier": {
+      "off_season": 0.9,
+      "regular": 1.0,
+      "peak_wedding": 1.2,
+      "festival_peak": 1.25
+    },
+    "day_part_multiplier": {
+      "breakfast": 0.75,
+      "lunch": 0.9,
+      "evening": 1.0,
+      "night": 1.1
+    },
+    "guest_count_band_multiplier": {
+      "0_30": 1.15,
+      "31_80": 1.05,
+      "81_200": 1.0,
+      "201_500": 0.95,
+      "500_plus": 0.9
+    }
+  },
+
+  "event_type_multiplier": {
+    "birthday_party": 0.55,
+    "anniversary": 0.7,
+    "baby_shower": 0.65,
+    "housewarming": 0.6,
+    "festival_party": 0.7,
+    "corporate_dinner": 0.9,
+    "wedding": 1.0
+  },
+
+  "rules": {
+    "wedding_functions_multiplier": {
+      "mehendi": 0.65,
+      "haldi": 0.55,
+      "sangeet": 0.85,
+      "cocktail": 0.9,
+      "wedding_day": 1.0,
+      "reception": 0.95,
+      "rehearsal_dinner": 0.75,
+      "pasupu": 0.6,
+      "pellikuturu": 0.6,
+      "pellikoduku": 0.6,
+      "nikah": 0.9,
+      "walima": 1.0,
+      "anand_karaj": 0.85,
+      "church_wedding": 0.85
+    },
+
+    "menu_counts_by_tier": {
+      "budget": { "starters": 2, "mains": 2, "desserts": 1, "live_counters": 0 },
+      "mid": { "starters": 3, "mains": 3, "desserts": 2, "live_counters": 1 },
+      "premium": { "starters": 4, "mains": 4, "desserts": 3, "live_counters": 2 },
+      "ultra": { "starters": 6, "mains": 7, "desserts": 5, "live_counters": 4 }
+    },
+
+    "venue_fixed_cost_adders": {
+      "home": { "min": 0, "max": 25000 },
+      "banquet": { "min": 50000, "max": 200000 },
+      "luxury_venue": { "min": 200000, "max": 1200000 },
+      "farmhouse": { "min": 120000, "max": 600000 },
+      "resort_destination": { "min": 300000, "max": 2500000 }
+    },
+
+    "contingency": {
+      "recommended_pct": {
+        "budget": 0.08,
+        "mid": 0.08,
+        "premium": 0.1,
+        "ultra": 0.12
+      }
+    }
+  },
+
+  "luxury_micro_upgrades": [
+    {
+      "key": "signature_entrance_install",
+      "label": "Signature entrance floral install",
+      "tier_min": "mid",
+      "estimated_cost_range": { "min": 60000, "max": 350000 }
+    },
+    {
+      "key": "dessert_studio",
+      "label": "Dessert studio (live plating + display)",
+      "tier_min": "premium",
+      "estimated_cost_range": { "min": 90000, "max": 500000 }
+    },
+    {
+      "key": "mocktail_bar",
+      "label": "Mocktail bar with bartender",
+      "tier_min": "mid",
+      "estimated_cost_range": { "min": 25000, "max": 180000 }
+    },
+    {
+      "key": "premium_sound_lights",
+      "label": "Production-grade sound + lights",
+      "tier_min": "premium",
+      "estimated_cost_range": { "min": 150000, "max": 1200000 }
+    },
+    {
+      "key": "butler_service",
+      "label": "Butler service (select zones)",
+      "tier_min": "ultra",
+      "estimated_cost_range": { "min": 100000, "max": 600000 }
+    }
+  ],
+
+  "ui_output_presets": {
+    "budget_snapshot": ["tier", "per_guest_estimate", "venue_fixed_cost", "total_estimate", "top_drivers"],
+    "breakdown": ["cost_buckets", "contingency", "micro_upgrades"],
+    "upgrade_path": ["what_changes", "upgrades", "luxury_micro_upgrades"]
+  }
+}

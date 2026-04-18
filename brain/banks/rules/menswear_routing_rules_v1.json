@@ -1,0 +1,227 @@
+{
+  "styling_response_test_set_v1": {
+    "version": "1.1",
+    "description": "Test prompts + expected assembly constraints for AHVI styling + options-mode + shopping decision. Validates tone safety, routing correctness, and stacking limits.",
+    "global_assertions": [
+      "Layer 1 must be short and human: reaction + 1 intelligence + optional 1 overlay + 1 closer.",
+      "No response should contain rude, blaming, or psychoanalyzing language.",
+      "No ALL CAPS mirroring. No chaotic punctuation mirroring.",
+      "Vulnerable emotion suppresses slang/humor/sass and suppresses critique.",
+      "Rating mode is exclusive and must not attach unrelated overlays or memory.",
+      "If user expresses confidence, do not add critique or upgrades unless user asks to tweak.",
+      "Options-mode: max 3 options; each option max 2 sentences; default mix 2 safe + 1 bold only if user requests bold."
+    ],
+    "tests": [
+      {
+        "id": "T001",
+        "context_mode": "styling",
+        "user_prompt": "Does this look good?",
+        "signals": {
+          "asked_for_opinion": true,
+          "expressed_confidence": false,
+          "expressed_dissatisfaction": false
+        },
+        "expected": {
+          "layer": "layer_1_default",
+          "must_include_components": ["reaction_starter", "intelligence_fragment", "invitation_closer"],
+          "allowed_overlays": ["polish_intentionality_overlay"],
+          "must_not_include": ["upgrade_suggestion", "constructive_*"]
+        }
+      },
+      {
+        "id": "T002",
+        "context_mode": "styling",
+        "user_prompt": "This outfit is perfect.",
+        "signals": {
+          "expressed_confidence": true
+        },
+        "expected": {
+          "layer": "layer_1_default",
+          "must_include_components": ["reaction_starter", "intelligence_fragment (positive_*)", "invitation_closer"],
+          "must_not_include": ["constructive_*", "upgrade_suggestion"]
+        }
+      },
+      {
+        "id": "T003",
+        "context_mode": "styling",
+        "user_prompt": "Be honest. Does this look good?",
+        "signals": {
+          "asked_for_opinion": true,
+          "asked_be_honest": true
+        },
+        "expected": {
+          "layer": "layer_1_default",
+          "must_include_components": ["reaction_starter", "intelligence_fragment", "invitation_closer"],
+          "allowed_components": ["optional constructive_* but softened"],
+          "constraints": ["max 1 constructive fragment"],
+          "must_not_include": ["rude_tone", "sarcasm", "multiple_critiques"]
+        }
+      },
+      {
+        "id": "T004",
+        "context_mode": "styling",
+        "user_prompt": "Rate this out of 10.",
+        "signals": {
+          "asked_for_rating": true
+        },
+        "expected": {
+          "layer": "rating_mode_exclusive",
+          "must_include_components": ["rating_mode.template"],
+          "allowed_components": ["optional invitation_closer"],
+          "must_not_include": [
+            "intelligence_fragment",
+            "occasion_overlay",
+            "memory_reference_overlay",
+            "upgrade_suggestion"
+          ]
+        }
+      },
+      {
+        "id": "T006",
+        "context_mode": "styling",
+        "user_prompt": "I have nothing to wear.",
+        "signals": {
+          "expressed_dissatisfaction": true,
+          "asked_for_options": true
+        },
+        "expected": {
+          "layer": "layer_1_default OR layer_2_expandable_depth",
+          "must_include_components": ["reaction_starter (reassuring_support)", "invitation_closer (ask_context or offer_options)"],
+          "allowed_overlays": ["memory_reference_overlay"],
+          "must_not_include": ["teasing", "blame"]
+        }
+      },
+
+      {
+        "id": "T051",
+        "context_mode": "styling",
+        "user_prompt": "Give me 3 outfit options for brunch.",
+        "signals": {
+          "asked_for_options": true,
+          "user_mentions_occasion": true,
+          "occasion_key": "brunch_day_out"
+        },
+        "expected": {
+          "layer": "layer_2_expandable_depth",
+          "must_include_components": [
+            "options_formatting_engine.template",
+            "occasion_overlay (brunch_day_out)",
+            "invitation_closer"
+          ],
+          "constraints": ["max 3 options", "2 safe + 1 bold only if user_requests_bold == true", "each option <= 2 sentences"]
+        }
+      },
+      {
+        "id": "T052",
+        "context_mode": "styling",
+        "user_prompt": "Give me options but keep it minimal.",
+        "signals": {
+          "asked_for_options": true,
+          "user_requests_subtle": true
+        },
+        "expected": {
+          "layer": "layer_2_expandable_depth",
+          "must_include_components": ["options_formatting_engine.template (minimal_requested)"],
+          "constraints": ["max 2 options", "no bold option", "each option <= 2 sentences"]
+        }
+      },
+      {
+        "id": "T053",
+        "context_mode": "styling",
+        "user_prompt": "I’m running late. Give me one option fast.",
+        "signals": {
+          "asked_for_options": true,
+          "asked_for_efficiency": true
+        },
+        "expected": {
+          "layer": "layer_1_default OR layer_2_expandable_depth",
+          "must_include_components": ["options_formatting_engine.template (time_pressure)"],
+          "constraints": ["exactly 1 option", "very short", "no extra overlays unless occasion explicitly mentioned"]
+        }
+      },
+      {
+        "id": "T054",
+        "context_mode": "shopping",
+        "user_prompt": "Should I buy this blazer?",
+        "signals": {
+          "asked_for_opinion": true,
+          "context_mode": "shopping"
+        },
+        "expected": {
+          "layer": "shopping_mode",
+          "must_include_components": [
+            "shopping_decision_engine.flow.step_2_context_questions_max_2 OR wardrobe_first_rule",
+            "invitation_closer (ask_context)"
+          ],
+          "constraints": ["ask max 2 questions", "no shaming", "wardrobe-first offer if wardrobe access exists"]
+        }
+      },
+      {
+        "id": "T055",
+        "context_mode": "shopping",
+        "user_prompt": "Should I buy this? I already have similar stuff.",
+        "signals": {
+          "context_mode": "shopping",
+          "asked_for_opinion": true
+        },
+        "expected": {
+          "layer": "shopping_mode",
+          "must_include_components": ["quick_verdict", "2 reasons", "next_step_question"],
+          "allowed_components": ["ask 1 follow-up question if needed"],
+          "must_not_include": ["rude_banter", "insults"]
+        }
+      },
+      {
+        "id": "T056",
+        "context_mode": "shopping",
+        "user_prompt": "Find me something similar but cheaper.",
+        "signals": {
+          "context_mode": "shopping"
+        },
+        "expected": {
+          "layer": "shopping_mode",
+          "must_include_components": ["shopping_decision_engine.flow.step_1_intent (find_similar)", "ask_budget_or_constraints"],
+          "constraints": ["ask max 2 questions", "offer shortlist logic", "no brand bias tone"]
+        }
+      },
+      {
+        "id": "T057",
+        "context_mode": "styling",
+        "user_prompt": "I feel ugly in everything.",
+        "signals": {
+          "emotion_state": "vulnerable",
+          "expressed_dissatisfaction": true
+        },
+        "expected": {
+          "layer": "layer_1_default",
+          "must_include_components": ["reaction_starter (reassuring_support)", "invitation_closer (gentle_check_in)"],
+          "must_not_include": ["slang", "humor", "critique", "rating_mode", "upgrade_suggestion"]
+        }
+      },
+      {
+        "id": "T058",
+        "context_mode": "styling",
+        "user_prompt": "I need an interview outfit. I’m a guy.",
+        "signals": {
+          "user_mentions_occasion": true,
+          "occasion_key": "interview",
+          "missing_context_details": true
+        },
+        "expected": {
+          "layer": "layer_1_default OR layer_2_expandable_depth",
+          "must_include_components": [
+            "occasion_overlay (interview)",
+            "menswear_overlay (formal_refinement OR structure_focus)",
+            "invitation_closer (ask_context)"
+          ],
+          "constraints": ["max 1 overlay + 1 menswear overlay", "ask max 2 questions"]
+        }
+      }
+    ],
+    "notes_for_devs": [
+      "T051–T053 validate options-mode rendering and template selection rules.",
+      "T054–T056 validate shopping decision flow with wardrobe-first logic.",
+      "T058 validates menswear overlay routing when profile.gender == male."
+    ]
+  }
+}

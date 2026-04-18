@@ -1,0 +1,952 @@
+{
+  "outfit_formula_engine_v1": {
+    "version": "1.0",
+    "description": "Reusable outfit formulas for AHVI styling options. Gender_identity influences defaults but never restricts. Use wardrobe inventory + constraints first, then formulas.",
+    "selection_policy": {
+      "priority_order": [
+        "wardrobe_inventory",
+        "explicit_user_constraints",
+        "occasion_context",
+        "weather_context",
+        "personal_style_memory",
+        "gender_defaults",
+        "cohort_tone"
+      ],
+      "defaults": {
+        "options_count": 3,
+        "max_options": 3,
+        "option_balance_rule": "2_safe_1_bolder_if_allowed",
+        "bolder_option_allowed_if": [
+          "user_requests_bold",
+          "user_style_profile_allows_bold"
+        ]
+      },
+      "constraints_supported": [
+        "no_heels",
+        "comfortable",
+        "modest",
+        "hot_weather",
+        "rainy_weather",
+        "budget_cap",
+        "only_from_wardrobe",
+        "no_tight_clothes",
+        "no_short_hems",
+        "all_black",
+        "minimal",
+        "bold",
+        "no_jewelry"
+      ],
+      "ban_rules": [
+        "Never recommend body-shaming or appearance-negating language.",
+        "Never block items solely based on gender_identity."
+      ]
+    },
+
+    "style_axes": {
+      "energy": ["minimal", "classic", "romantic", "street", "bold", "sporty", "elevated"],
+      "formality": ["very_casual", "casual", "smart_casual", "semi_formal", "formal"],
+      "silhouette": ["relaxed", "balanced", "structured", "fluid"],
+      "color_story": ["neutral", "monochrome", "soft_tones", "high_contrast", "jewel_tones", "earthy"]
+    },
+
+    "formula_sets": {
+      "neutral_core": [
+        {
+          "id": "N001",
+          "name": "Clean Base + One Sharp Layer",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["tee", "knit_top", "shirt"],
+            "bottom": ["straight_jeans", "tailored_trouser", "wide_leg_trouser"],
+            "layer": ["structured_blazer", "overshirt", "light_jacket"],
+            "shoes": ["clean_sneaker", "loafer", "ankle_boot"],
+            "accessories": ["simple_watch_or_chain", "minimal_bag"]
+          },
+          "rules": [
+            "Keep base pieces simple and clean.",
+            "Let the layer do the styling work."
+          ],
+          "swap_suggestions": [
+            "Swap sneaker → loafer to elevate fast.",
+            "Swap tee → knit for a richer finish."
+          ]
+        },
+        {
+          "id": "N002",
+          "name": "Monochrome Column",
+          "energy": "classic",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "monochrome",
+          "pieces": {
+            "top": ["tee", "shirt", "knit_top"],
+            "bottom": ["straight_trouser", "wide_leg_trouser", "dark_jeans"],
+            "layer": ["optional_longline_layer", "optional_blazer"],
+            "shoes": ["clean_sneaker", "loafer"],
+            "accessories": ["minimal_belt", "simple_bag"]
+          },
+          "rules": [
+            "Keep top + bottom in the same color family.",
+            "Add texture contrast instead of color contrast."
+          ],
+          "swap_suggestions": [
+            "Add a belt to define the waistline visually.",
+            "Add a single metal accent (watch/chain) for polish."
+          ]
+        },
+        {
+          "id": "N003",
+          "name": "Relaxed Top + Structured Bottom",
+          "energy": "street",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["oversized_tee", "relaxed_shirt", "relaxed_knit"],
+            "bottom": ["tailored_trouser", "straight_jeans"],
+            "shoes": ["chunky_sneaker", "clean_sneaker"],
+            "accessories": ["cap_optional", "crossbody_bag"]
+          },
+          "rules": [
+            "One relaxed piece only; balance it with structure elsewhere."
+          ],
+          "swap_suggestions": [
+            "Tuck a little in front to sharpen proportions.",
+            "Swap chunky sneaker → clean sneaker to look more premium."
+          ]
+        },
+        {
+          "id": "N004",
+          "name": "Structured Top + Relaxed Bottom",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["structured_shirt", "fitted_knit", "corset_style_top_optional"],
+            "bottom": ["wide_leg_trouser", "relaxed_jeans"],
+            "shoes": ["loafer", "clean_sneaker", "ankle_boot"],
+            "accessories": ["minimal_jewelry_optional", "structured_bag_optional"]
+          },
+          "rules": [
+            "Keep the top crisp; let the bottom move."
+          ],
+          "swap_suggestions": [
+            "Add a structured bag to intensify the polish.",
+            "Choose a cleaner hem for a sharper outline."
+          ]
+        },
+        {
+          "id": "N005",
+          "name": "Soft Knit + Straight Denim",
+          "energy": "classic",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "soft_tones",
+          "pieces": {
+            "top": ["soft_knit", "crewneck_sweater", "cardigan"],
+            "bottom": ["straight_jeans", "dark_jeans"],
+            "shoes": ["clean_sneaker", "ankle_boot"],
+            "accessories": ["simple_watch_or_chain", "tote_or_crossbody"]
+          },
+          "rules": [
+            "Use softness in fabric, not extra details."
+          ],
+          "swap_suggestions": [
+            "Dark denim reads more polished than light wash.",
+            "Swap tote → structured bag for a sharper finish."
+          ]
+        },
+        {
+          "id": "N006",
+          "name": "Statement Top + Quiet Base",
+          "energy": "bold",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "high_contrast",
+          "pieces": {
+            "top": ["printed_shirt", "statement_top", "color_pop_top"],
+            "bottom": ["black_trouser", "dark_jeans", "neutral_trouser"],
+            "shoes": ["clean_sneaker", "loafer"],
+            "accessories": ["minimal_accessories_only"]
+          },
+          "rules": [
+            "Only one hero piece; everything else supports it."
+          ],
+          "swap_suggestions": [
+            "Reduce accessories if the top is loud.",
+            "Pick a shoe that matches the base color."
+          ]
+        },
+        {
+          "id": "N007",
+          "name": "Sporty Clean Set",
+          "energy": "sporty",
+          "formality": "very_casual",
+          "silhouette": "relaxed",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["hoodie", "crew_sweatshirt", "athleisure_top"],
+            "bottom": ["jogger", "straight_jean_optional"],
+            "shoes": ["sneaker"],
+            "accessories": ["cap_optional", "crossbody_optional"]
+          },
+          "rules": [
+            "Keep it clean: fresh sneakers + tidy fit."
+          ],
+          "swap_suggestions": [
+            "Swap joggers → straight jeans to instantly look more put together.",
+            "Add a clean outer layer for structure."
+          ]
+        },
+        {
+          "id": "N008",
+          "name": "All-Black Clean Lines",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "monochrome",
+          "pieces": {
+            "top": ["black_tee", "black_shirt", "black_knit"],
+            "bottom": ["black_trouser", "black_jeans"],
+            "layer": ["optional_black_blazer", "optional_black_jacket"],
+            "shoes": ["black_loafer", "black_boot", "clean_black_sneaker"],
+            "accessories": ["single_metal_accent", "minimal_bag"]
+          },
+          "rules": [
+            "Different textures prevent it from looking flat."
+          ],
+          "swap_suggestions": [
+            "Add one metal detail (watch/chain) to finish it.",
+            "Use matte + slight sheen mix for depth."
+          ]
+        },
+        {
+          "id": "N009",
+          "name": "Light Top + Dark Base",
+          "energy": "classic",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "high_contrast",
+          "pieces": {
+            "top": ["white_shirt", "white_tee", "light_knit"],
+            "bottom": ["dark_jeans", "black_trouser"],
+            "shoes": ["clean_sneaker", "loafer"],
+            "accessories": ["belt_optional", "simple_bag"]
+          },
+          "rules": [
+            "Keep the contrast clean, not busy."
+          ],
+          "swap_suggestions": [
+            "Tuck or half-tuck for sharper proportions.",
+            "Swap sneaker → loafer for a more grown look."
+          ]
+        },
+        {
+          "id": "N010",
+          "name": "Texture Contrast (Same Palette)",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "fluid",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["linen_shirt", "ribbed_knit", "satin_like_top_optional"],
+            "bottom": ["tailored_trouser", "straight_jeans"],
+            "shoes": ["loafer", "minimal_sneaker"],
+            "accessories": ["minimal_accessories"]
+          },
+          "rules": [
+            "Use texture to make neutrals look expensive."
+          ],
+          "swap_suggestions": [
+            "Swap cotton tee → textured knit for instant polish.",
+            "Add a structured bag to reinforce the 'intentional' vibe."
+          ]
+        }
+      ],
+
+      "female_leaning": [
+        {
+          "id": "F001",
+          "name": "Fitted Top + High-Waist Straight Bottom",
+          "energy": "classic",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["fitted_top", "bodysuit", "fine_knit"],
+            "bottom": ["high_waist_straight_jean", "tailored_trouser", "midi_skirt"],
+            "shoes": ["clean_sneaker", "loafer", "block_heel_optional"],
+            "accessories": ["small_earrings", "structured_bag_optional"]
+          },
+          "rules": [
+            "High waist creates clean proportions.",
+            "If bottom is skirt, keep top clean and fitted."
+          ],
+          "swap_suggestions": [
+            "Swap sneaker → loafer for sharper polish.",
+            "Add one clean accessory to finish."
+          ]
+        },
+        {
+          "id": "F002",
+          "name": "One-Piece Hero + Clean Add-ons",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "fluid",
+          "color_story": "soft_tones",
+          "pieces": {
+            "one_piece": ["midi_dress", "slip_dress", "wrap_dress"],
+            "layer": ["light_blazer", "denim_jacket", "cardigan"],
+            "shoes": ["sandal", "clean_sneaker", "block_heel_optional"],
+            "accessories": ["one_statement_earring_optional", "small_bag"]
+          },
+          "rules": [
+            "Let the dress be the hero; keep extras minimal."
+          ],
+          "swap_suggestions": [
+            "Add a layer if you want it more polished.",
+            "Swap bag to structured for 'expensive' energy."
+          ]
+        },
+        {
+          "id": "F003",
+          "name": "Relaxed Shirt + Defined Waist",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["relaxed_shirt", "linen_shirt", "oversized_shirt"],
+            "bottom": ["high_waist_trouser", "straight_jean", "midi_skirt"],
+            "waist_detail": ["belt", "front_tuck", "tie_waist_optional"],
+            "shoes": ["loafer", "clean_sneaker", "ankle_boot"],
+            "accessories": ["minimal_jewelry", "structured_bag_optional"]
+          },
+          "rules": [
+            "Waist definition keeps it intentional."
+          ],
+          "swap_suggestions": [
+            "Do a front tuck if you want instant shape.",
+            "Choose a cleaner shoe to elevate quickly."
+          ]
+        },
+        {
+          "id": "F004",
+          "name": "Blazer + Denim + Pointed Finish",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["tee", "fine_knit", "tank_top"],
+            "bottom": ["straight_jean", "dark_jean"],
+            "layer": ["structured_blazer"],
+            "shoes": ["loafer", "ankle_boot", "pointed_flat_optional"],
+            "accessories": ["simple_earrings", "structured_bag"]
+          },
+          "rules": [
+            "Blazer = structure; keep everything else clean."
+          ],
+          "swap_suggestions": [
+            "Dark denim looks more premium.",
+            "Add a small metal detail to finish."
+          ]
+        },
+        {
+          "id": "F005",
+          "name": "Soft Romantic (Clean Version)",
+          "energy": "romantic",
+          "formality": "casual",
+          "silhouette": "fluid",
+          "color_story": "soft_tones",
+          "pieces": {
+            "top": ["soft_blouse", "ribbed_knit", "delicate_top"],
+            "bottom": ["midi_skirt", "straight_jean"],
+            "shoes": ["sandal", "ballet_flat_optional", "clean_sneaker"],
+            "accessories": ["delicate_jewelry", "small_bag"]
+          },
+          "rules": [
+            "Romantic = soft fabric + clean silhouette (not extra fuss)."
+          ],
+          "swap_suggestions": [
+            "Keep jewelry delicate if the top has detail.",
+            "Swap to a cleaner shoe if it feels too sweet."
+          ]
+        },
+        {
+          "id": "F006",
+          "name": "Statement Bottom + Simple Top",
+          "energy": "bold",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "high_contrast",
+          "pieces": {
+            "top": ["simple_tee", "fitted_top", "fine_knit"],
+            "bottom": ["statement_skirt", "colored_trouser", "printed_pant"],
+            "shoes": ["clean_sneaker", "loafer", "heel_optional"],
+            "accessories": ["minimal_accessories_only"]
+          },
+          "rules": [
+            "Bottom is the hero; top stays quiet."
+          ],
+          "swap_suggestions": [
+            "If the bottom is busy, keep accessories minimal.",
+            "Match shoe to the base color for a clean finish."
+          ]
+        },
+        {
+          "id": "F007",
+          "name": "Easy Chic Co-ord",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "monochrome",
+          "pieces": {
+            "set": ["co_ord_set", "matching_top_bottom"],
+            "shoes": ["sandal", "clean_sneaker", "loafer"],
+            "accessories": ["one_clean_accessory", "small_bag"]
+          },
+          "rules": [
+            "Matching set looks expensive when fit is clean."
+          ],
+          "swap_suggestions": [
+            "Add a structured bag to upgrade instantly.",
+            "Keep jewelry minimal and sleek."
+          ]
+        },
+        {
+          "id": "F008",
+          "name": "All-Black Night Clean",
+          "energy": "bold",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "monochrome",
+          "pieces": {
+            "top": ["black_fitted_top", "black_shirt", "black_satin_top_optional"],
+            "bottom": ["black_trouser", "black_skirt", "black_jeans"],
+            "shoes": ["black_boot", "black_loafer", "heel_optional"],
+            "accessories": ["single_statement_earring_optional", "small_bag"]
+          },
+          "rules": [
+            "Use texture contrast to keep it rich."
+          ],
+          "swap_suggestions": [
+            "Add one statement piece only (earrings OR bag).",
+            "Keep hair/makeup optional but clean lines in outfit."
+          ]
+        },
+        {
+          "id": "F009",
+          "name": "Day Dress + Casual Shoe",
+          "energy": "classic",
+          "formality": "casual",
+          "silhouette": "fluid",
+          "color_story": "soft_tones",
+          "pieces": {
+            "one_piece": ["day_dress", "shirt_dress", "midi_dress"],
+            "shoes": ["clean_sneaker", "flat_sandal"],
+            "accessories": ["sunglasses_optional", "tote_or_crossbody"]
+          },
+          "rules": [
+            "Dress + casual shoe = effortless day look."
+          ],
+          "swap_suggestions": [
+            "Add a light layer if you want it more polished.",
+            "Swap tote → structured crossbody for a cleaner finish."
+          ]
+        },
+        {
+          "id": "F010",
+          "name": "Wide-Leg + Cropped/Defined Top",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["cropped_top", "tucked_tee", "fitted_knit"],
+            "bottom": ["wide_leg_trouser", "wide_leg_jean"],
+            "shoes": ["loafer", "clean_sneaker", "block_heel_optional"],
+            "accessories": ["minimal_jewelry", "structured_bag_optional"]
+          },
+          "rules": [
+            "Wide-leg needs waist definition to feel intentional."
+          ],
+          "swap_suggestions": [
+            "Do a tuck if the top isn’t cropped.",
+            "Choose a cleaner shoe for a sharper line."
+          ]
+        }
+      ],
+
+      "male_leaning": [
+        {
+          "id": "M001",
+          "name": "Crisp Shirt + Straight Trouser",
+          "energy": "classic",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["crisp_shirt", "oxford_shirt", "linen_shirt"],
+            "bottom": ["straight_trouser", "chino"],
+            "shoes": ["loafer", "clean_sneaker", "derby_optional"],
+            "accessories": ["watch", "belt_optional"]
+          },
+          "rules": [
+            "Crisp top + clean trouser = instant polish."
+          ],
+          "swap_suggestions": [
+            "Roll sleeves for relaxed polish.",
+            "Swap sneaker → loafer to elevate quickly."
+          ]
+        },
+        {
+          "id": "M002",
+          "name": "Tee + Overshirt + Denim",
+          "energy": "street",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["plain_tee"],
+            "layer": ["overshirt", "light_jacket"],
+            "bottom": ["straight_jeans", "dark_jeans"],
+            "shoes": ["clean_sneaker"],
+            "accessories": ["watch_optional", "crossbody_optional"]
+          },
+          "rules": [
+            "Overshirt adds structure without feeling formal."
+          ],
+          "swap_suggestions": [
+            "Dark denim reads sharper.",
+            "Keep shoes clean for a premium finish."
+          ]
+        },
+        {
+          "id": "M003",
+          "name": "Polo + Tailored Bottom",
+          "energy": "classic",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["polo", "knit_polo"],
+            "bottom": ["tailored_trouser", "chino"],
+            "shoes": ["loafer", "clean_sneaker"],
+            "accessories": ["watch", "belt_optional"]
+          },
+          "rules": [
+            "Polo works best when the bottom is tailored."
+          ],
+          "swap_suggestions": [
+            "Choose a cleaner collar/fit for a sharper look.",
+            "Swap to loafers if you want it more elevated."
+          ]
+        },
+        {
+          "id": "M004",
+          "name": "Blazer + Tee + Trousers",
+          "energy": "elevated",
+          "formality": "semi_formal",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["plain_tee", "fine_knit_optional"],
+            "bottom": ["tailored_trouser"],
+            "layer": ["structured_blazer"],
+            "shoes": ["loafer", "derby_optional"],
+            "accessories": ["watch", "minimal_belt"]
+          },
+          "rules": [
+            "Keep tee clean and fitted enough to not look sloppy under blazer."
+          ],
+          "swap_suggestions": [
+            "Swap tee → fine knit for a richer finish.",
+            "Add a belt if proportions feel loose."
+          ]
+        },
+        {
+          "id": "M005",
+          "name": "All-Black Minimal",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "monochrome",
+          "pieces": {
+            "top": ["black_tee", "black_shirt"],
+            "bottom": ["black_jeans", "black_trouser"],
+            "shoes": ["black_sneaker", "black_loafer", "black_boot_optional"],
+            "accessories": ["watch_optional"]
+          },
+          "rules": [
+            "Mix textures so it doesn’t look flat."
+          ],
+          "swap_suggestions": [
+            "Swap sneakers → loafers for sharper energy.",
+            "Add a clean outer layer if needed."
+          ]
+        },
+        {
+          "id": "M006",
+          "name": "Knit + Chinos",
+          "energy": "classic",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "earthy",
+          "pieces": {
+            "top": ["crewneck_knit", "half_zip_optional"],
+            "bottom": ["chino", "straight_trouser"],
+            "shoes": ["loafer", "clean_sneaker"],
+            "accessories": ["watch", "belt_optional"]
+          },
+          "rules": [
+            "Earth tones feel premium when fit is clean."
+          ],
+          "swap_suggestions": [
+            "Choose a slimmer shoe for a cleaner line.",
+            "Keep knit texture subtle."
+          ]
+        },
+        {
+          "id": "M007",
+          "name": "Athleisure Clean Upgrade",
+          "energy": "sporty",
+          "formality": "very_casual",
+          "silhouette": "relaxed",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["hoodie", "crew_sweatshirt"],
+            "bottom": ["jogger", "straight_jean_optional"],
+            "shoes": ["clean_sneaker"],
+            "accessories": ["cap_optional", "crossbody_optional"]
+          },
+          "rules": [
+            "Athleisure looks good when everything is fresh and clean."
+          ],
+          "swap_suggestions": [
+            "Swap joggers → straight jeans if you want it sharper.",
+            "Add a clean jacket for structure."
+          ]
+        },
+        {
+          "id": "M008",
+          "name": "Light Shirt + Dark Denim",
+          "energy": "classic",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "high_contrast",
+          "pieces": {
+            "top": ["white_shirt", "light_shirt"],
+            "bottom": ["dark_jeans"],
+            "shoes": ["clean_sneaker", "loafer_optional"],
+            "accessories": ["watch_optional", "belt_optional"]
+          },
+          "rules": [
+            "Clean contrast reads sharp without effort."
+          ],
+          "swap_suggestions": [
+            "Roll sleeves for relaxed polish.",
+            "Swap sneaker → loafer if you want it more elevated."
+          ]
+        },
+        {
+          "id": "M009",
+          "name": "Structured Jacket + Simple Base",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["plain_tee", "henley_optional"],
+            "bottom": ["straight_trouser", "dark_jeans"],
+            "layer": ["structured_jacket", "bomber_optional"],
+            "shoes": ["clean_sneaker", "boot_optional"],
+            "accessories": ["watch_optional"]
+          },
+          "rules": [
+            "One structured layer makes the whole look intentional."
+          ],
+          "swap_suggestions": [
+            "Choose a cleaner shoe to keep it premium.",
+            "Keep colors simple when the jacket is the hero."
+          ]
+        },
+        {
+          "id": "M010",
+          "name": "Summer Linen Set",
+          "energy": "classic",
+          "formality": "casual",
+          "silhouette": "fluid",
+          "color_story": "soft_tones",
+          "pieces": {
+            "top": ["linen_shirt"],
+            "bottom": ["linen_trouser_optional", "chino", "shorts_optional"],
+            "shoes": ["sandal_optional", "clean_sneaker"],
+            "accessories": ["sunglasses_optional"]
+          },
+          "rules": [
+            "Linen looks best when it’s simple and breathable."
+          ],
+          "swap_suggestions": [
+            "Keep accessories minimal.",
+            "If wearing shorts, keep top slightly structured."
+          ]
+        }
+      ],
+
+      "occasion_special": [
+        {
+          "id": "O001",
+          "name": "Interview (Corporate Clean)",
+          "occasion": "interview",
+          "energy": "classic",
+          "formality": "formal",
+          "silhouette": "structured",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["crisp_shirt", "blouse_optional"],
+            "bottom": ["tailored_trouser", "pencil_skirt_optional"],
+            "layer": ["blazer"],
+            "shoes": ["loafer", "closed_toe_flat_optional", "heel_optional"],
+            "accessories": ["minimal_watch", "structured_bag"]
+          },
+          "rules": [
+            "Keep it crisp, minimal, and well-fitted.",
+            "Avoid loud prints by default."
+          ],
+          "swap_suggestions": [
+            "Swap shoe to closed-toe for extra polish.",
+            "Add a structured bag if available."
+          ]
+        },
+        {
+          "id": "O002",
+          "name": "Date Night (Effortless Confidence)",
+          "occasion": "date_night",
+          "energy": "romantic",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "soft_tones",
+          "pieces": {
+            "top_or_one_piece": ["statement_top", "fine_knit", "midi_dress_optional"],
+            "bottom_optional": ["tailored_trouser", "dark_jeans", "midi_skirt_optional"],
+            "layer_optional": ["clean_jacket", "blazer_optional"],
+            "shoes": ["sleek_sneaker_optional", "loafer", "boot_optional", "heel_optional"],
+            "accessories": ["one_statement_piece_only", "small_bag_optional"]
+          },
+          "rules": [
+            "One memorable detail only.",
+            "Keep it comfortable enough to enjoy the night."
+          ],
+          "swap_suggestions": [
+            "Add one shine element if it’s evening.",
+            "If outfit is bold, keep accessories minimal."
+          ]
+        },
+        {
+          "id": "O003",
+          "name": "Office (Reliable Polish)",
+          "occasion": "office_work",
+          "energy": "classic",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["shirt", "fine_knit", "blouse_optional"],
+            "bottom": ["tailored_trouser", "straight_jean_if_allowed"],
+            "layer_optional": ["light_blazer", "cardigan", "overshirt_optional"],
+            "shoes": ["loafer", "clean_sneaker_if_allowed"],
+            "accessories": ["watch_optional", "structured_bag_optional"]
+          },
+          "rules": [
+            "Comfortable but intentional—clean lines win."
+          ],
+          "swap_suggestions": [
+            "Add a layer on meeting-heavy days.",
+            "Swap to loafers for instant polish."
+          ]
+        },
+        {
+          "id": "O004",
+          "name": "Wedding Guest (Polished Celebration)",
+          "occasion": "wedding_guest",
+          "energy": "elevated",
+          "formality": "semi_formal",
+          "silhouette": "fluid",
+          "color_story": "jewel_tones",
+          "pieces": {
+            "one_piece_or_set": ["dress", "saree_optional", "lehenga_optional", "kurta_set_optional", "tailored_set_optional"],
+            "shoes": ["dressy_flat_optional", "loafer_optional", "heel_optional"],
+            "accessories": ["cohesive_jewelry", "small_bag_or_clutch"]
+          },
+          "rules": [
+            "Elevate with one dressy element if needed (shoes/bag/jewelry)."
+          ],
+          "swap_suggestions": [
+            "If outfit is ornate, reduce jewelry.",
+            "If outfit is simple, add one statement piece."
+          ]
+        },
+        {
+          "id": "O005",
+          "name": "Travel/Airport (Comfort + Clean)",
+          "occasion": "travel_airport",
+          "energy": "sporty",
+          "formality": "very_casual",
+          "silhouette": "relaxed",
+          "color_story": "neutral",
+          "pieces": {
+            "top": ["tee", "hoodie_optional", "sweatshirt_optional"],
+            "bottom": ["jogger", "straight_jean_optional", "relaxed_trouser_optional"],
+            "layer": ["light_jacket", "overshirt_optional"],
+            "shoes": ["clean_sneaker"],
+            "accessories": ["crossbody_optional", "cap_optional"]
+          },
+          "rules": [
+            "Prioritize comfort, but keep it clean and fresh."
+          ],
+          "swap_suggestions": [
+            "Add a light layer for temperature changes.",
+            "Choose darker bottoms for a more polished look."
+          ]
+        },
+        {
+          "id": "O006",
+          "name": "Festive Ethnic (Modern-Classic)",
+          "occasion": "festive_ethnic",
+          "energy": "elevated",
+          "formality": "semi_formal",
+          "silhouette": "fluid",
+          "color_story": "jewel_tones",
+          "pieces": {
+            "ethnic_core": ["kurta_set", "saree_optional", "lehenga_optional", "anarkali_optional", "fusion_set_optional"],
+            "shoes": ["ethnic_flat", "dressy_flat_optional", "heel_optional"],
+            "accessories": ["one_statement_jewelry", "clutch_optional"]
+          },
+          "rules": [
+            "Let fabric and color do the work—keep styling clean."
+          ],
+          "swap_suggestions": [
+            "If outfit is heavy, keep jewelry minimal.",
+            "If outfit is simple, add one statement piece."
+          ]
+        },
+        {
+          "id": "O007",
+          "name": "Vacation Resort (Day Easy)",
+          "occasion": "vacation_resort",
+          "energy": "classic",
+          "formality": "casual",
+          "silhouette": "fluid",
+          "color_story": "earthy",
+          "pieces": {
+            "top_or_one_piece": ["linen_shirt", "resort_shirt_optional", "day_dress_optional"],
+            "bottom_optional": ["shorts_optional", "linen_trouser_optional", "light_trouser"],
+            "shoes": ["flat_sandal_optional", "clean_sneaker_optional"],
+            "accessories": ["sunglasses_optional", "straw_bag_optional"]
+          },
+          "rules": [
+            "Keep it breathable and unfussy."
+          ],
+          "swap_suggestions": [
+            "Tight palette = looks more expensive in photos.",
+            "Choose natural textures for resort energy."
+          ]
+        },
+        {
+          "id": "O008",
+          "name": "Vacation Resort (Dinner Dressy-Relaxed)",
+          "occasion": "vacation_resort",
+          "energy": "elevated",
+          "formality": "smart_casual",
+          "silhouette": "balanced",
+          "color_story": "soft_tones",
+          "pieces": {
+            "top_or_one_piece": ["midi_dress_optional", "fine_knit", "clean_shirt"],
+            "bottom_optional": ["tailored_short_optional", "tailored_trouser", "midi_skirt_optional"],
+            "shoes": ["dressy_sandal_optional", "loafer_optional", "heel_optional"],
+            "accessories": ["one_statement_piece_only", "small_bag_optional"]
+          },
+          "rules": [
+            "Dinner = one elevated touch, still relaxed."
+          ],
+          "swap_suggestions": [
+            "Add a little shine in accessories for night.",
+            "Keep silhouette clean to look premium."
+          ]
+        },
+        {
+          "id": "O009",
+          "name": "Brunch (Casual-Chic)",
+          "occasion": "brunch_day_out",
+          "energy": "classic",
+          "formality": "casual",
+          "silhouette": "balanced",
+          "color_story": "soft_tones",
+          "pieces": {
+            "top_or_one_piece": ["light_blouse", "knit_top", "day_dress_optional", "tee_optional"],
+            "bottom_optional": ["straight_jean", "midi_skirt_optional", "light_trouser_optional"],
+            "shoes": ["clean_sneaker", "flat_sandal_optional"],
+            "accessories": ["sunglasses_optional", "small_bag_optional"]
+          },
+          "rules": [
+            "Keep it easy and fresh; one cute detail is enough."
+          ],
+          "swap_suggestions": [
+            "Swap tote → small structured bag for polish.",
+            "Add sunglasses to finish the vibe."
+          ]
+        },
+        {
+          "id": "O010",
+          "name": "Party Night Out (One Hero Move)",
+          "occasion": "party_night_out",
+          "energy": "bold",
+          "formality": "smart_casual",
+          "silhouette": "structured",
+          "color_story": "high_contrast",
+          "pieces": {
+            "hero_piece": ["statement_top", "statement_dress_optional", "leather_jacket_optional", "shine_top_optional"],
+            "base_piece": ["black_trouser", "dark_jeans", "black_skirt_optional"],
+            "shoes": ["boot_optional", "loafer_optional", "heel_optional", "clean_sleek_sneaker_optional"],
+            "accessories": ["one_statement_piece_only", "small_bag_optional"]
+          },
+          "rules": [
+            "One hero piece only. Keep everything else clean."
+          ],
+          "swap_suggestions": [
+            "If you add statement earrings, keep the neckline clean.",
+            "If outfit is shiny, keep accessories minimal."
+          ]
+        }
+      ]
+    },
+
+    "gender_defaults": {
+      "female": {
+        "preferred_sets_order": ["female_leaning", "neutral_core", "occasion_special", "male_leaning"]
+      },
+      "male": {
+        "preferred_sets_order": ["male_leaning", "neutral_core", "occasion_special", "female_leaning"]
+      },
+      "non_binary": {
+        "preferred_sets_order": ["neutral_core", "occasion_special", "female_leaning", "male_leaning"]
+      },
+      "prefer_not_to_say": {
+        "preferred_sets_order": ["neutral_core", "occasion_special", "female_leaning", "male_leaning"]
+      }
+    },
+
+    "dev_notes": [
+      "Formulas produce 'outfit ideas' and are meant to be filled by wardrobe inventory when available.",
+      "If only_from_wardrobe constraint is active, filter piece types to available wardrobe categories.",
+      "If no_heels is true, never suggest heel_optional as primary shoe; keep it optional or remove.",
+      "If modest is true, avoid deep necks, very short hems, and suggest layering/coverage options.",
+      "If hot_weather is true, prioritize breathable fabrics (linen/cotton) and lighter layers."
+    ]
+  }
+}

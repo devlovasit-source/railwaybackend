@@ -1,0 +1,283 @@
+{
+  "styling_intelligence": {
+    "body_type_outfit_formulas_bank_v1": {
+      "version": "1.0",
+      "description": "Body-type and height-aware styling guidance for men and women. Provides flexible goals, flattering silhouettes, and outfit formulas. No shaming, no absolutes.",
+      "supported_profiles": {
+        "gender": ["woman", "man"],
+        "women_body_types": ["pear", "hourglass", "inverted_triangle", "apple", "rectangle"],
+        "men_body_types": ["oval", "triangle", "inverted_triangle", "trapezoid", "rectangle"],
+        "height_tiers": ["petite", "average", "tall"]
+      },
+      "global_rules": {
+        "tone_safety": [
+          "Never criticize the body; focus on outfit goals and proportions.",
+          "Use optional language: 'you could', 'if you want', 'one easy move'.",
+          "If user is vulnerable, suppress body-type guidance unless they explicitly ask."
+        ],
+        "default_pattern": "1 supportive line + 1 body-type-friendly formula + 1 invitation question",
+        "constraints": {
+          "max_body_type_fragments": 1,
+          "max_height_overlays": 1,
+          "max_formulas_without_user_request": 1,
+          "options_when_asked": "2 safe + 1 bold"
+        }
+      },
+      "height_overlays": {
+        "petite": {
+          "goals": ["elongate", "clean vertical line", "avoid heavy breaks"],
+          "micro_moves": [
+            "Keep hem lines clean and avoid heavy bunching at ankles.",
+            "Slightly higher waistlines can help elongate the line.",
+            "Monochrome or tonal dressing reads longer and cleaner."
+          ]
+        },
+        "average": {
+          "goals": ["balanced proportions", "clean silhouette"],
+          "micro_moves": [
+            "Aim for one fitted + one relaxed piece for easy balance.",
+            "Keep one focal point and let the rest support."
+          ]
+        },
+        "tall": {
+          "goals": ["intentional breaks", "structure", "avoid looking unfinished"],
+          "micro_moves": [
+            "Add intentional proportion breaks (belt, layer, or hem contrast).",
+            "Structured outer layers look especially premium.",
+            "Slightly wider silhouettes can look very elegant if kept clean."
+          ]
+        }
+      },
+      "women": {
+        "pear": {
+          "style_goals": ["balance shoulders with hips", "define waist softly", "clean vertical lines"],
+          "works_well": {
+            "tops": ["structured shoulders", "boat/square neck", "wrap styles", "clean collars"],
+            "bottoms": ["straight", "bootcut", "wide-leg (clean drape)", "high-waist"],
+            "layers": ["cropped jackets", "structured blazers ending at waist/upper hip"],
+            "avoid_notes": ["too much bulk exactly at widest hip point (unless intentional and balanced)"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Structured/neckline-focused top + high-waist straight pants + sleek shoe",
+              "Wrap top + clean wide-leg trouser + minimal accessories"
+            ],
+            "bold": [
+              "Statement shoulder top + monochrome bottom + hero shoe/bag"
+            ]
+          },
+          "accessory_moves": [
+            "Bring focus upward with earrings/neckline detail.",
+            "Keep bags structured and mid-size for clean balance."
+          ]
+        },
+        "hourglass": {
+          "style_goals": ["highlight waist if desired", "keep proportions aligned", "avoid distortion from bulky layers"],
+          "works_well": {
+            "tops": ["wrap", "fitted knits", "clean bodysuits", "structured shirts (tucked/half-tucked)"],
+            "bottoms": ["high-waist straight", "pencil", "clean wide-leg"],
+            "layers": ["belted coats", "tailored blazers", "short jackets"],
+            "avoid_notes": ["boxy layers that hide all shape (unless the goal is oversized)"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Fitted top + high-waist straight trousers + loafer",
+              "Knit top + midi skirt + clean sandal/boot"
+            ],
+            "bold": [
+              "Monochrome fitted base + statement outer layer + sleek shoe"
+            ]
+          },
+          "accessory_moves": [
+            "Belts work well if you want definition.",
+            "Keep one hero piece max to avoid over-styling."
+          ]
+        },
+        "inverted_triangle": {
+          "style_goals": ["soften shoulder dominance", "add visual weight lower half", "clean neckline choices"],
+          "works_well": {
+            "tops": ["v-neck", "scoop", "softer fabrics", "minimal shoulder details"],
+            "bottoms": ["wide-leg", "pleated", "A-line skirts", "lighter colors/prints on bottom"],
+            "layers": ["longer open layers that create vertical lines"],
+            "avoid_notes": ["heavy shoulder embellishments if you want a softer look"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Clean v-neck top + wide-leg trousers + minimal shoe",
+              "Simple tee + A-line skirt + structured bag"
+            ],
+            "bold": [
+              "Minimal top + printed/bold bottom + quiet accessories"
+            ]
+          },
+          "accessory_moves": [
+            "Use bags/shoes to anchor the lower half.",
+            "Keep neck area clean if earrings are bold."
+          ]
+        },
+        "apple": {
+          "style_goals": ["create clean vertical lines", "define shape without cling", "highlight legs/neckline if desired"],
+          "works_well": {
+            "tops": ["open necklines", "structured but not tight", "tunic lengths", "wrap-ish shapes (soft)"],
+            "bottoms": ["straight", "bootcut", "clean tapered", "higher waist if comfortable"],
+            "layers": ["open-front layers", "longline blazers"],
+            "avoid_notes": ["high cling fabrics around midsection if it feels uncomfortable"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Open neckline top + straight pants + structured outer layer",
+              "Tunic + slim-straight jeans + clean sneaker/loafer"
+            ],
+            "bold": [
+              "Monochrome base + statement jacket/coat + hero bag"
+            ]
+          },
+          "accessory_moves": [
+            "Longer pendant or open neckline creates an easy vertical line.",
+            "Structured bag adds polish and shape."
+          ]
+        },
+        "rectangle": {
+          "style_goals": ["add shape through structure", "create waist illusion if desired", "use layering and contrast"],
+          "works_well": {
+            "tops": ["structured shirts", "cropped jackets", "peplum/wrap options", "belts"],
+            "bottoms": ["high-waist", "wide-leg", "straight", "A-line skirts"],
+            "layers": ["blazers", "vests", "cropped layers"],
+            "avoid_notes": ["all-one-boxy silhouette if you want more shape (unless oversized is the goal)"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Cropped jacket + high-waist trousers + sleek shoe",
+              "Shirt half-tuck + straight pants + structured bag"
+            ],
+            "bold": [
+              "Layered look (vest/blazer) + tonal base + statement accessory"
+            ]
+          },
+          "accessory_moves": [
+            "Belts or structured layers create shape quickly.",
+            "A hero bag/shoe gives focal point."
+          ]
+        }
+      },
+      "men": {
+        "oval": {
+          "style_goals": ["clean vertical line", "structured shoulders", "avoid heavy cling", "smart layering"],
+          "works_well": {
+            "tops": ["structured overshirts", "open collars", "heavier tees", "mid-length layers"],
+            "bottoms": ["straight or slight taper", "minimal break"],
+            "layers": ["single structured layer (overshirt/jacket)"],
+            "avoid_notes": ["thin cling tees if they feel unflattering"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Heavier tee + overshirt + straight trousers + clean sneaker",
+              "Open collar shirt + straight chinos + loafer"
+            ],
+            "bold": [
+              "Monochrome base + structured jacket + premium shoe"
+            ]
+          },
+          "accessory_moves": [
+            "Clean watch + tidy collar reads premium instantly."
+          ]
+        },
+        "triangle": {
+          "style_goals": ["build visual strength on shoulders", "clean taper below", "balance top-to-bottom"],
+          "works_well": {
+            "tops": ["structured shoulders", "jackets", "crewnecks", "layering up top"],
+            "bottoms": ["straight or slight taper", "darker bottoms"],
+            "layers": ["overshirts, bomber, tailored jacket"],
+            "avoid_notes": ["too-skinny pants if they exaggerate bottom heaviness"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Crewneck knit + straight jeans + clean sneaker",
+              "Overshirt + tee + straight chinos + loafer"
+            ],
+            "bold": [
+              "Statement jacket + simple base + minimal accessory"
+            ]
+          },
+          "accessory_moves": [
+            "Keep shoes clean and low-profile to maintain balance."
+          ]
+        },
+        "inverted_triangle": {
+          "style_goals": ["avoid making shoulders look too huge (if undesired)", "add ease through legs", "keep neckline clean"],
+          "works_well": {
+            "tops": ["minimal shoulder detail", "open collars", "simple tees"],
+            "bottoms": ["straight", "slight wide", "relaxed tapered"],
+            "layers": ["longer clean layers"],
+            "avoid_notes": ["super skinny pants that exaggerate shoulder width"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Clean tee + straight trousers + minimalist sneaker",
+              "Open collar shirt + relaxed trousers + loafer"
+            ],
+            "bold": [
+              "Texture hero (knit/overshirt) + relaxed trousers + premium shoe"
+            ]
+          },
+          "accessory_moves": [
+            "One hero shoe or watch is enough."
+          ]
+        },
+        "trapezoid": {
+          "style_goals": ["maintain balance", "keep proportions clean", "elevate through finishing"],
+          "works_well": {
+            "tops": ["most fits work", "structured polos", "shirts"],
+            "bottoms": ["straight", "slight taper", "tailored trousers"],
+            "layers": ["blazers, overshirts, coats"],
+            "avoid_notes": ["extreme oversized + extreme skinny at once"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Polo + tailored trousers + loafer",
+              "Shirt + chinos + clean sneaker"
+            ],
+            "bold": [
+              "Monochrome look + statement jacket + leather shoe"
+            ]
+          },
+          "accessory_moves": [
+            "Match belt and shoe tone for instant polish."
+          ]
+        },
+        "rectangle": {
+          "style_goals": ["add structure", "create shape with layers", "use contrast and texture"],
+          "works_well": {
+            "tops": ["overshirts", "structured knits", "jackets"],
+            "bottoms": ["straight or tapered", "clean hems"],
+            "layers": ["layering is your cheat code"],
+            "avoid_notes": ["flat, unlayered fits if you want more dimension"]
+          },
+          "go_to_formulas": {
+            "safe": [
+              "Tee + overshirt + straight jeans + sneaker",
+              "Knit + chinos + loafer"
+            ],
+            "bold": [
+              "Textured layer (tweed/knit) + tonal base + premium shoe"
+            ]
+          },
+          "accessory_moves": [
+            "One texture contrast = instant depth."
+          ]
+        }
+      },
+      "usage_rules": {
+        "default_usage": "Use only when body_type is known OR user explicitly asks 'what suits me'.",
+        "when_unknown_body_type": "Ask once: 'Want this personalized by fit goals/body type, or keep it general?'",
+        "options_mode": "If user asks for options, output 2 safe + 1 bold body-type-aware formulas.",
+        "avoid": [
+          "Absolute statements like 'never wear'.",
+          "Negative body language.",
+          "Over-personalization that feels intrusive."
+        ],
+        "tone_integration": "Reaction → Body-type friendly guidance (1) → Optional height overlay (1) → Invitation question."
+      }
+    }
+  }
+}

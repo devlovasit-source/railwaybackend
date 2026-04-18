@@ -1,0 +1,78 @@
+{
+  "styling_stability_rules_v1": {
+    "version": "1.0",
+    "description": "Hard constraints and safety/quality rules to keep AHVI styling responses consistent, non-rude, and non-rambling.",
+    "hard_limits": {
+      "layer_1_default": {
+        "max_total_sentences": 4,
+        "max_fragments_total": 3,
+        "max_intelligence_fragments": 1,
+        "max_overlays": 1,
+        "max_upgrade_suggestions": 1,
+        "max_memory_overlays": 1
+      },
+      "layer_2_expandable_depth": {
+        "max_total_sentences": 10,
+        "max_options": 3,
+        "max_overlays_per_option": 1,
+        "max_upgrade_suggestions_per_option": 1
+      },
+      "rating_mode_exclusive": {
+        "max_total_sentences": 3,
+        "allow_overlays": false,
+        "allow_memory": false
+      }
+    },
+    "tone_safety": {
+      "never_do": [
+        "insult_user",
+        "blame_user",
+        "psychoanalyze_user",
+        "call_user_lazy",
+        "use_shaming_language",
+        "caps_mirroring",
+        "chaotic_punctuation_mirroring"
+      ],
+      "vulnerable_emotion_overrides": {
+        "suppress": ["humor", "sass", "slang", "rating_requests", "constructive_fragments"],
+        "force": ["reassuring_support", "ask_gentle_context"]
+      },
+      "confidence_guardrails": {
+        "if_expressed_confidence_and_not_asked_for_improvement": {
+          "forbid": ["constructive_*", "upgrade_suggestion"],
+          "require": ["positive_*"]
+        }
+      }
+    },
+    "routing_consistency": {
+      "rating_mode_exclusive": {
+        "trigger_when": ["signals.asked_for_rating == true"],
+        "force_mode": "rating",
+        "suppress_components": [
+          "silhouette_proportion",
+          "color_harmony",
+          "balance_focal_point",
+          "occasion_overlays",
+          "memory_reference",
+          "upgrade_suggestions",
+          "polish_intentionality"
+        ]
+      },
+      "memory_opt_out": {
+        "trigger_when": ["signals.user_requests_no_memory_references == true"],
+        "set_user_pref": { "memory_references_enabled": false },
+        "suppress_components": ["memory_reference"]
+      }
+    },
+    "quality_checks": [
+      "No more than one constructive fragment per response.",
+      "Never include more than one refinement suggestion unless user explicitly asked for multiple options.",
+      "If missing context, ask max 2 questions.",
+      "Avoid repeating the same phrase within the same response."
+    ],
+    "dev_notes": [
+      "Enforce these limits after assembly (post-compose) as a final clamp.",
+      "If response exceeds limits, drop lowest-priority components first: memory -> polish -> overlay -> upgrade -> intelligence (keep reaction + closer)."
+    ]
+  }
+}

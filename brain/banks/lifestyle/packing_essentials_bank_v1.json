@@ -1,0 +1,135 @@
+{
+  "version": "1.0",
+  "description": "India-first packing essentials and outfit-based packing templates for AHVI Pack mode.",
+  "categories": [
+    {
+      "key": "documents",
+      "label": "Documents",
+      "items": [
+        "Government ID",
+        "Cards + cash",
+        "Tickets / booking confirmations",
+        "Hotel details",
+        "Emergency contacts",
+        "Insurance (if any)"
+      ]
+    },
+    {
+      "key": "tech",
+      "label": "Tech",
+      "items": [
+        "Phone charger",
+        "Power bank",
+        "Earphones",
+        "Travel adapter",
+        "Laptop + charger (if needed)"
+      ]
+    },
+    {
+      "key": "toiletries",
+      "label": "Toiletries",
+      "items": [
+        "Toothbrush + paste",
+        "Deodorant",
+        "Shampoo/conditioner (travel)",
+        "Moisturiser",
+        "Sunscreen SPF 30+",
+        "Lip balm",
+        "Sanitizer",
+        "Wet wipes"
+      ]
+    },
+    {
+      "key": "health",
+      "label": "Health",
+      "items": [
+        "Basic meds (paracetamol, ORS)",
+        "Band-aids",
+        "Any prescriptions",
+        "Period care / condoms (as needed)"
+      ]
+    },
+    {
+      "key": "essentials",
+      "label": "Essentials",
+      "items": [
+        "Sunglasses",
+        "Water bottle",
+        "Umbrella / raincoat",
+        "Snacks",
+        "Mini perfume"
+      ]
+    }
+  ],
+  "purpose_addons": {
+    "beach": [
+      "Swimwear",
+      "Flip flops",
+      "After-sun / aloe",
+      "Beach cover-up",
+      "Waterproof pouch"
+    ],
+    "work": [
+      "Formal shoes",
+      "Blazer (optional)",
+      "Laptop sleeve",
+      "Business cards",
+      "Ironing spray"
+    ],
+    "wedding": [
+      "Traditional outfits",
+      "Matching dupatta/stole",
+      "Ethnic footwear",
+      "Statement jewellery",
+      "Safety pins",
+      "Bindi/alta (optional)"
+    ],
+    "cold": [
+      "Thermals",
+      "Jacket",
+      "Gloves",
+      "Beanie",
+      "Moisturising cream"
+    ],
+    "gym": [
+      "Workout set",
+      "Sports shoes",
+      "Resistance band",
+      "Protein/snack",
+      "Quick-dry towel"
+    ]
+  },
+  "outfit_slots": {
+    "per_day_default": {
+      "women": [
+        "Top x1",
+        "Bottom x1",
+        "Innerwear",
+        "Sleepwear"
+      ],
+      "men": [
+        "Top x1",
+        "Bottom x1",
+        "Innerwear",
+        "Sleepwear"
+      ]
+    },
+    "multipliers": {
+      "short_trip_1_3_days": {
+        "tops": 1.0,
+        "bottoms": 0.7,
+        "innerwear": 1.2
+      },
+      "mid_trip_4_7_days": {
+        "tops": 1.0,
+        "bottoms": 0.6,
+        "innerwear": 1.3
+      },
+      "long_trip_8_plus_days": {
+        "tops": 0.8,
+        "bottoms": 0.5,
+        "innerwear": 1.4
+      }
+    }
+  }
+}

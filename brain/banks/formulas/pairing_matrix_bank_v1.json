@@ -1,0 +1,552 @@
+{
+  "styling_intelligence": {
+    "pairing_matrix_bank_v1": {
+      "version": "1.0",
+      "description": "Occasion + place driven pairing rules and outfit builders. Outputs outfit formulas using a slot-based approach: base → layer → shoe → bag/accessories. Designed for men and women. Uses '2 safe + 1 bold' by default in options mode.",
+      "schema": {
+        "slots": ["base_outfit", "optional_layer", "shoe", "bag_or_accessory", "jewelry_or_finisher"],
+        "output_shapes": ["single_formula", "options_3", "options_2"],
+        "default_options_mode": "options_3"
+      },
+      "global_rules": {
+        "tone": [
+          "No strict rules. Use choice language: 'you could', 'if you want'.",
+          "No body commentary. Focus on outfit goals and context."
+        ],
+        "composition_limits": {
+          "max_total_formulas_in_one_response": 3,
+          "max_layers_per_formula": 1,
+          "max_finishers_per_formula": 1
+        },
+        "options_mode_constraints": {
+          "default": "2 safe + 1 bold",
+          "each_option_sentence_limit": "Each option must be one sentence (tags optional).",
+          "no_repeat": "Do not repeat the same base_outfit formula in one set."
+        },
+        "place_logic": [
+          "If place implies walking/heat → prioritize comfort shoes.",
+          "If place implies AC/formality → add optional_layer or structured shoe.",
+          "If place implies photos/events → choose cleaner palette + one hero piece."
+        ]
+      },
+      "place_profiles": {
+        "office": {
+          "vibe": ["professional", "clean", "reliable"],
+          "shoe_priority": ["loafer", "minimal_sneaker_if_casual_office", "block_heel_or_slingback", "derby"],
+          "bag_priority": ["structured_tote", "structured_sling", "briefcase_style"],
+          "avoid": ["very_flashy", "too_many_statement_pieces"]
+        },
+        "cafe_brunch": {
+          "vibe": ["fresh", "daytime", "casual-chic"],
+          "shoe_priority": ["clean_sneaker", "minimal_sandal", "loafer"],
+          "bag_priority": ["crossbody", "mini_bag", "tote_light"],
+          "avoid": ["heavy_layers"]
+        },
+        "club_night": {
+          "vibe": ["bold", "sleek", "night"],
+          "shoe_priority": ["sleek_heel", "sleek_boot", "polished_loafer", "clean_leather_sneaker"],
+          "bag_priority": ["tiny_bag", "clutch"],
+          "avoid": ["too_many_competing_elements"]
+        },
+        "wedding_venue": {
+          "vibe": ["elevated", "celebration", "polished"],
+          "shoe_priority": ["dress_shoe", "block_heel", "sleek_sandal", "mojari_optional"],
+          "bag_priority": ["clutch", "structured_small"],
+          "avoid": ["casual_sneaker_unless_explicitly_allowed"]
+        },
+        "airport": {
+          "vibe": ["comfortable", "clean", "practical"],
+          "shoe_priority": ["clean_sneaker", "comfortable_loafer"],
+          "bag_priority": ["crossbody_secure", "tote_travel", "backpack_clean"],
+          "avoid": ["fussy_shoes", "too_many_loose_accessories"]
+        },
+        "mall_shopping": {
+          "vibe": ["comfortable", "presentable", "walkable"],
+          "shoe_priority": ["clean_sneaker", "minimal_sandal"],
+          "bag_priority": ["crossbody", "tote"],
+          "avoid": ["heels_if_walking"]
+        },
+        "beach_resort": {
+          "vibe": ["breathable", "relaxed", "effortless"],
+          "shoe_priority": ["sandal", "slides", "espadrille_optional"],
+          "bag_priority": ["straw_texture", "tote"],
+          "avoid": ["heavy_denim_layers"]
+        },
+        "home_hosting": {
+          "vibe": ["comfortable", "polished", "easy"],
+          "shoe_priority": ["none_or_house_slippers"],
+          "bag_priority": ["none"],
+          "avoid": ["too_formal_unless_event"]
+        },
+        "temple_religious": {
+          "vibe": ["respectful", "comfortable", "covered"],
+          "shoe_priority": ["easy_slip_on"],
+          "bag_priority": ["simple_sling"],
+          "avoid": ["too_revealing", "too_flashy"]
+        },
+        "travel_city_walk": {
+          "vibe": ["walkable", "layerable", "photo-ready"],
+          "shoe_priority": ["clean_sneaker", "comfortable_boot_in_cold"],
+          "bag_priority": ["crossbody_secure", "small_backpack_clean"],
+          "avoid": ["new_shoes_that_bite"]
+        }
+      },
+      "occasion_to_place_matrix": {
+        "work_day": ["office", "travel_city_walk"],
+        "meeting_day": ["office"],
+        "interview": ["office"],
+        "date_night": ["cafe_brunch", "club_night", "travel_city_walk"],
+        "brunch": ["cafe_brunch"],
+        "wedding_guest": ["wedding_venue"],
+        "party_night_out": ["club_night"],
+        "airport_travel": ["airport"],
+        "shopping_day": ["mall_shopping"],
+        "vacation_resort": ["beach_resort", "travel_city_walk"],
+        "festive_ethnic": ["home_hosting", "wedding_venue", "temple_religious"],
+        "casual_everyday": ["cafe_brunch", "mall_shopping", "travel_city_walk", "home_hosting"]
+      },
+      "pairing_sets": {
+        "women": {
+          "office": {
+            "safe": [
+              {
+                "id": "PM_W_OFF_S1",
+                "base_outfit": "Crisp shirt + tailored straight trousers",
+                "optional_layer": "Blazer or light structured jacket",
+                "shoe": "Loafer or slingback",
+                "bag_or_accessory": "Structured tote",
+                "jewelry_or_finisher": "Small studs or watch"
+              },
+              {
+                "id": "PM_W_OFF_S2",
+                "base_outfit": "Clean top + cigarette pants",
+                "optional_layer": "Longline blazer (optional)",
+                "shoe": "Minimal flats or loafer",
+                "bag_or_accessory": "Structured sling or tote",
+                "jewelry_or_finisher": "One clean chain"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_W_OFF_B1",
+                "base_outfit": "Monochrome co-ord set (clean cut)",
+                "optional_layer": "Structured blazer",
+                "shoe": "Sleek loafer",
+                "bag_or_accessory": "Minimal structured bag",
+                "jewelry_or_finisher": "One statement earring (small)"
+              }
+            ]
+          },
+          "cafe_brunch": {
+            "safe": [
+              {
+                "id": "PM_W_BR_S1",
+                "base_outfit": "Easy midi dress",
+                "optional_layer": "Light overshirt or denim jacket",
+                "shoe": "Minimal sandal or clean sneaker",
+                "bag_or_accessory": "Crossbody",
+                "jewelry_or_finisher": "Hoops or sunglasses"
+              },
+              {
+                "id": "PM_W_BR_S2",
+                "base_outfit": "Fitted tee + wide-leg linen pants",
+                "optional_layer": "Open shirt layer (optional)",
+                "shoe": "Flat sandal",
+                "bag_or_accessory": "Mini bag",
+                "jewelry_or_finisher": "One bracelet or hoops"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_W_BR_B1",
+                "base_outfit": "Statement top + clean straight jeans",
+                "optional_layer": "None",
+                "shoe": "Sleek sandal",
+                "bag_or_accessory": "Contrasting small bag",
+                "jewelry_or_finisher": "One hero earring"
+              }
+            ]
+          },
+          "club_night": {
+            "safe": [
+              {
+                "id": "PM_W_NGT_S1",
+                "base_outfit": "Monochrome dress (midi/mini depending on comfort)",
+                "optional_layer": "Cropped jacket or blazer",
+                "shoe": "Sleek heel or sleek boot",
+                "bag_or_accessory": "Tiny bag or clutch",
+                "jewelry_or_finisher": "One statement piece (earring OR necklace)"
+              },
+              {
+                "id": "PM_W_NGT_S2",
+                "base_outfit": "Structured top + tailored trousers",
+                "optional_layer": "Blazer optional",
+                "shoe": "Pointed-toe heel or sleek loafer",
+                "bag_or_accessory": "Small shoulder bag",
+                "jewelry_or_finisher": "Glossy lip or clean highlight (optional)"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_W_NGT_B1",
+                "base_outfit": "All-black base + one high-shine hero element",
+                "optional_layer": "None",
+                "shoe": "Sleek heel",
+                "bag_or_accessory": "Tiny bag",
+                "jewelry_or_finisher": "Minimal jewelry to keep the hero item loud"
+              }
+            ]
+          },
+          "wedding_venue": {
+            "safe": [
+              {
+                "id": "PM_W_WED_S1",
+                "base_outfit": "Elegant dress or saree/lehenga (simple silhouette)",
+                "optional_layer": "Light dupatta/shawl (optional)",
+                "shoe": "Dressy sandal or block heel",
+                "bag_or_accessory": "Clutch",
+                "jewelry_or_finisher": "One statement jewelry piece"
+              },
+              {
+                "id": "PM_W_WED_S2",
+                "base_outfit": "Fusion set: kurta + straight pants OR draped skirt",
+                "optional_layer": "None",
+                "shoe": "Sleek sandal",
+                "bag_or_accessory": "Structured small bag",
+                "jewelry_or_finisher": "Clean earrings"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_W_WED_B1",
+                "base_outfit": "Monochrome ethnic look + hero jewelry",
+                "optional_layer": "None",
+                "shoe": "Dressy sandal",
+                "bag_or_accessory": "Clutch",
+                "jewelry_or_finisher": "Statement necklace OR chandelier earrings"
+              }
+            ]
+          },
+          "airport": {
+            "safe": [
+              {
+                "id": "PM_W_TRV_S1",
+                "base_outfit": "Crisp tee + straight joggers/soft trousers",
+                "optional_layer": "Overshirt or hoodie (light)",
+                "shoe": "Clean sneaker",
+                "bag_or_accessory": "Crossbody secure",
+                "jewelry_or_finisher": "Watch + hair tie on wrist (practical)"
+              },
+              {
+                "id": "PM_W_TRV_S2",
+                "base_outfit": "Jumpsuit (easy fit) or co-ord set",
+                "optional_layer": "Light jacket",
+                "shoe": "Clean sneaker",
+                "bag_or_accessory": "Tote travel",
+                "jewelry_or_finisher": "Minimal studs"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_W_TRV_B1",
+                "base_outfit": "Monochrome travel set + structured outer layer",
+                "optional_layer": "Blazer-style jacket",
+                "shoe": "Clean sneaker",
+                "bag_or_accessory": "Structured tote",
+                "jewelry_or_finisher": "One clean chain"
+              }
+            ]
+          },
+          "beach_resort": {
+            "safe": [
+              {
+                "id": "PM_W_RES_S1",
+                "base_outfit": "Breezy co-ord or linen set",
+                "optional_layer": "Light shirt layer",
+                "shoe": "Sandal or slides",
+                "bag_or_accessory": "Straw-texture tote",
+                "jewelry_or_finisher": "Sunglasses"
+              },
+              {
+                "id": "PM_W_RES_S2",
+                "base_outfit": "Maxi/midi dress (light fabric)",
+                "optional_layer": "None",
+                "shoe": "Minimal sandal",
+                "bag_or_accessory": "Small crossbody",
+                "jewelry_or_finisher": "Small hoops"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_W_RES_B1",
+                "base_outfit": "Statement print dress + calm accessories",
+                "optional_layer": "None",
+                "shoe": "Neutral sandal",
+                "bag_or_accessory": "Neutral bag",
+                "jewelry_or_finisher": "Minimal jewelry"
+              }
+            ]
+          },
+          "temple_religious": {
+            "safe": [
+              {
+                "id": "PM_W_TMP_S1",
+                "base_outfit": "Kurta + straight pants or long skirt",
+                "optional_layer": "Dupatta (optional)",
+                "shoe": "Easy slip-on",
+                "bag_or_accessory": "Simple sling",
+                "jewelry_or_finisher": "Small studs"
+              },
+              {
+                "id": "PM_W_TMP_S2",
+                "base_outfit": "Modest midi dress + light layer",
+                "optional_layer": "Shrug/dupatta style layer",
+                "shoe": "Flat sandal",
+                "bag_or_accessory": "Small bag",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_W_TMP_B1",
+                "base_outfit": "Festive kurta set in rich color + clean silhouette",
+                "optional_layer": "None",
+                "shoe": "Easy slip-on",
+                "bag_or_accessory": "Small bag",
+                "jewelry_or_finisher": "One bangle stack (subtle)"
+              }
+            ]
+          }
+        },
+
+        "men": {
+          "office": {
+            "safe": [
+              {
+                "id": "PM_M_OFF_S1",
+                "base_outfit": "Crisp shirt + tailored trousers (minimal break)",
+                "optional_layer": "Blazer optional",
+                "shoe": "Loafer or derby",
+                "bag_or_accessory": "Briefcase-style or clean backpack",
+                "jewelry_or_finisher": "Watch"
+              },
+              {
+                "id": "PM_M_OFF_S2",
+                "base_outfit": "Structured polo + chinos",
+                "optional_layer": "Light jacket optional",
+                "shoe": "Loafer",
+                "bag_or_accessory": "Clean sling/backpack",
+                "jewelry_or_finisher": "Belt matches shoe tone"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_M_OFF_B1",
+                "base_outfit": "Monochrome shirt + trousers set (dark or neutral)",
+                "optional_layer": "Blazer",
+                "shoe": "Leather shoe",
+                "bag_or_accessory": "Minimal bag",
+                "jewelry_or_finisher": "Watch"
+              }
+            ]
+          },
+          "cafe_brunch": {
+            "safe": [
+              {
+                "id": "PM_M_BR_S1",
+                "base_outfit": "Heavier tee + straight chinos",
+                "optional_layer": "Overshirt",
+                "shoe": "Clean sneaker",
+                "bag_or_accessory": "None or simple sling",
+                "jewelry_or_finisher": "Watch"
+              },
+              {
+                "id": "PM_M_BR_S2",
+                "base_outfit": "Open-collar linen shirt + tailored shorts",
+                "optional_layer": "None",
+                "shoe": "Clean loafer or sandal (clean)",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Sunglasses"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_M_BR_B1",
+                "base_outfit": "Statement shirt (print) + clean trousers",
+                "optional_layer": "None",
+                "shoe": "Neutral loafer",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ]
+          },
+          "club_night": {
+            "safe": [
+              {
+                "id": "PM_M_NGT_S1",
+                "base_outfit": "Dark shirt/tee + tailored trousers",
+                "optional_layer": "Clean jacket optional",
+                "shoe": "Leather shoe or polished loafer",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Watch"
+              },
+              {
+                "id": "PM_M_NGT_S2",
+                "base_outfit": "Open-collar shirt + straight trousers",
+                "optional_layer": "None",
+                "shoe": "Loafer",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_M_NGT_B1",
+                "base_outfit": "All-black base + one texture hero (leather/knit/overshirt)",
+                "optional_layer": "Texture hero layer",
+                "shoe": "Leather shoe",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ]
+          },
+          "wedding_venue": {
+            "safe": [
+              {
+                "id": "PM_M_WED_S1",
+                "base_outfit": "Kurta set OR bandh-gala style top + trousers",
+                "optional_layer": "Stole optional",
+                "shoe": "Mojari or dress shoe",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal (watch optional)"
+              },
+              {
+                "id": "PM_M_WED_S2",
+                "base_outfit": "Suit or blazer + trousers",
+                "optional_layer": "Blazer",
+                "shoe": "Derby or loafer",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Pocket square optional"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_M_WED_B1",
+                "base_outfit": "Monochrome ethnic look in rich tone",
+                "optional_layer": "None",
+                "shoe": "Mojari",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "One ring or watch"
+              }
+            ]
+          },
+          "airport": {
+            "safe": [
+              {
+                "id": "PM_M_TRV_S1",
+                "base_outfit": "Crisp tee + tapered jogger/soft trousers",
+                "optional_layer": "Overshirt",
+                "shoe": "Clean sneaker",
+                "bag_or_accessory": "Clean backpack",
+                "jewelry_or_finisher": "Watch"
+              },
+              {
+                "id": "PM_M_TRV_S2",
+                "base_outfit": "Polo + straight chinos",
+                "optional_layer": "Light jacket",
+                "shoe": "Comfort loafer or clean sneaker",
+                "bag_or_accessory": "Backpack",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_M_TRV_B1",
+                "base_outfit": "Monochrome travel set + structured layer",
+                "optional_layer": "Jacket/overshirt (structured)",
+                "shoe": "Clean sneaker",
+                "bag_or_accessory": "Structured tote or backpack",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ]
+          },
+          "beach_resort": {
+            "safe": [
+              {
+                "id": "PM_M_RES_S1",
+                "base_outfit": "Linen shirt + tailored shorts",
+                "optional_layer": "None",
+                "shoe": "Sandal",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Sunglasses"
+              },
+              {
+                "id": "PM_M_RES_S2",
+                "base_outfit": "Polo + light trousers",
+                "optional_layer": "None",
+                "shoe": "Loafer or sandal (clean)",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_M_RES_B1",
+                "base_outfit": "Statement print shirt + clean neutral shorts/trousers",
+                "optional_layer": "None",
+                "shoe": "Neutral sandal/loafer",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ]
+          },
+          "temple_religious": {
+            "safe": [
+              {
+                "id": "PM_M_TMP_S1",
+                "base_outfit": "Kurta + straight trousers",
+                "optional_layer": "None",
+                "shoe": "Easy slip-on",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              },
+              {
+                "id": "PM_M_TMP_S2",
+                "base_outfit": "Shirt + chinos (covered, clean)",
+                "optional_layer": "None",
+                "shoe": "Slip-on",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ],
+            "bold": [
+              {
+                "id": "PM_M_TMP_B1",
+                "base_outfit": "Festive kurta set in rich color + clean fit",
+                "optional_layer": "None",
+                "shoe": "Slip-on",
+                "bag_or_accessory": "None",
+                "jewelry_or_finisher": "Minimal"
+              }
+            ]
+          }
+        }
+      },
+      "usage_rules": {
+        "when_to_use": [
+          "user asks: 'what should I wear' and provides occasion/place",
+          "user asks: 'give me options for X place/occasion'",
+          "user asks: 'outfit for date/interview/wedding/airport'"
+        ],
+        "if_place_missing": "Ask one question: 'Where is it—office, café, wedding venue, or outdoor?'",
+        "if_occasion_missing": "Ask one question: 'What’s the vibe—work, casual, date, festive, or party?'",
+        "selection_logic": {
+          "default": "Pick 2 safe and 1 bold from pairing_sets.<gender>.<place>.",
+          "if_user_requests_minimal": "Return only safe set (2 options).",
+          "if_user_requests_bold": "Return 1 safe + 2 bold (if available), else keep default."
+        },
+        "tone_integration": "Reaction → Options (2 safe + 1 bold) → One short context question."
+      }
+    }
+  }
+}

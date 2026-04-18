@@ -1,0 +1,49 @@
+{
+  "body_type_engine_rules_v1": {
+    "version": "1.0",
+    "description": "Rules for when/how to use body-type + height overlays safely and usefully.",
+    "activation": {
+      "enable_when_any_of": [
+        "signals.user_requests_personalization == true",
+        "signals.user_asks_for_flattering == true",
+        "signals.user_mentions_body_type == true"
+      ],
+      "optional_always": true
+    },
+    "suppression": {
+      "disable_when_any_of": [
+        "signals.emotion_state == vulnerable",
+        "signals.user_requests_no_body_type == true"
+      ],
+      "if_disabled_response_rule": "Use generic silhouette + polish guidance only."
+    },
+    "selection": {
+      "gender_key": "profile.gender",
+      "female_body_types": ["pear", "hourglass", "inverted_triangle", "apple", "rectangle"],
+      "male_body_types": ["oval", "triangle", "inverted_triangle", "trapezoid", "rectangle"],
+      "height_types": ["petite", "tall", "normal"],
+      "max_body_type_fragments": 1,
+      "max_height_overlay_fragments": 1,
+      "max_total_personalization_fragments": 2
+    },
+    "output_policy": {
+      "mention_style": "gentle",
+      "preferred_language": [
+        "If you want balance, try…",
+        "If you want more definition, you can…",
+        "One easy formula that usually works is…"
+      ],
+      "forbidden_language": ["fix", "hide flaws", "problem areas", "wrong for your body"]
+    },
+    "integration_with_other_engines": {
+      "rating_mode_exclusive": "suppress_body_type_engine",
+      "shopping_mode": "body_type_engine optional; only if user asks 'flattering' or 'what suits me'",
+      "options_mode": "allow 1 body-type insight max in header only; do not repeat per option"
+    },
+    "dev_notes": [
+      "Body-type guidance is an optional value-add, never mandatory.",
+      "If user disagrees with body type, let them override and store preference without friction.",
+      "Keep it to one insight + one formula; do not lecture."
+    ]
+  }
+}

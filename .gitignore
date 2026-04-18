@@ -1,0 +1,9 @@
+# Ignore AI model weights
+*.safetensors
+*.bin
+*.onnx
+RMBG_2_0/onnx/
+.venv/
+__pycache__/
+*.pyc
+.env

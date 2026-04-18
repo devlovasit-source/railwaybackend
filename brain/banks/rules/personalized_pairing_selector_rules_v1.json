@@ -1,0 +1,562 @@
+{
+  "personalized_pairing_selector_rules_v1": {
+    "version": "1.1",
+    "description": "Decision rules for AHVI personalized outfit generation. Supports pairing mode, color-pair queries, accessory queries, menswear-specific routing, and gentle personalization using age, body type, occasion, place, personal style, season, and complexion (undertone/contrast). Works with pairing_matrix_bank_v1, seasonal_combinations_bank_v1, body_type_outfit_formulas_bank_v1, ahvi_color_pair_logic_v1, ahvi_top_bottom_combos_v1, ahvi_accessory_combo_logic_v1, ahvi_metal_matching_logic_v1, and ahvi_shoe_bag_matching_logic_v1.",
+    "decision_order": [
+      "safety_and_suppression",
+      "detect_query_mode",
+      "resolve_context (occasion/place/season/weather)",
+      "select_primary_bank_set",
+      "base_pairing_or_base_logic_selection",
+      "apply_constraints (comfort/no-heels/covered/weather/practicality)",
+      "personal_style_modifiers",
+      "body_type_modifiers (if allowed and known)",
+      "season_modifiers",
+      "complexion_modifiers (gentle, if allowed and known)",
+      "color_pair_bonus_or_accessory_bonus",
+      "assemble_options_or_explanation",
+      "tone_output (age-based lingo handled by tone engine)"
+    ],
+    "query_mode_detection": {
+      "pairing_mode": {
+        "trigger_when_any_of": [
+          "signals.asked_for_options == true",
+          "signals.user_requests_outfit_for_event == true",
+          "signals.user_says_what_to_wear == true",
+          "signals.place_known == true OR signals.occasion_known == true"
+        ]
+      },
+      "color_pair_query": {
+        "trigger_when_any_of": [
+          "signals.color_question == true",
+          "signals.user_asks_what_color_goes_with_item == true",
+          "signals.user_mentions_color == true AND signals.query_scope == color_pairing"
+        ]
+      },
+      "accessory_combo_query": {
+        "trigger_when_any_of": [
+          "signals.user_asks_accessories == true",
+          "signals.user_asks_shoes_or_bag == true",
+          "signals.user_asks_jewellery == true",
+          "signals.user_mentions_accessories == true AND signals.query_scope == accessories"
+        ]
+      },
+      "menswear_mode": {
+        "trigger_when_any_of": [
+          "signals.user_mentions_menswear == true",
+          "signals.gender == men",
+          "signals.user_says_for_him == true"
+        ]
+      },
+      "fallback_mode": "pairing_mode"
+    },
+    "safety_and_suppression": {
+      "if_emotion_state_vulnerable": {
+        "suppress": [
+          "body_type_modifiers",
+          "complexion_modifiers",
+          "premium_intelligence"
+        ],
+        "allow": [
+          "context_questions",
+          "comfort_first_options"
+        ],
+        "notes": "If user is vulnerable, prioritize comfort, ease, and confidence."
+      },
+      "if_user_toggle_disable_body_type": {
+        "suppress": [
+          "body_type_modifiers"
+        ]
+      },
+      "if_user_toggle_disable_complexion": {
+        "suppress": [
+          "complexion_modifiers"
+        ]
+      },
+      "if_query_mode_color_pair_query": {
+        "suppress": [
+          "body_type_modifiers",
+          "full_formula_generation"
+        ],
+        "notes": "Color pairing questions should stay focused and not become full outfit analysis."
+      },
+      "if_query_mode_accessory_combo_query": {
+        "suppress": [
+          "body_type_modifiers",
+          "full_formula_generation"
+        ],
+        "notes": "Accessory questions should stay focused on support styling."
+      },
+      "if_rating_mode_exclusive": {
+        "suppress": [
+          "pairing_mode",
+          "occasion_overlays",
+          "memory_reference_overlay",
+          "premium_intelligence"
+        ]
+      }
+    },
+    "resolve_context": {
+      "defaults": {
+        "season": "unknown",
+        "occasion": "unknown",
+        "place": "unknown",
+        "weather": "unknown"
+      },
+      "if_place_unknown": {
+        "ask_one_question": "Where is it—office, café, wedding venue, outdoor walk, or airport?",
+        "fallback_place": "travel_city_walk"
+      },
+      "if_occasion_unknown": {
+        "ask_one_question": "What’s the vibe—work, casual, date, festive, or party?",
+        "fallback_occasion": "casual_everyday"
+      },
+      "if_season_unknown": {
+        "fallback_season": "unknown",
+        "notes": "If season is unknown, avoid climate-specific claims and use neutral formulas."
+      },
+      "if_weather_unknown": {
+        "fallback_weather": "unknown"
+      }
+    },
+    "select_primary_bank_set": {
+      "pairing_mode": {
+        "primary_banks": [
+          "pairing_matrix_bank_v1",
+          "ahvi_top_bottom_combos_v1",
+          "occasion_overlays_bank_v1"
+        ],
+        "modifier_banks": [
+          "seasonal_combinations_bank_v1",
+          "body_type_outfit_formulas_bank_v1",
+          "body_type_styling_bank_v1",
+          "silhouette_proportion_bank_v1",
+          "ahvi_color_pair_logic_v1",
+          "ahvi_accessory_combo_logic_v1",
+          "ahvi_metal_matching_logic_v1",
+          "ahvi_shoe_bag_matching_logic_v1",
+          "polish_intentionality_bank_v1",
+          "upgrade_suggestions_bank_v1"
+        ]
+      },
+      "color_pair_query": {
+        "primary_banks": [
+          "ahvi_color_pair_logic_v1",
+          "color_harmony_bank_v1"
+        ],
+        "modifier_banks": [
+          "occasion_overlays_bank_v1",
+          "polish_intentionality_bank_v1"
+        ]
+      },
+      "accessory_combo_query": {
+        "primary_banks": [
+          "ahvi_accessory_combo_logic_v1",
+          "ahvi_metal_matching_logic_v1",
+          "ahvi_shoe_bag_matching_logic_v1"
+        ],
+        "modifier_banks": [
+          "balance_focal_point_bank_v1",
+          "polish_intentionality_bank_v1"
+        ]
+      },
+      "menswear_mode": {
+        "primary_banks": [
+          "ahvi_top_bottom_combos_v1",
+          "menswear_fit_details_bank_v1",
+          "menswear_polish_deep_dive_bank_v1"
+        ],
+        "modifier_banks": [
+          "ahvi_color_pair_logic_v1",
+          "ahvi_accessory_combo_logic_v1",
+          "seasonal_combinations_bank_v1",
+          "occasion_overlays_bank_v1",
+          "polish_intentionality_bank_v1"
+        ]
+      }
+    },
+    "scoring_weights": {
+      "occasion_match": 5,
+      "place_match": 4,
+      "gender_match": 5,
+      "formality_match": 4,
+      "season_match": 3,
+      "weather_match": 3,
+      "personal_style_match": 4,
+      "body_type_match": 2,
+      "height_overlay_match": 1,
+      "complexion_match": 1,
+      "color_pair_bonus": 2,
+      "accessory_bonus": 1,
+      "menswear_specific_bonus": 3,
+      "polish_bonus": 2,
+      "safe_repeatability_bonus": 1,
+      "boldness_bonus": 2
+    },
+    "candidate_filters": {
+      "must_pass_any": [
+        "occasion_match",
+        "place_match",
+        "query_type_specific_match",
+        "gender_match"
+      ],
+      "hard_reject_if_any": [
+        "dress_code_conflict",
+        "weather_unsuitable",
+        "coverage_conflict_when_explicit",
+        "mobility_conflict_when_explicit",
+        "menswear_formula_for_womens_query_without_explicit_request",
+        "womens_formula_for_mens_query_without_explicit_request"
+      ]
+    },
+    "base_pairing_or_base_logic_selection": {
+      "pairing_mode": {
+        "source_priority": [
+          "pairing_matrix_bank_v1",
+          "ahvi_top_bottom_combos_v1"
+        ],
+        "selection": "default 2 safe + 1 bold"
+      },
+      "color_pair_query": {
+        "source_priority": [
+          "ahvi_color_pair_logic_v1",
+          "color_harmony_bank_v1"
+        ],
+        "selection": "best feel match + context note"
+      },
+      "accessory_combo_query": {
+        "source_priority": [
+          "ahvi_accessory_combo_logic_v1",
+          "ahvi_metal_matching_logic_v1",
+          "ahvi_shoe_bag_matching_logic_v1"
+        ],
+        "selection": "best support combo + balance note"
+      },
+      "menswear_mode": {
+        "source_priority": [
+          "ahvi_top_bottom_combos_v1",
+          "menswear_fit_details_bank_v1",
+          "menswear_polish_deep_dive_bank_v1"
+        ],
+        "selection": "best formula + one polish improvement"
+      }
+    },
+    "apply_constraints": {
+      "no_heels": {
+        "rule": "If user.no_heels == true, replace heel or slingback with loafer, flat, clean sneaker, or dressy sandal depending on place.",
+        "shoe_replacements": {
+          "sleek_heel": [
+            "sleek_flat",
+            "loafer",
+            "clean_sneaker"
+          ],
+          "block_heel": [
+            "sleek_flat",
+            "loafer"
+          ]
+        }
+      },
+      "prefer_covered": {
+        "rule": "If prefer_covered == true, avoid deep necklines and very short hems. Prefer layering options.",
+        "layer_bias": "optional_layer = true when available"
+      },
+      "sensitive_to_heat": {
+        "rule": "Bias toward breathable base formulas and minimal layers.",
+        "layer_bias": "optional_layer = false unless AC context"
+      },
+      "weather_practicality": {
+        "rule": "Weather fit outranks style flourish when weather is harsh.",
+        "examples": {
+          "india_monsoon": [
+            "avoid floor hems",
+            "avoid suede",
+            "prefer easy-clean shoes"
+          ],
+          "india_summer": [
+            "avoid heavy layers",
+            "prefer breathable fabrics"
+          ]
+        }
+      }
+    },
+    "personal_style_modifiers": {
+      "how_to_apply": "Add 1 style tag and 1 micro-choice per option, not more.",
+      "style_map": {
+        "minimal": {
+          "palette": "tight neutrals",
+          "finisher": "one clean accessory",
+          "avoid": [
+            "busy_prints",
+            "too_many_details"
+          ]
+        },
+        "classic": {
+          "palette": "neutral + one anchor",
+          "finisher": "structured bag or loafer",
+          "avoid": [
+            "overly_trendy_shapes"
+          ]
+        },
+        "romantic": {
+          "palette": "soft tones or gentle contrast",
+          "finisher": "delicate jewellery",
+          "avoid": [
+            "harsh heavy hardware"
+          ]
+        },
+        "street": {
+          "palette": "neutral + one strong accent",
+          "finisher": "clean sneaker + relaxed layer",
+          "avoid": [
+            "too_formal_shoes"
+          ]
+        },
+        "glam": {
+          "palette": "monochrome or rich tones",
+          "finisher": "one shine element",
+          "avoid": [
+            "multiple_hero_pieces"
+          ]
+        },
+        "ethnic_traditional": {
+          "palette": "rich but cohesive",
+          "finisher": "one statement jewellery",
+          "avoid": [
+            "too_many_contrasting_colors"
+          ]
+        },
+        "fusion": {
+          "palette": "neutral base + cultural accent",
+          "finisher": "modern shoe + ethnic silhouette",
+          "avoid": [
+            "clashing_prints"
+          ]
+        }
+      }
+    },
+    "body_type_modifiers": {
+      "source": "body_type_outfit_formulas_bank_v1.<gender>.<body_type> + height_overlays",
+      "apply_when": "profile.body_type_known == true AND disable_body_type_personalization == false",
+      "how_to_apply": "Add only one body-type-friendly move across the full response, not per option.",
+      "examples": [
+        "Pear: bring focus upward via neckline or earrings and keep bottom clean.",
+        "Inverted triangle: keep top clean and add ease or interest to bottom.",
+        "Oval: use a structured layer and cleaner vertical line.",
+        "Triangle (men): structure up top with a straighter or tapered bottom."
+      ]
+    },
+    "season_modifiers": {
+      "source": "seasonal_combinations_bank_v1.season_playbooks.<season>",
+      "apply_when": "season != unknown",
+      "how_to_apply": "Modify fabric, shoe practicality, and optional layer. Keep it subtle.",
+      "rules": {
+        "india_summer": [
+          "bias breathable fabrics",
+          "avoid heavy layers"
+        ],
+        "india_monsoon": [
+          "avoid floor hems",
+          "avoid suede",
+          "prefer closed_toe or clean_sneaker"
+        ],
+        "india_winter": [
+          "allow structured layer",
+          "add texture for premium feel"
+        ]
+      }
+    },
+    "complexion_modifiers": {
+      "apply_when": "undertone != unknown AND disable_complexion_personalization == false",
+      "how_to_apply": "Only adjust palette suggestions gently. Never label identity. Never say 'this suits your skin because you are X'.",
+      "undertone_map": {
+        "warm": {
+          "best_accents": [
+            "gold",
+            "olive",
+            "rust",
+            "coral",
+            "cream"
+          ],
+          "avoid_strong_claims": true
+        },
+        "cool": {
+          "best_accents": [
+            "silver",
+            "navy",
+            "berry",
+            "emerald",
+            "crisp_white"
+          ],
+          "avoid_strong_claims": true
+        },
+        "neutral": {
+          "best_accents": [
+            "gold_or_silver",
+            "most_neutrals",
+            "balanced_accents"
+          ],
+          "avoid_strong_claims": true
+        }
+      },
+      "contrast_level_map": {
+        "low": {
+          "rule": "Prefer softer contrasts and tonal looks."
+        },
+        "high": {
+          "rule": "Clean higher-contrast looks can pop if the user likes it."
+        }
+      }
+    },
+    "color_pair_bonus_or_accessory_bonus": {
+      "color_pair_logic": {
+        "apply_when": "query_mode == pairing_mode OR query_mode == color_pair_query",
+        "how_to_apply": "Use color pair logic to explain how the combination feels, not just whether it matches."
+      },
+      "accessory_logic": {
+        "apply_when": "query_mode == pairing_mode OR query_mode == accessory_combo_query",
+        "how_to_apply": "Use accessory, metal, and shoe-bag logic as support styling, not as the main answer unless explicitly asked."
+      }
+    },
+    "option_generation": {
+      "safe_option_rules": [
+        "Prefer highest occasion_match + formality_match combinations.",
+        "Prefer known strong color combinations over experimental ones.",
+        "Prefer easier shoes and simpler accessories if context is practical."
+      ],
+      "bold_option_rules": [
+        "Use one stronger color direction or one stronger accessory move.",
+        "Do not combine multiple bold decisions in the same option unless user explicitly asks.",
+        "Bold option must still respect occasion and weather."
+      ],
+      "dedupe_rules": [
+        "Do not repeat the same top-bottom formula more than once in a 3-option output.",
+        "Do not repeat the same exact color story across all options.",
+        "Do not repeat the same hero accessory across all options."
+      ]
+    },
+    "assemble_options_or_explanation": {
+      "pairing_mode": {
+        "default": "Return 3 options (2 safe + 1 bold).",
+        "minimal_request": "Return 2 safe options only.",
+        "format": {
+          "option_line": "Option: base_outfit + optional_layer + shoe + bag/accessory + finisher, compressed into one sentence.",
+          "tags_optional": true,
+          "end_with": "One short question for preference."
+        },
+        "must_include": [
+          "top_bottom_formula",
+          "why_it_works",
+          "occasion_read",
+          "shoe_direction",
+          "accessory_direction"
+        ],
+        "nice_to_include": [
+          "color_story",
+          "small_caution",
+          "upgrade_note"
+        ]
+      },
+      "color_pair_query": {
+        "format": {
+          "default": "Explain feel + use case + caution."
+        },
+        "must_include": [
+          "pair_feel",
+          "shared_effect",
+          "best_use_case"
+        ],
+        "nice_to_include": [
+          "women_effect",
+          "men_effect",
+          "small_caution"
+        ]
+      },
+      "accessory_combo_query": {
+        "format": {
+          "default": "Best combo + balance rule + metal direction."
+        },
+        "must_include": [
+          "best_combo",
+          "balance_rule",
+          "metal_direction"
+        ],
+        "nice_to_include": [
+          "shoe_bag_note",
+          "avoid_overstyling_note"
+        ]
+      },
+      "menswear_mode": {
+        "must_include": [
+          "best_formula",
+          "polish_upgrade",
+          "shoe_direction",
+          "fit_note"
+        ]
+      }
+    },
+    "fallback_rules": {
+      "if_no_strong_pairing_match": "Use safest neutral formulas from pairing_matrix_bank_v1 and ahvi_top_bottom_combos_v1.",
+      "if_no_color_pair_match": "Fall back to color_harmony_bank_v1.",
+      "if_no_accessory_match": "Use minimal accessory logic with one clean recommendation.",
+      "if_missing_personal_profile": "Skip modifiers and keep output simple.",
+      "if_query_is_too_sparse": "Return clean universal options with one internal clarifying assumption."
+    },
+    "selection_examples": [
+      {
+        "scenario": "women brunch query with green top",
+        "preferred_path": [
+          "pairing_mode",
+          "ahvi_top_bottom_combos_v1",
+          "ahvi_color_pair_logic_v1",
+          "ahvi_accessory_combo_logic_v1"
+        ]
+      },
+      {
+        "scenario": "men smart casual query with olive shirt",
+        "preferred_path": [
+          "menswear_mode",
+          "ahvi_top_bottom_combos_v1",
+          "menswear_fit_details_bank_v1",
+          "ahvi_color_pair_logic_v1"
+        ]
+      },
+      {
+        "scenario": "what goes with green",
+        "preferred_path": [
+          "color_pair_query",
+          "ahvi_color_pair_logic_v1",
+          "color_harmony_bank_v1"
+        ]
+      },
+      {
+        "scenario": "what accessories with black dress",
+        "preferred_path": [
+          "accessory_combo_query",
+          "ahvi_accessory_combo_logic_v1",
+          "ahvi_metal_matching_logic_v1",
+          "ahvi_shoe_bag_matching_logic_v1"
+        ]
+      }
+    ],
+    "expansion_notes": {
+      "expand_existing_files_first": [
+        "ahvi_color_pair_logic_v1.json",
+        "ahvi_top_bottom_combos_v1.json",
+        "ahvi_accessory_combo_logic_v1.json",
+        "ahvi_shoe_bag_matching_logic_v1.json",
+        "ahvi_metal_matching_logic_v1.json"
+      ],
+      "why": [
+        "The new selector rules are only as strong as the depth of the banks they can choose from.",
+        "Color-pair logic and top-bottom formulas should become much richer before adding too many new meta-layers.",
+        "Accessory, shoe-bag, and metal logic should support both western and Indian styling."
+      ]
+    },
+    "dev_notes": [
+      "This file is the scoring bridge between router intent and bank selection.",
+      "It decides which banks lead and which banks only modify.",
+      "Color pair logic and accessory logic are now first-class selectors, not afterthoughts.",
+      "As combo banks grow, increase query-specific boosts before increasing body-type complexity."
+    ]
+  }
+}

@@ -1,0 +1,379 @@
+{
+  "styling_intelligence": {
+    "seasonal_combinations_bank_v1": {
+      "version": "1.0",
+      "description": "Season-aware outfit formulas and pairing logic. India-friendly defaults (summer/monsoon/winter) with optional global seasons. Designed for generating outfit options, not critique.",
+      "season_definitions": {
+        "india_summer": {
+          "months_hint": ["Mar", "Apr", "May", "Jun"],
+          "weather_profile": ["hot", "humid", "high_sun"]
+        },
+        "india_monsoon": {
+          "months_hint": ["Jun", "Jul", "Aug", "Sep"],
+          "weather_profile": ["rain", "humidity", "wet_roads"]
+        },
+        "india_winter": {
+          "months_hint": ["Nov", "Dec", "Jan", "Feb"],
+          "weather_profile": ["cool", "dry", "layering"]
+        },
+        "global_spring": {
+          "months_hint": ["Mar", "Apr", "May"],
+          "weather_profile": ["mild", "breezy"]
+        },
+        "global_fall": {
+          "months_hint": ["Sep", "Oct", "Nov"],
+          "weather_profile": ["mild", "cool_evenings"]
+        }
+      },
+      "global_pairing_principles": {
+        "palette_rules": [
+          "Keep palette to 2–3 tones for premium feel.",
+          "Use one anchor neutral (black/navy/cream/khaki) when unsure.",
+          "Repeat one color across shoe/bag/belt to look intentional."
+        ],
+        "fabric_rules": [
+          "Hot weather: crisp cotton/linen blends/viscose/crepe; avoid heavy cling.",
+          "Rain: quick-dry fabrics, darker tones, avoid floor-length hems.",
+          "Cold: knits/suiting/wool blends; prioritize structure and layering."
+        ],
+        "silhouette_rules": [
+          "One fitted + one relaxed is the safest balance.",
+          "If bottom is wide/flowy → keep top cleaner.",
+          "If top is oversized → keep bottom straighter/cleaner."
+        ],
+        "finishing_rules": [
+          "Clean shoe + tidy hems = instant polish.",
+          "One hero item max (bag/shoe/jacket/jewelry).",
+          "When prints are busy, accessories must be calm."
+        ]
+      },
+      "season_playbooks": {
+        "india_summer": {
+          "intent": "Breathable, light, clean lines, looks fresh without effort.",
+          "recommended_fabrics": ["crisp cotton", "linen blend", "viscose", "crepe", "light denim"],
+          "avoid_notes": ["heavy shine", "thick synthetics", "too many layers"],
+          "color_palettes": {
+            "neutrals": ["white", "cream", "beige", "tan", "light grey", "navy"],
+            "fresh_accents": ["sage", "powder blue", "soft yellow", "coral", "teal"],
+            "deep_anchors": ["black", "navy", "espresso", "charcoal"]
+          },
+          "outfit_formulas": {
+            "women": {
+              "casual": [
+                {
+                  "id": "SUM_W_CAS_01",
+                  "formula": "Crisp tee/tank + high-waist wide-leg linen pants + minimal sandal",
+                  "style_tags": ["clean", "comfortable", "minimal"],
+                  "notes": "Add sunglasses or a small hoop for polish."
+                },
+                {
+                  "id": "SUM_W_CAS_02",
+                  "formula": "Cotton shirt (slightly oversized) + shorts/denim cutoffs + clean sneaker",
+                  "style_tags": ["cool", "easy", "street-clean"],
+                  "notes": "Half-tuck the shirt for shape."
+                },
+                {
+                  "id": "SUM_W_CAS_03",
+                  "formula": "Midi cotton dress + flat sandal + structured mini bag",
+                  "style_tags": ["feminine", "effortless", "photogenic"],
+                  "notes": "Keep jewelry minimal if dress has detail."
+                }
+              ],
+              "office": [
+                {
+                  "id": "SUM_W_OFF_01",
+                  "formula": "Sleeveless/short sleeve top + tailored trousers + loafer",
+                  "style_tags": ["polished", "modern", "work-ready"],
+                  "notes": "Add a structured tote for premium signal."
+                },
+                {
+                  "id": "SUM_W_OFF_02",
+                  "formula": "Crisp shirt + straight pants + sleek slingback/loafer",
+                  "style_tags": ["sharp", "clean", "reliable"],
+                  "notes": "Keep palette tight (2–3 tones)."
+                },
+                {
+                  "id": "SUM_W_OFF_03",
+                  "formula": "Kurta (clean cut) + cigarette pants + minimal flats",
+                  "style_tags": ["indian", "comfortable", "office-safe"],
+                  "notes": "One statement earring max."
+                }
+              ],
+              "date_party": [
+                {
+                  "id": "SUM_W_NIGHT_01",
+                  "formula": "Slip/midi dress + matte accessories + sleek sandal",
+                  "style_tags": ["romantic", "elevated", "minimal"],
+                  "notes": "Balance shine: keep bag/shoe matte if dress is satin."
+                },
+                {
+                  "id": "SUM_W_NIGHT_02",
+                  "formula": "Corset-ish/structured top + relaxed trousers + statement earring",
+                  "style_tags": ["confident", "modern", "clean-bold"],
+                  "notes": "Let one item be the hero."
+                },
+                {
+                  "id": "SUM_W_NIGHT_03",
+                  "formula": "Monochrome co-ord + sleek shoe + tiny bag",
+                  "style_tags": ["premium", "put-together", "effortless"],
+                  "notes": "Monochrome reads expensive instantly."
+                }
+              ],
+              "travel_airport": [
+                {
+                  "id": "SUM_W_TRV_01",
+                  "formula": "Crisp tee + straight jogger/soft trousers + clean sneaker + light overshirt",
+                  "style_tags": ["comfortable", "clean", "layered"],
+                  "notes": "Overshirt = AC defense + polish."
+                },
+                {
+                  "id": "SUM_W_TRV_02",
+                  "formula": "Easy jumpsuit + minimal sneaker + crossbody",
+                  "style_tags": ["one-and-done", "practical", "styled"],
+                  "notes": "Keep accessories tiny for movement."
+                }
+              ]
+            },
+            "men": {
+              "casual": [
+                {
+                  "id": "SUM_M_CAS_01",
+                  "formula": "Crisp tee + straight chinos + minimalist sneaker",
+                  "style_tags": ["clean", "easy", "premium-basic"],
+                  "notes": "Heavier cotton tee reads more expensive."
+                },
+                {
+                  "id": "SUM_M_CAS_02",
+                  "formula": "Linen shirt (open collar) + tailored shorts + loafer/sandal (clean)",
+                  "style_tags": ["resort", "relaxed", "polished"],
+                  "notes": "Keep collar neat; one bracelet/watch max."
+                },
+                {
+                  "id": "SUM_M_CAS_03",
+                  "formula": "Polo + tapered trousers + clean sneaker",
+                  "style_tags": ["smart-casual", "tidy", "reliable"],
+                  "notes": "Taper + clean hem = sharp."
+                }
+              ],
+              "office": [
+                {
+                  "id": "SUM_M_OFF_01",
+                  "formula": "Light shirt + tailored trousers + loafer",
+                  "style_tags": ["professional", "sharp", "modern"],
+                  "notes": "Crisp collar is the expensive signal."
+                },
+                {
+                  "id": "SUM_M_OFF_02",
+                  "formula": "Polo (structured) + chinos + derby/loafer",
+                  "style_tags": ["work-ready", "comfortable", "smart"],
+                  "notes": "Match belt tone to shoe for polish."
+                }
+              ],
+              "date_party": [
+                {
+                  "id": "SUM_M_NIGHT_01",
+                  "formula": "Dark tee/shirt + tailored trousers + clean leather shoe",
+                  "style_tags": ["confident", "night", "premium"],
+                  "notes": "Dark anchor + clean shoe = instant elevated."
+                },
+                {
+                  "id": "SUM_M_NIGHT_02",
+                  "formula": "Open collar shirt + straight trousers + loafer",
+                  "style_tags": ["romantic", "effortless", "styled"],
+                  "notes": "Keep accessories minimal."
+                }
+              ],
+              "travel_airport": [
+                {
+                  "id": "SUM_M_TRV_01",
+                  "formula": "Crisp tee + tapered jogger/soft trouser + clean sneaker + overshirt",
+                  "style_tags": ["comfortable", "sharp", "layered"],
+                  "notes": "Clean sneaker + tidy hem matters most."
+                }
+              ]
+            }
+          }
+        },
+
+        "india_monsoon": {
+          "intent": "Practical, quick-dry, cleaner hems, darker palettes, no fussy footwear.",
+          "recommended_fabrics": ["quick-dry blends", "cotton", "denim", "poly-cotton", "knits (not heavy)"],
+          "avoid_notes": ["suede shoes", "floor-length hems", "delicate light colors"],
+          "color_palettes": {
+            "safe_anchors": ["black", "navy", "charcoal", "olive", "espresso"],
+            "accents": ["burgundy", "mustard", "deep teal", "rust"]
+          },
+          "outfit_formulas": {
+            "women": {
+              "casual": [
+                {
+                  "id": "MON_W_CAS_01",
+                  "formula": "Fitted tee + ankle-length straight jeans + clean sneaker",
+                  "style_tags": ["practical", "clean", "rain-safe"],
+                  "notes": "Ankle length avoids wet hems."
+                },
+                {
+                  "id": "MON_W_CAS_02",
+                  "formula": "Overshirt/light jacket + tank + straight pants + sneaker",
+                  "style_tags": ["layered", "street", "tidy"],
+                  "notes": "Outer layer hides rain creases and looks intentional."
+                }
+              ],
+              "office": [
+                {
+                  "id": "MON_W_OFF_01",
+                  "formula": "Structured top + ankle trousers + closed-toe flat/loafer",
+                  "style_tags": ["polished", "rain-proof", "work-safe"],
+                  "notes": "Avoid suede; go leather or coated finishes."
+                },
+                {
+                  "id": "MON_W_OFF_02",
+                  "formula": "Kurta (shorter) + straight pants + closed flats",
+                  "style_tags": ["indian", "clean", "practical"],
+                  "notes": "Keep dupatta optional/light."
+                }
+              ],
+              "date_party": [
+                {
+                  "id": "MON_W_NIGHT_01",
+                  "formula": "Dark dress (midi) + sleek closed shoe + small bag",
+                  "style_tags": ["night", "clean", "low-maintenance"],
+                  "notes": "Dark tones handle rain better and look premium."
+                }
+              ],
+              "travel_airport": [
+                {
+                  "id": "MON_W_TRV_01",
+                  "formula": "Tee + water-resistant layer + tapered trousers + sneaker",
+                  "style_tags": ["practical", "comfortable", "clean"],
+                  "notes": "Keep one extra layer for AC + rain."
+                }
+              ]
+            },
+            "men": {
+              "casual": [
+                {
+                  "id": "MON_M_CAS_01",
+                  "formula": "Dark tee + tapered jeans + clean sneaker",
+                  "style_tags": ["rain-safe", "sharp", "easy"],
+                  "notes": "Avoid heavy stacking at the hem."
+                },
+                {
+                  "id": "MON_M_CAS_02",
+                  "formula": "Overshirt + tee + chinos + sneaker",
+                  "style_tags": ["layered", "polished", "smart-casual"],
+                  "notes": "Overshirt reads premium and hides wrinkles."
+                }
+              ],
+              "office": [
+                {
+                  "id": "MON_M_OFF_01",
+                  "formula": "Crisp shirt + tailored trousers (minimal break) + leather shoe",
+                  "style_tags": ["professional", "clean", "sharp"],
+                  "notes": "Minimal break avoids wet bunching."
+                }
+              ],
+              "date_party": [
+                {
+                  "id": "MON_M_NIGHT_01",
+                  "formula": "Dark open-collar shirt + tailored trousers + loafer",
+                  "style_tags": ["night", "confident", "easy-premium"],
+                  "notes": "Let shoe be the hero."
+                }
+              ]
+            }
+          }
+        },
+
+        "india_winter": {
+          "intent": "Layered, structured, cozy but sharp. Premium finishes and clean proportions.",
+          "recommended_fabrics": ["knits", "wool blends", "suiting", "denim", "tweed", "leather"],
+          "avoid_notes": ["too many bulky layers", "sloppy proportions"],
+          "color_palettes": {
+            "neutrals": ["black", "charcoal", "navy", "cream", "camel", "grey"],
+            "rich_accents": ["burgundy", "forest green", "deep teal", "rust"]
+          },
+          "outfit_formulas": {
+            "women": {
+              "casual": [
+                {
+                  "id": "WIN_W_CAS_01",
+                  "formula": "Fitted knit + straight jeans + ankle boot",
+                  "style_tags": ["cozy", "clean", "premium"],
+                  "notes": "Boot anchors the look instantly."
+                },
+                {
+                  "id": "WIN_W_CAS_02",
+                  "formula": "Turtleneck + tailored trousers + long coat",
+                  "style_tags": ["elevated", "minimal", "expensive"],
+                  "notes": "Long coat = instant vertical line."
+                }
+              ],
+              "office": [
+                {
+                  "id": "WIN_W_OFF_01",
+                  "formula": "Structured top + trousers + blazer + loafer",
+                  "style_tags": ["sharp", "work", "polished"],
+                  "notes": "Match textures: matte + matte reads expensive."
+                }
+              ],
+              "date_party": [
+                {
+                  "id": "WIN_W_NIGHT_01",
+                  "formula": "Monochrome base + statement coat/jacket + sleek shoe",
+                  "style_tags": ["night", "premium", "confident"],
+                  "notes": "One hero layer does the work."
+                }
+              ]
+            },
+            "men": {
+              "casual": [
+                {
+                  "id": "WIN_M_CAS_01",
+                  "formula": "Crewneck knit + chinos + clean sneaker",
+                  "style_tags": ["cozy", "tidy", "smart-casual"],
+                  "notes": "Heavier knit reads premium."
+                },
+                {
+                  "id": "WIN_M_CAS_02",
+                  "formula": "Tee + overshirt/jacket + tapered jeans + boot",
+                  "style_tags": ["layered", "sharp", "winter-clean"],
+                  "notes": "Boot + clean hem = expensive signal."
+                }
+              ],
+              "office": [
+                {
+                  "id": "WIN_M_OFF_01",
+                  "formula": "Shirt + trousers + blazer + loafer/derby",
+                  "style_tags": ["professional", "polished", "sharp"],
+                  "notes": "Collar + jacket structure matters most."
+                }
+              ],
+              "date_party": [
+                {
+                  "id": "WIN_M_NIGHT_01",
+                  "formula": "Dark knit + tailored trousers + leather shoe",
+                  "style_tags": ["night", "clean", "premium"],
+                  "notes": "Minimal palette looks expensive."
+                }
+              ]
+            }
+          }
+        }
+      },
+      "usage_rules": {
+        "default_output": "If user asks for 'what to wear' and season is known, pick 2 safe + 1 bold option.",
+        "options_mode_constraints": {
+          "default_count": 3,
+          "structure": "Each option is one sentence + optional short tag.",
+          "no_repeat_rule": "Avoid repeating the same base formula in one set."
+        },
+        "avoid": [
+          "Overly climate-specific claims without user location/weather info.",
+          "Strict rules; keep it flexible."
+        ],
+        "tone_integration": "Reaction → (Optional season cue) → Options (2 safe + 1 bold) → Invitation question."
+      }
+    }
+  }
+}

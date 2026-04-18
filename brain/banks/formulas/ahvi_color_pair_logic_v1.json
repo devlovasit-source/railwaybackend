@@ -1,0 +1,895 @@
+{
+  "ahvi_color_pair_logic_v1": {
+    "version": "4.0",
+    "description": "Final AHVI color pairing logic with gender-separated routing. Womenswear and menswear color applications are stored separately so AHVI can suggest pairings based on gender, garment context, occasion, season, and styling mood.",
+    "runtime_rule": {
+      "selection_logic": "Use womenswear_logic when gender == women. Use menswear_logic when gender == men. Do not blend outputs unless user explicitly asks for unisex guidance.",
+      "fallback_logic": "If gender is unknown, prefer the safest neutral combinations from the most relevant garment context.",
+      "application_priority": [
+        "occasion_fit",
+        "garment_context_fit",
+        "season_fit",
+        "style_mode_fit",
+        "contrast_fit",
+        "undertone_fit",
+        "accessory_finish"
+      ]
+    },
+    "womenswear_logic": {
+      "schema": {
+        "fields": [
+          "pair_id",
+          "primary",
+          "secondary",
+          "mood",
+          "effect",
+          "occasion_tags",
+          "season_tags",
+          "style_modes",
+          "best_for",
+          "undertone_bias",
+          "contrast_bias",
+          "safe_level",
+          "dress_logic",
+          "top_bottom_logic",
+          "layer_logic",
+          "shawl_dupatta_logic",
+          "shoe_direction",
+          "bag_direction",
+          "jewellery_direction",
+          "avoid_if",
+          "notes"
+        ]
+      },
+      "pairs": [
+        {
+          "pair_id": "WCP_001",
+          "primary": "green",
+          "secondary": "black",
+          "mood": ["classic", "grounded", "polished"],
+          "effect": "chic, sharp, and quietly powerful",
+          "occasion_tags": ["smart_casual", "evening", "office_casual", "dinner"],
+          "season_tags": ["autumn", "winter", "all_season"],
+          "style_modes": ["classic", "sharp", "elevated"],
+          "best_for": ["emerald", "forest_green", "olive"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["medium", "high"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "green_dress + black_heels + black_bag = dinner-ready and sleek",
+            "black_dress + green_earrings_or_clutch = strong accent styling"
+          ],
+          "top_bottom_logic": [
+            "green_top + black_trousers = classic smart casual",
+            "black_top + green_skirt = sharper and more fashion-led"
+          ],
+          "layer_logic": [
+            "green_knit + black_coat = rich winter combination",
+            "black_blazer_over_green_top = office-friendly and polished"
+          ],
+          "shawl_dupatta_logic": [
+            "green_kurta + black_shawl = elegant evening Indianwear",
+            "black_outfit + deep_green_dupatta = rich focal accent"
+          ],
+          "shoe_direction": ["black_heels", "black_loafers", "black_boots"],
+          "bag_direction": ["structured_black_bag", "dark_green_clutch", "gold_accent_clutch"],
+          "jewellery_direction": ["gold_for_richer_finish", "emerald_stone_details"],
+          "avoid_if": ["very_neon_green_with_hard_black"],
+          "notes": "Deeper greens with black feel more refined than loud greens with black."
+        },
+        {
+          "pair_id": "WCP_002",
+          "primary": "green",
+          "secondary": "white",
+          "mood": ["fresh", "clean", "natural"],
+          "effect": "feminine, effortless, and crisp",
+          "occasion_tags": ["brunch", "daywear", "travel", "summer_casual"],
+          "season_tags": ["spring", "summer"],
+          "style_modes": ["fresh", "easy", "resort"],
+          "best_for": ["sage", "mint", "bottle_green"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "green_day_dress + white_sneakers = fresh everyday styling",
+            "white_dress + sage_shawl_or_bag = soft resort styling"
+          ],
+          "top_bottom_logic": [
+            "green_top + white_trousers = clean summer formula",
+            "white_shirt + green_skirt = crisp daytime pairing"
+          ],
+          "layer_logic": [
+            "white_shirt + green_knit_over_shoulders = preppy and fresh",
+            "green_linen_set + white_light_layer = airy travel styling"
+          ],
+          "shawl_dupatta_logic": [
+            "white_kurta + green_dupatta = classic fresh Indianwear",
+            "green_kurta + white_chikankari_dupatta = soft festive daywear"
+          ],
+          "shoe_direction": ["white_sneakers", "nude_sandals", "tan_flats"],
+          "bag_direction": ["white_tote", "tan_crossbody", "woven_bag"],
+          "jewellery_direction": ["gold_minimal", "silver_for_crisper_finish"],
+          "avoid_if": ["white_bottom_in_heavy_rain_or_messy_travel_days"],
+          "notes": "Soft greens feel relaxed; darker greens with white feel crisp."
+        },
+        {
+          "pair_id": "WCP_003",
+          "primary": "green",
+          "secondary": "pink",
+          "mood": ["feminine", "playful", "soft"],
+          "effect": "romantic, expressive, and pretty",
+          "occasion_tags": ["brunch", "day_party", "resort", "festive_day"],
+          "season_tags": ["spring", "summer"],
+          "style_modes": ["romantic", "playful", "fashion_forward"],
+          "best_for": ["sage_with_blush", "mint_with_soft_pink", "emerald_with_hot_pink"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "moderate",
+          "dress_logic": [
+            "green_dress + blush_shawl = romantic occasion styling",
+            "pink_dress + sage_bag_or_layer = softer feminine balance"
+          ],
+          "top_bottom_logic": [
+            "sage_top + blush_bottom = soft feminine pairing",
+            "pink_top + olive_or_green_bottom = fashion-forward but best kept muted"
+          ],
+          "layer_logic": [
+            "pink_outfit + green_light_layer works best if one tone is muted",
+            "green_skirt + blush_cardigan = gentle spring styling"
+          ],
+          "shawl_dupatta_logic": [
+            "green_suit + pink_dupatta = festive and pretty",
+            "pink_kurta + sage_organza_dupatta = softer modern festive styling"
+          ],
+          "shoe_direction": ["nude_heels", "soft_pink_sandals", "neutral_flats"],
+          "bag_direction": ["blush_bag", "cream_bag", "gold_potli_for_festive"],
+          "jewellery_direction": ["rose_gold_for_softness", "gold_for_festive_versions"],
+          "avoid_if": ["very_bright_green_and_very_bright_pink_without_grounding_neutral"],
+          "notes": "Softer pinks are easier; bold pinks become statement styling."
+        },
+        {
+          "pair_id": "WCP_004",
+          "primary": "green",
+          "secondary": "grey",
+          "mood": ["elegant", "calm", "refined"],
+          "effect": "graceful, understated, and quietly polished",
+          "occasion_tags": ["workwear", "travel", "semi_formal", "polished_daywear"],
+          "season_tags": ["autumn", "winter", "all_season"],
+          "style_modes": ["minimal", "elegant", "workwear"],
+          "best_for": ["sage_with_pearl_grey", "olive_with_charcoal"],
+          "undertone_bias": ["neutral", "cool"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "sage_dress + grey_blazer = polished and calm",
+            "grey_dress + olive_bag_or_shawl = subtle elegance"
+          ],
+          "top_bottom_logic": [
+            "green_top + grey_trousers = work-safe and refined",
+            "grey_top + olive_bottom = grounded and quiet"
+          ],
+          "layer_logic": [
+            "green_knit + grey_coat = premium winter styling",
+            "grey_blazer_over_green_shell_top = clean office formula"
+          ],
+          "shawl_dupatta_logic": [
+            "green_suit + grey_shawl = mature and understated",
+            "grey_kurta + olive_dupatta = soft earthy Indian styling"
+          ],
+          "shoe_direction": ["taupe_heels", "grey_flats", "black_loafers"],
+          "bag_direction": ["charcoal_bag", "soft_grey_tote", "taupe_bag"],
+          "jewellery_direction": ["silver", "minimal_white_stone_details"],
+          "avoid_if": ["flat_grey_with_flat_muted_green_without_texture"],
+          "notes": "Texture helps this pair feel richer."
+        },
+        {
+          "pair_id": "WCP_005",
+          "primary": "green",
+          "secondary": "beige",
+          "mood": ["earthy", "relaxed", "premium"],
+          "effect": "soft luxe, calm, and expensive-looking",
+          "occasion_tags": ["travel", "resort", "smart_casual", "daywear"],
+          "season_tags": ["spring", "summer", "autumn"],
+          "style_modes": ["quiet_luxury", "earthy", "travel"],
+          "best_for": ["olive", "sage", "bottle_green", "camel_beige"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "olive_dress + beige_shawl_or_jacket = soft luxe travel styling",
+            "beige_dress + green_bag = grounded but easy"
+          ],
+          "top_bottom_logic": [
+            "green_top + beige_trousers = premium casual formula",
+            "beige_top + olive_bottom = softer earthy balance"
+          ],
+          "layer_logic": [
+            "green_knit + camel_coat = rich tonal winter styling",
+            "beige_blazer_over_green_top = polished quiet luxury"
+          ],
+          "shawl_dupatta_logic": [
+            "green_kurta + beige_chanderi_dupatta = elegant and calm",
+            "beige_suit + olive_shawl = earthy elevated layering"
+          ],
+          "shoe_direction": ["tan_sandals", "brown_loafers", "white_sneakers"],
+          "bag_direction": ["beige_tote", "tan_crossbody", "woven_bag"],
+          "jewellery_direction": ["gold", "tan_hardware", "woven_or_textured_accents"],
+          "avoid_if": ["too_many_similar_flat_beige_green_pieces_without_texture"],
+          "notes": "One of the easiest rich-looking combinations."
+        },
+        {
+          "pair_id": "WCP_006",
+          "primary": "green",
+          "secondary": "gold",
+          "mood": ["rich", "festive", "regal"],
+          "effect": "luxurious, celebratory, and warm",
+          "occasion_tags": ["wedding", "festive", "family_event", "indianwear"],
+          "season_tags": ["autumn", "winter", "festive_season"],
+          "style_modes": ["festive", "traditional", "elevated"],
+          "best_for": ["emerald", "bottle_green", "forest_green"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["medium", "high"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "green_evening_gown + gold_earrings_or_clutch = rich formal styling"
+          ],
+          "top_bottom_logic": [
+            "green_skirt + gold_blouse = festive fusion styling",
+            "green_top + gold-accented_bottom = celebratory but balanced"
+          ],
+          "layer_logic": [
+            "green_outfit + gold_embellished_jacket = festive focal layer"
+          ],
+          "shawl_dupatta_logic": [
+            "green_suit + gold_dupatta = classic festive formula",
+            "green_lehenga + gold_organza_dupatta = regal wedding guest styling"
+          ],
+          "shoe_direction": ["gold_juttis", "neutral_heels", "metallic_sandals"],
+          "bag_direction": ["gold_potli", "embroidered_clutch"],
+          "jewellery_direction": ["gold_jewellery", "kundan_or_traditional_sets"],
+          "avoid_if": ["too_many_competing_embellished_elements"],
+          "notes": "Deeper greens work best with gold."
+        },
+        {
+          "pair_id": "WCP_007",
+          "primary": "black",
+          "secondary": "white",
+          "mood": ["timeless", "crisp", "high_contrast"],
+          "effect": "classic, fashion-forward, and slimming",
+          "occasion_tags": ["work", "dinner", "travel", "smart_casual", "formal"],
+          "season_tags": ["all_season"],
+          "style_modes": ["classic", "minimal", "sharp"],
+          "best_for": ["all_black_white_wardrobes"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["high"],
+          "safe_level": "universal_safe",
+          "dress_logic": [
+            "black_dress + white_blazer = sharp occasion dressing",
+            "white_dress + black_belt_or_bag = clean contrast styling"
+          ],
+          "top_bottom_logic": [
+            "white_top + black_trousers = universal polished formula",
+            "black_top + white_skirt_or_pants = crisp and high-contrast"
+          ],
+          "layer_logic": [
+            "black_base + white_coat = strong minimal winter look",
+            "white_shirt + black_blazer = formal classic"
+          ],
+          "shawl_dupatta_logic": [
+            "black_kurta + white_dupatta = graphic and elegant",
+            "white_suit + black_shawl = high-contrast but refined"
+          ],
+          "shoe_direction": ["black_heels", "white_sneakers", "pointed_flats"],
+          "bag_direction": ["black_structured_bag", "white_bag", "silver_clutch"],
+          "jewellery_direction": ["silver_for_modern", "gold_for_warmer_dressier_finish"],
+          "avoid_if": [],
+          "notes": "AHVI should treat this as a universal safe pairing."
+        },
+        {
+          "pair_id": "WCP_008",
+          "primary": "black",
+          "secondary": "beige",
+          "mood": ["polished", "premium", "balanced"],
+          "effect": "elegant and expensive-looking",
+          "occasion_tags": ["work", "airport", "meetings", "dinner"],
+          "season_tags": ["all_season"],
+          "style_modes": ["quiet_luxury", "workwear", "minimal"],
+          "best_for": ["tailored_neutrals", "smart_casual"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "black_dress + beige_coat = refined dinner or city styling",
+            "beige_dress + black_bag_and_shoes = cleaner stronger finish"
+          ],
+          "top_bottom_logic": [
+            "black_top + beige_trousers = quiet luxury formula",
+            "beige_top + black_skirt_or_trouser = sleek balance"
+          ],
+          "layer_logic": [
+            "beige_blazer_over_black_base = polished office styling",
+            "black_knit + camel_coat = premium winter formula"
+          ],
+          "shawl_dupatta_logic": [
+            "black_suit + beige_shawl = softens the look without losing polish",
+            "beige_kurta + black_dupatta = cleaner strong contrast"
+          ],
+          "shoe_direction": ["black_loafers", "beige_heels", "tan_loafers"],
+          "bag_direction": ["structured_black_bag", "camel_bag", "beige_tote"],
+          "jewellery_direction": ["gold_for_soft_richness", "black_or_clean_hardware_finish"],
+          "avoid_if": [],
+          "notes": "One of the easiest polished neutral combinations."
+        },
+        {
+          "pair_id": "WCP_009",
+          "primary": "pink",
+          "secondary": "grey",
+          "mood": ["polished", "soft", "modern"],
+          "effect": "graceful and elegant",
+          "occasion_tags": ["spring", "workwear_accents", "smart_casual"],
+          "season_tags": ["spring", "summer", "all_season"],
+          "style_modes": ["soft_workwear", "romantic_minimal", "spring"],
+          "best_for": ["dusty_pink", "blush", "charcoal_grey", "soft_grey"],
+          "undertone_bias": ["cool", "neutral"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "pink_dress + grey_blazer = polished soft event styling",
+            "grey_dress + blush_shawl = elegant gentle contrast"
+          ],
+          "top_bottom_logic": [
+            "pink_top + grey_trousers = modern soft workwear",
+            "grey_top + blush_bottom = lighter feminine styling"
+          ],
+          "layer_logic": [
+            "grey_coat over blush_base = soft winter polish",
+            "pink_knit + grey_tailored_layer = refined balance"
+          ],
+          "shawl_dupatta_logic": [
+            "pink_suit + silver_grey_dupatta = graceful festive styling"
+          ],
+          "shoe_direction": ["grey_flats", "nude_heels", "white_sneakers"],
+          "bag_direction": ["grey_bag", "blush_bag", "cream_bag"],
+          "jewellery_direction": ["silver", "rose_gold", "pearls"],
+          "avoid_if": ["very_bright_pink_with_cold_flat_grey_without_balance"],
+          "notes": "Excellent in shirts, knitwear, and soft tailored looks."
+        },
+        {
+          "pair_id": "WCP_010",
+          "primary": "white",
+          "secondary": "blue",
+          "mood": ["fresh", "classic", "easy"],
+          "effect": "crisp and easy chic",
+          "occasion_tags": ["shirts", "denim", "summer", "travel", "work_casual"],
+          "season_tags": ["spring", "summer", "all_season"],
+          "style_modes": ["classic", "fresh", "smart_casual"],
+          "best_for": ["light_blue", "navy", "mid_blue", "denim_blue"],
+          "undertone_bias": ["cool", "neutral", "warm"],
+          "contrast_bias": ["medium"],
+          "safe_level": "universal_safe",
+          "dress_logic": [
+            "white_dress + blue_shawl_or_denim_layer = fresh resort-to-city styling",
+            "blue_dress + white_sneakers = classic easy daywear"
+          ],
+          "top_bottom_logic": [
+            "white_shirt + blue_jeans = universal formula",
+            "blue_top + white_trousers = crisp warm-weather styling"
+          ],
+          "layer_logic": [
+            "white_base + denim_jacket = timeless casual layering",
+            "blue_shirt + white_knit_draped_over_shoulders = preppy fresh styling"
+          ],
+          "shawl_dupatta_logic": [
+            "white_kurta + blue_dupatta = classic and fresh Indian styling"
+          ],
+          "shoe_direction": ["white_sneakers", "tan_sandals", "blue_flats"],
+          "bag_direction": ["tan_bag", "white_tote", "navy_bag"],
+          "jewellery_direction": ["silver_for_crispness", "gold_for_warmer_finish"],
+          "avoid_if": [],
+          "notes": "One of the safest and easiest pairings for women."
+        },
+        {
+          "pair_id": "WCP_011",
+          "primary": "blue",
+          "secondary": "beige",
+          "mood": ["polished", "effortless", "premium"],
+          "effect": "soft polished daywear",
+          "occasion_tags": ["brunch", "airport", "smart_casual", "work_casual"],
+          "season_tags": ["spring", "summer", "autumn"],
+          "style_modes": ["smart_casual", "travel", "quiet_luxury"],
+          "best_for": ["navy_with_camel", "light_blue_with_beige", "denim_with_camel"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "navy_dress + beige_blazer = polished city styling",
+            "beige_dress + blue_bag_or_shawl = softer premium contrast"
+          ],
+          "top_bottom_logic": [
+            "blue_top + beige_bottom = reliable smart casual formula",
+            "beige_top + navy_bottom = stronger structured finish"
+          ],
+          "layer_logic": [
+            "navy_base + camel_coat = premium winter formula",
+            "beige_knit_over_blue_shirt = polished tonal layering"
+          ],
+          "shawl_dupatta_logic": [
+            "blue_kurta + beige_dupatta = elegant daytime Indian styling"
+          ],
+          "shoe_direction": ["brown_loafers", "nude_heels", "white_sneakers"],
+          "bag_direction": ["camel_bag", "tan_tote", "navy_bag"],
+          "jewellery_direction": ["gold", "tan_hardware", "minimal_pearls"],
+          "avoid_if": [],
+          "notes": "Very strong for shirts, chinos, denim, and relaxed tailoring."
+        },
+        {
+          "pair_id": "WCP_012",
+          "primary": "cream",
+          "secondary": "maroon",
+          "mood": ["rich", "classic", "elegant"],
+          "effect": "refined and graceful festive dressing",
+          "occasion_tags": ["festive", "family_event", "semi_formal", "wedding_guest"],
+          "season_tags": ["autumn", "winter", "festive_season"],
+          "style_modes": ["festive", "classic", "traditional"],
+          "best_for": ["cream_kurtas", "maroon_dupattas", "maroon_jackets"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "dress_logic": [
+            "cream_dress + maroon_shawl_or_jacket = warm winter event styling"
+          ],
+          "top_bottom_logic": [
+            "cream_top + maroon_bottom = elegant festive contrast",
+            "maroon_top + cream_bottom = richer stronger balance"
+          ],
+          "layer_logic": [
+            "cream_base + maroon_layer = warm polished structure"
+          ],
+          "shawl_dupatta_logic": [
+            "cream_kurta + maroon_dupatta = classic festive formula",
+            "maroon_suit + cream_organza_dupatta = softer rich contrast"
+          ],
+          "shoe_direction": ["mojris", "block_heels", "brown_loafers_for_fusion"],
+          "bag_direction": ["gold_potli", "maroon_clutch"],
+          "jewellery_direction": ["gold", "antique_gold", "kundan"],
+          "avoid_if": ["very_stark_bright_red_instead_of_deeper_maroon"],
+          "notes": "A very strong Indian festive and winter-event combination."
+        }
+      ]
+    },
+    "menswear_logic": {
+      "schema": {
+        "fields": [
+          "pair_id",
+          "primary",
+          "secondary",
+          "mood",
+          "effect",
+          "occasion_tags",
+          "season_tags",
+          "style_modes",
+          "best_for",
+          "undertone_bias",
+          "contrast_bias",
+          "safe_level",
+          "shirt_trouser_logic",
+          "tee_chino_logic",
+          "layer_logic",
+          "traditional_logic",
+          "shoe_direction",
+          "bag_direction",
+          "accessory_direction",
+          "avoid_if",
+          "notes"
+        ]
+      },
+      "pairs": [
+        {
+          "pair_id": "MCP_001",
+          "primary": "green",
+          "secondary": "black",
+          "mood": ["strong", "masculine", "elevated"],
+          "effect": "sharp and confident",
+          "occasion_tags": ["smart_casual", "evening", "dinner", "semi_formal"],
+          "season_tags": ["autumn", "winter", "all_season"],
+          "style_modes": ["sharp", "classic", "masculine"],
+          "best_for": ["olive", "forest_green", "deep_green"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["medium", "high"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "green_shirt + black_trousers = strong smart casual formula",
+            "black_shirt + olive_trousers = more rugged but still polished"
+          ],
+          "tee_chino_logic": [
+            "black_tee + dark_green_overshirt + black_bottom = clean tonal masculinity"
+          ],
+          "layer_logic": [
+            "green_knit + black_coat = rich winter styling",
+            "black_blazer_over_olive_shirt = elevated evening casual"
+          ],
+          "traditional_logic": [
+            "green_kurta + black_stole = strong festive evening styling",
+            "black_kurta + deep_green_shawl = rich traditional contrast"
+          ],
+          "shoe_direction": ["black_loafers", "black_boots", "black_formal_shoes"],
+          "bag_direction": ["black_work_bag", "black_duffel"],
+          "accessory_direction": ["watch", "black_belt", "minimal_chain_optional"],
+          "avoid_if": ["very_neon_green"],
+          "notes": "Darker greens work best for men here."
+        },
+        {
+          "pair_id": "MCP_002",
+          "primary": "green",
+          "secondary": "white",
+          "mood": ["fresh", "clean", "neat"],
+          "effect": "sporty, reliable, and easy",
+          "occasion_tags": ["travel", "daywear", "summer", "smart_casual"],
+          "season_tags": ["spring", "summer"],
+          "style_modes": ["fresh", "easy", "sporty_clean"],
+          "best_for": ["olive", "bottle_green", "sage_in_relaxed_contexts"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "green_shirt + white_trousers_or_chinos = crisp warm-weather styling",
+            "white_shirt + olive_bottom = one of the easiest menswear travel formulas"
+          ],
+          "tee_chino_logic": [
+            "white_tee + olive_chinos = fresh masculine basic",
+            "green_polo + white_or_off_white_bottom = strong summer smart casual"
+          ],
+          "layer_logic": [
+            "white_shirt + green_lightweight_overshirt = easy casual layering"
+          ],
+          "traditional_logic": [
+            "white_kurta + green_stole = clean festive daywear",
+            "green_kurta + off_white_bottom = classic Indian menswear pairing"
+          ],
+          "shoe_direction": ["white_sneakers", "tan_loafers", "brown_sandals_for_relaxed_contexts"],
+          "bag_direction": ["tan_backpack", "neutral_tote"],
+          "accessory_direction": ["watch", "tan_belt_if_needed"],
+          "avoid_if": ["bright_white_bottoms_in_messy_weather"],
+          "notes": "Olive and white is especially strong for men."
+        },
+        {
+          "pair_id": "MCP_003",
+          "primary": "green",
+          "secondary": "grey",
+          "mood": ["mature", "balanced", "quietly_stylish"],
+          "effect": "refined and calm",
+          "occasion_tags": ["workwear", "travel", "smart_casual", "semi_formal"],
+          "season_tags": ["all_season", "autumn", "winter"],
+          "style_modes": ["workwear", "minimal", "mature"],
+          "best_for": ["olive_with_charcoal", "forest_green_with_mid_grey"],
+          "undertone_bias": ["neutral", "cool"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "olive_shirt + grey_trousers = mature smart casual formula",
+            "grey_shirt + forest_green_bottom works best when tones are deeper and clean"
+          ],
+          "tee_chino_logic": [
+            "grey_tee + olive_chinos = grounded relaxed styling"
+          ],
+          "layer_logic": [
+            "green_knit + charcoal_coat = premium winter styling",
+            "grey_blazer_over_olive_shirt = polished office casual"
+          ],
+          "traditional_logic": [
+            "olive_kurta + grey_stole = understated festive styling"
+          ],
+          "shoe_direction": ["black_loafers", "charcoal_sneakers", "brown_loafers_if_green_is_warmer"],
+          "bag_direction": ["grey_or_black_work_bag"],
+          "accessory_direction": ["watch", "minimal_black_belt"],
+          "avoid_if": ["flat_muted_grey_and_green_without_texture"],
+          "notes": "Excellent for understated men’s wardrobes."
+        },
+        {
+          "pair_id": "MCP_004",
+          "primary": "green",
+          "secondary": "beige",
+          "mood": ["premium", "grounded", "effortless"],
+          "effect": "expensive-looking casual polish",
+          "occasion_tags": ["travel", "brunch", "smart_casual", "holiday"],
+          "season_tags": ["spring", "summer", "autumn"],
+          "style_modes": ["premium_casual", "travel", "earthy"],
+          "best_for": ["olive_shirts", "sage_polos", "beige_chinos"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "olive_shirt + beige_chinos = one of the strongest menswear formulas",
+            "beige_shirt + olive_bottom = softer grounded alternative"
+          ],
+          "tee_chino_logic": [
+            "green_polo + beige_chinos = clean masculine smart casual",
+            "olive_tee + stone_trousers = relaxed premium basic"
+          ],
+          "layer_logic": [
+            "olive_jacket + beige_knit_or_trouser = earthy premium layering",
+            "beige_overshirt_over_green_base = softer casual polish"
+          ],
+          "traditional_logic": [
+            "olive_kurta + beige_bottom = elegant muted festive menswear"
+          ],
+          "shoe_direction": ["brown_loafers", "white_sneakers", "tan_derbies"],
+          "bag_direction": ["tan_backpack", "brown_tote", "duffel"],
+          "accessory_direction": ["brown_belt", "watch"],
+          "avoid_if": [],
+          "notes": "This is a core menswear premium-casual combination."
+        },
+        {
+          "pair_id": "MCP_005",
+          "primary": "white",
+          "secondary": "navy",
+          "mood": ["timeless", "clean", "dependable"],
+          "effect": "sharp and universally strong",
+          "occasion_tags": ["work", "meeting", "smart_casual", "semi_formal"],
+          "season_tags": ["all_season"],
+          "style_modes": ["classic", "smart", "tailored"],
+          "best_for": ["white_shirts", "navy_trousers", "navy_blazers"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["medium", "high"],
+          "safe_level": "universal_safe",
+          "shirt_trouser_logic": [
+            "white_shirt + navy_trousers = timeless menswear formula",
+            "navy_shirt + off_white_trousers = softer resort-smart version"
+          ],
+          "tee_chino_logic": [
+            "white_tee + navy_chinos = clean dependable casual",
+            "navy_polo + white_bottom works best in warm-weather smart casual"
+          ],
+          "layer_logic": [
+            "white_shirt + navy_blazer = core classic menswear",
+            "navy_knit + white_tee_underlayer = easy polished layering"
+          ],
+          "traditional_logic": [
+            "white_kurta + navy_jacket_or_stole = clean and elegant festive menswear"
+          ],
+          "shoe_direction": ["brown_loafers", "black_formal_shoes", "white_sneakers_for_relaxed_contexts"],
+          "bag_direction": ["brown_or_navy_work_bag"],
+          "accessory_direction": ["watch", "belt_matching_shoes"],
+          "avoid_if": [],
+          "notes": "One of the safest combinations in menswear."
+        },
+        {
+          "pair_id": "MCP_006",
+          "primary": "blue",
+          "secondary": "grey",
+          "mood": ["refined", "stable", "boardroom_safe"],
+          "effect": "smart and balanced",
+          "occasion_tags": ["workwear", "tailoring", "travel", "semi_formal"],
+          "season_tags": ["all_season"],
+          "style_modes": ["workwear", "tailored", "refined"],
+          "best_for": ["navy_with_grey", "powder_blue_with_grey"],
+          "undertone_bias": ["cool", "neutral"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "blue_shirt + grey_trousers = boardroom-safe and stylish",
+            "grey_shirt + navy_trousers = deeper more anchored version"
+          ],
+          "tee_chino_logic": [
+            "grey_tee + navy_bottom = cleaner elevated casual"
+          ],
+          "layer_logic": [
+            "navy_blazer + grey_trousers = tailoring classic",
+            "grey_coat_over_navy_base = premium winter workwear"
+          ],
+          "traditional_logic": [
+            "navy_kurta + grey_stole = cool elegant festive styling"
+          ],
+          "shoe_direction": ["black_formal_shoes", "brown_loafers", "grey_sneakers_for_relaxed_mode"],
+          "bag_direction": ["black_or_navy_laptop_bag"],
+          "accessory_direction": ["watch", "black_or_brown_belt_based_on_shoe_choice"],
+          "avoid_if": [],
+          "notes": "Ideal for men’s workwear and tailoring."
+        },
+        {
+          "pair_id": "MCP_007",
+          "primary": "blue",
+          "secondary": "beige",
+          "mood": ["effortless", "premium", "smart_casual"],
+          "effect": "relaxed but refined",
+          "occasion_tags": ["airport", "brunch", "smart_casual", "travel"],
+          "season_tags": ["spring", "summer", "autumn"],
+          "style_modes": ["premium_casual", "travel", "quiet_luxury"],
+          "best_for": ["navy_with_camel", "light_blue_with_beige"],
+          "undertone_bias": ["warm", "neutral", "cool"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "blue_shirt + beige_chinos = one of the best smart casual combinations",
+            "beige_shirt + navy_trousers = slightly dressier version"
+          ],
+          "tee_chino_logic": [
+            "navy_tee + beige_bottom = calm masculine polish",
+            "light_blue_polo + tan_chinos = easy warm-weather smart casual"
+          ],
+          "layer_logic": [
+            "navy_base + camel_coat = premium winter menswear",
+            "beige_overshirt_over_blue_base = relaxed layered structure"
+          ],
+          "traditional_logic": [
+            "navy_kurta + beige_bottom = clean festive menswear formula"
+          ],
+          "shoe_direction": ["brown_loafers", "white_sneakers", "tan_derbies"],
+          "bag_direction": ["camel_or_navy_bag"],
+          "accessory_direction": ["watch", "brown_belt"],
+          "avoid_if": [],
+          "notes": "Very strong for men’s shirts, polos, chinos, and travel styling."
+        },
+        {
+          "pair_id": "MCP_008",
+          "primary": "blue",
+          "secondary": "brown",
+          "mood": ["warm", "rich", "classic"],
+          "effect": "grounded and premium",
+          "occasion_tags": ["smart_casual", "autumn", "work_casual", "travel"],
+          "season_tags": ["autumn", "winter"],
+          "style_modes": ["classic", "earthy", "menswear_led"],
+          "best_for": ["navy_with_cognac", "denim_with_tan", "blue_with_chocolate"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "blue_shirt + brown_or_tan_bottom = rich grounded menswear",
+            "navy_shirt + cognac_accents = especially strong"
+          ],
+          "tee_chino_logic": [
+            "navy_tee + brown_chinos = rugged but clean smart casual"
+          ],
+          "layer_logic": [
+            "blue_base + brown_leather_jacket = classic masculine layering",
+            "navy_knit + camel_or_brown_coat = premium winter formula"
+          ],
+          "traditional_logic": [
+            "blue_kurta + tan_stole works best in muted festive contexts"
+          ],
+          "shoe_direction": ["brown_loafers", "boots", "tan_derbies"],
+          "bag_direction": ["brown_leather_bag", "tan_duffel"],
+          "accessory_direction": ["brown_belt", "watch"],
+          "avoid_if": [],
+          "notes": "One of the strongest smart casual combinations for men."
+        },
+        {
+          "pair_id": "MCP_009",
+          "primary": "pink",
+          "secondary": "grey",
+          "mood": ["soft", "polished", "modern"],
+          "effect": "sophisticated when muted",
+          "occasion_tags": ["spring", "smart_casual", "workwear_accents"],
+          "season_tags": ["spring", "summer", "all_season"],
+          "style_modes": ["soft_smart_casual", "spring", "fashion_forward_clean"],
+          "best_for": ["dusty_pink", "pale_pink", "soft_grey"],
+          "undertone_bias": ["cool", "neutral"],
+          "contrast_bias": ["low", "medium"],
+          "safe_level": "moderate",
+          "shirt_trouser_logic": [
+            "dusty_pink_shirt + grey_trousers = sophisticated and approachable",
+            "grey_shirt + pale_pink_layer_or_accent works better than bright pink bottoms"
+          ],
+          "tee_chino_logic": [
+            "muted_pink_polo + grey_chinos = soft smart casual"
+          ],
+          "layer_logic": [
+            "grey_blazer_over_pale_pink_shirt = polished spring menswear"
+          ],
+          "traditional_logic": [
+            "pale_pink_kurta + grey_stole works only in softer festive styling"
+          ],
+          "shoe_direction": ["brown_loafers", "grey_sneakers", "black_loafers_if_more_formal"],
+          "bag_direction": ["grey_or_tan_bag"],
+          "accessory_direction": ["watch", "brown_belt_for_softer_finish"],
+          "avoid_if": ["bright_candy_pink_without_muting_elements"],
+          "notes": "Pink works best for men in dusty, pale, or muted tones."
+        },
+        {
+          "pair_id": "MCP_010",
+          "primary": "olive",
+          "secondary": "tan",
+          "mood": ["earthy", "rugged", "premium"],
+          "effect": "strong travel-smart casual polish",
+          "occasion_tags": ["travel", "utility", "smart_casual", "autumn"],
+          "season_tags": ["autumn", "winter"],
+          "style_modes": ["travel", "utility", "earthy"],
+          "best_for": ["olive_jackets", "tan_chinos", "utility_layers"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "olive_shirt + tan_chinos = premium earthy menswear",
+            "tan_shirt + olive_trousers = softer rugged alternative"
+          ],
+          "tee_chino_logic": [
+            "olive_tee + tan_cargo_or_chino = strong utility casual"
+          ],
+          "layer_logic": [
+            "olive_jacket + tan_knit = rich layered travel styling",
+            "tan_coat_over_olive_base = softer premium contrast"
+          ],
+          "traditional_logic": [
+            "olive_kurta + tan_stole = muted elegant festive styling"
+          ],
+          "shoe_direction": ["tan_boots", "brown_loafers", "white_sneakers"],
+          "bag_direction": ["tan_backpack", "brown_crossbody", "utility_duffel"],
+          "accessory_direction": ["brown_belt", "watch"],
+          "avoid_if": [],
+          "notes": "Excellent in travel and utility-inspired menswear."
+        },
+        {
+          "pair_id": "MCP_011",
+          "primary": "burgundy",
+          "secondary": "grey",
+          "mood": ["rich", "classy", "winter_elegant"],
+          "effect": "premium and masculine",
+          "occasion_tags": ["winter", "evening", "smart_casual", "semi_formal"],
+          "season_tags": ["autumn", "winter"],
+          "style_modes": ["winter", "rich", "elevated"],
+          "best_for": ["burgundy_knits", "charcoal_trousers", "winter_layers"],
+          "undertone_bias": ["cool", "neutral", "warm"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "burgundy_shirt_or_knit + grey_trousers = premium winter smart casual",
+            "grey_top + burgundy_bottom works better when the burgundy stays deep and muted"
+          ],
+          "tee_chino_logic": [
+            "burgundy_knit_polo + charcoal_bottom = elevated city styling"
+          ],
+          "layer_logic": [
+            "burgundy_knit + grey_coat = rich cold-weather menswear",
+            "charcoal_blazer_over_wine_shirt = evening-ready polish"
+          ],
+          "traditional_logic": [
+            "burgundy_kurta + grey_stole = elegant festive winter styling"
+          ],
+          "shoe_direction": ["black_boots", "charcoal_loafers", "oxfords"],
+          "bag_direction": ["black_or_charcoal_bag"],
+          "accessory_direction": ["watch", "black_belt", "minimal_metal"],
+          "avoid_if": [],
+          "notes": "Excellent for winter knitwear and elevated casualwear."
+        },
+        {
+          "pair_id": "MCP_012",
+          "primary": "cream",
+          "secondary": "maroon",
+          "mood": ["traditional", "rich", "polished"],
+          "effect": "festive and elegant",
+          "occasion_tags": ["festive", "family_event", "wedding_guest", "traditionalwear"],
+          "season_tags": ["autumn", "winter", "festive_season"],
+          "style_modes": ["traditional", "classic_festive", "elevated"],
+          "best_for": ["cream_kurtas", "maroon_shawls", "maroon_layers"],
+          "undertone_bias": ["warm", "neutral"],
+          "contrast_bias": ["medium"],
+          "safe_level": "strong_safe",
+          "shirt_trouser_logic": [
+            "cream_shirt + maroon_layer_or_jacket works better than full maroon bottom in most menswear contexts"
+          ],
+          "tee_chino_logic": [
+            "not ideal for tee-led casual styling unless used through light layering"
+          ],
+          "layer_logic": [
+            "cream_base + maroon_nehru_or_jacket = strong festive menswear structure"
+          ],
+          "traditional_logic": [
+            "cream_kurta + maroon_shawl = classic festive men’s pairing",
+            "maroon_kurta + cream_pajama = richer stronger celebratory styling"
+          ],
+          "shoe_direction": ["mojris", "brown_loafers", "traditional_shoes"],
+          "bag_direction": ["tan_or_brown_traditional_support"],
+          "accessory_direction": ["watch", "brooch_if_layer_is_simple"],
+          "avoid_if": ["very_bright_red_when_richer_maroon_is_available"],
+          "notes": "A strong festive and traditional menswear combination."
+        }
+      ]
+    },
+    "dev_notes": [
+      "This file is intentionally split by gender so AHVI can route suggestions cleanly.",
+      "Womenswear color logic supports dresses, top-bottom formulas, layers, shawls, and dupattas.",
+      "Menswear color logic supports shirt-trouser, tee-chino, layers, and traditionalwear.",
+      "Do not merge womenswear and menswear suggestions unless the user explicitly asks for unisex guidance."
+    ]
+  }
+}

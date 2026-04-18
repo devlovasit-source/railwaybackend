@@ -1,0 +1,61 @@
+{
+  "version": "1.0",
+  "palettes": [
+    {
+      "key": "mehendi_marigold_mango",
+      "name": "Marigold + Mango",
+      "hex": ["#F6C21C", "#F28C28", "#2E7D32", "#FFF3D6", "#7A3E00"],
+      "tags": ["mehendi", "indian", "bright", "day", "traditional"],
+      "best_for": ["mehendi", "haldi", "festive_brunch"]
+    },
+    {
+      "key": "haldi_sunshine_white",
+      "name": "Sunshine + White",
+      "hex": ["#FFD400", "#FFF8E1", "#FFFFFF", "#2E7D32", "#B08968"],
+      "tags": ["haldi", "minimal", "day", "fresh"],
+      "best_for": ["haldi", "pasupu", "poolside_haldi"]
+    },
+    {
+      "key": "sangeet_midnight_neon",
+      "name": "Midnight + Neon Pop",
+      "hex": ["#0B0B0F", "#6A00FF", "#00E5FF", "#FF2E88", "#C9C9C9"],
+      "tags": ["sangeet", "night", "party", "modern"],
+      "best_for": ["sangeet", "cocktail", "after_party"]
+    },
+    {
+      "key": "reception_emerald_gold",
+      "name": "Emerald + Antique Gold",
+      "hex": ["#0B6B4F", "#D4AF37", "#F7F1E3", "#1C1C1C", "#7A3E00"],
+      "tags": ["reception", "royal", "evening", "luxury"],
+      "best_for": ["reception", "wedding_day", "royal_theme"]
+    },
+    {
+      "key": "nikah_ivory_emerald",
+      "name": "Ivory + Emerald",
+      "hex": ["#FFF7E6", "#0B6B4F", "#CBB26A", "#2B2B2B", "#F2E9D8"],
+      "tags": ["nikah", "muslim", "elegant", "minimal_luxe"],
+      "best_for": ["nikah", "walima", "eid_dinner"]
+    },
+    {
+      "key": "christian_white_greenery",
+      "name": "White + Greenery",
+      "hex": ["#FFFFFF", "#2E7D32", "#E8F5E9", "#C9C9C9", "#111111"],
+      "tags": ["christian", "church", "western", "minimal"],
+      "best_for": ["church_wedding", "rehearsal_dinner", "reception"]
+    }
+  ],
+  "microtheme_overrides": [
+    {
+      "microtheme": "vintage_royal",
+      "palette_keys": ["reception_emerald_gold"]
+    },
+    {
+      "microtheme": "minimal_modern",
+      "palette_keys": ["christian_white_greenery"]
+    }
+  ],
+  "rules": {
+    "day_events_prefer": ["warm", "bright", "fresh"],
+    "night_events_prefer": ["deep", "jewel_tones", "metallics"]
+  }
+}

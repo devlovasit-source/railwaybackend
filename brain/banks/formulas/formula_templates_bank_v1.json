@@ -1,0 +1,290 @@
+{
+  "styling_intelligence": {
+    "formula_templates_bank_v1": {
+      "version": "1.0",
+      "description": "Reusable outfit formula templates. Each template is a short modular blueprint, not a brand/product recommendation.",
+      "packs": {
+        "general_formulas": {
+          "safe": [
+            {
+              "id": "G_S1",
+              "template": "Clean top + well-fitting bottom + simple shoe. Add one neat accessory to make it feel intentional.",
+              "tags": ["everyday", "easy", "repeatable"]
+            },
+            {
+              "id": "G_S2",
+              "template": "Monochrome base (same color family) + one texture or layer. Keep accessories minimal and clean.",
+              "tags": ["polished", "premium", "easy"]
+            },
+            {
+              "id": "G_S3",
+              "template": "Structured layer (shirt/jacket/blazer) over a simple base. Let the layer be the ‘main character’.",
+              "tags": ["put-together", "workable", "fast"]
+            },
+            {
+              "id": "G_S4",
+              "template": "Fitted top + relaxed bottom (or vice versa). Keep one side clean to balance the silhouette.",
+              "tags": ["balanced", "flattering", "modern"]
+            }
+          ],
+          "bold": [
+            {
+              "id": "G_B1",
+              "template": "Simple base + one statement piece (color/print/jacket). Keep everything else quiet so it lands cleanly.",
+              "tags": ["statement", "balanced-bold"]
+            },
+            {
+              "id": "G_B2",
+              "template": "Neutral base + one unexpected accent (shoe/bag/outer layer). Anchor it with clean lines.",
+              "tags": ["playful", "controlled"]
+            }
+          ]
+        },
+
+        "minimal_formulas": {
+          "safe": [
+            {
+              "id": "M_S1",
+              "template": "Two-tone palette (2–3 colors max) + clean silhouettes. Minimal accessories, clean finish.",
+              "tags": ["minimal", "premium"]
+            },
+            {
+              "id": "M_S2",
+              "template": "Straight lines + neutral base + one structured item (bag/shoe/layer). Keep it crisp.",
+              "tags": ["minimal", "sharp"]
+            },
+            {
+              "id": "M_S3",
+              "template": "Simple set (top+bottom) with one repeat tone (shoe+bag). That repeat makes it look expensive.",
+              "tags": ["cohesive", "easy"]
+            }
+          ],
+          "bold": [
+            {
+              "id": "M_B1",
+              "template": "Minimal silhouette + one bold color block (only one). Keep everything else neutral.",
+              "tags": ["minimal-bold", "clean"]
+            }
+          ]
+        },
+
+        "comfort_formulas": {
+          "safe": [
+            {
+              "id": "C_S1",
+              "template": "Relaxed base + one structured element (overshirt/jacket/bag). Comfort stays, polish goes up.",
+              "tags": ["comfort", "smart"]
+            },
+            {
+              "id": "C_S2",
+              "template": "Soft pieces in a tight palette + clean sneakers/sandals. The cohesion makes it look intentional.",
+              "tags": ["comfort", "cohesive"]
+            },
+            {
+              "id": "C_S3",
+              "template": "Easy silhouette + tidy details (rolled sleeves, neat hem). Small tweaks, big impact.",
+              "tags": ["comfort", "fast"]
+            }
+          ],
+          "bold": [
+            {
+              "id": "C_B1",
+              "template": "Comfort base + one elevated statement (bold jacket or accessory). Keep everything else simple.",
+              "tags": ["comfort-bold", "controlled"]
+            }
+          ]
+        },
+
+        "occasion_formulas": {
+          "date_night": {
+            "safe": [
+              {
+                "id": "O_DN_S1",
+                "template": "Clean silhouette + one soft statement (neckline/earring/layer). Keep it intentional, not loud.",
+                "tags": ["date", "effortless"]
+              },
+              {
+                "id": "O_DN_S2",
+                "template": "Monochrome or tonal base + one polished finish (sleeker shoe or structured bag).",
+                "tags": ["date", "premium"]
+              }
+            ],
+            "bold": [
+              {
+                "id": "O_DN_B1",
+                "template": "Simple base + one bold element (color/shine/statement piece). Anchor with neutral shoe/bag.",
+                "tags": ["date", "bold"]
+              }
+            ]
+          },
+          "interview": {
+            "safe": [
+              {
+                "id": "O_IV_S1",
+                "template": "Structured top/layer + clean bottom + neutral shoe. Keep accessories minimal and sharp.",
+                "tags": ["interview", "professional"]
+              },
+              {
+                "id": "O_IV_S2",
+                "template": "Crisp silhouette + controlled palette (2–3 tones). Let the structure do the talking.",
+                "tags": ["interview", "composed"]
+              }
+            ],
+            "bold": [
+              {
+                "id": "O_IV_B1",
+                "template": "Professional base + one subtle personality detail (texture or small accent). Keep everything else clean.",
+                "tags": ["interview", "modern"]
+              }
+            ]
+          },
+          "office_work": {
+            "safe": [
+              {
+                "id": "O_OF_S1",
+                "template": "Reliable work uniform: clean top + tailored-ish bottom + neat shoe. Add one structured bag/layer.",
+                "tags": ["office", "repeatable"]
+              },
+              {
+                "id": "O_OF_S2",
+                "template": "Tonal palette + structured layer. Looks premium with minimal effort.",
+                "tags": ["office", "polished"]
+              }
+            ],
+            "bold": [
+              {
+                "id": "O_OF_B1",
+                "template": "Work base + one confident accent (color or statement shoe). Keep everything else simple.",
+                "tags": ["office", "confident"]
+              }
+            ]
+          },
+          "wedding_guest": {
+            "safe": [
+              {
+                "id": "O_WG_S1",
+                "template": "Elevated silhouette + one dressy finish (shoe/bag/jewelry). Keep it refined and cohesive.",
+                "tags": ["wedding", "elevated"]
+              },
+              {
+                "id": "O_WG_S2",
+                "template": "Clean base + controlled shine (one). Let one element be the hero and keep the rest quiet.",
+                "tags": ["wedding", "polished"]
+              }
+            ],
+            "bold": [
+              {
+                "id": "O_WG_B1",
+                "template": "Statement piece + simple supports. Anchor it with a cohesive palette so it looks intentional.",
+                "tags": ["wedding", "bold"]
+              }
+            ]
+          },
+          "travel_airport": {
+            "safe": [
+              {
+                "id": "O_TR_S1",
+                "template": "Comfort base + light layer + clean shoe. Keep palette tight for a put-together travel look.",
+                "tags": ["travel", "comfort"]
+              },
+              {
+                "id": "O_TR_S2",
+                "template": "Easy silhouette + structured bag. The bag makes it look intentional even when comfy.",
+                "tags": ["travel", "polished"]
+              }
+            ],
+            "bold": [
+              {
+                "id": "O_TR_B1",
+                "template": "Neutral travel base + one standout layer (jacket/shirt). Keep everything else minimal.",
+                "tags": ["travel", "bold"]
+              }
+            ]
+          },
+          "vacation_resort": {
+            "safe": [
+              {
+                "id": "O_VR_S1",
+                "template": "Light silhouette + clean sandal + simple bag. Keep it breezy but structured.",
+                "tags": ["resort", "breezy"]
+              },
+              {
+                "id": "O_VR_S2",
+                "template": "Tonal palette + one natural texture element. Effortless and photo-ready.",
+                "tags": ["resort", "premium"]
+              }
+            ],
+            "bold": [
+              {
+                "id": "O_VR_B1",
+                "template": "Simple base + one bold color or print. Anchor with neutral accessories.",
+                "tags": ["resort", "bold"]
+              }
+            ]
+          },
+          "festive_ethnic": {
+            "safe": [
+              {
+                "id": "O_FE_S1",
+                "template": "Festive base + one statement jewelry piece. Keep everything else clean and cohesive.",
+                "tags": ["festive", "ethnic"]
+              },
+              {
+                "id": "O_FE_S2",
+                "template": "Traditional or fusion silhouette + controlled shine (one). Let fabric/detail lead.",
+                "tags": ["festive", "premium"]
+              }
+            ],
+            "bold": [
+              {
+                "id": "O_FE_B1",
+                "template": "Statement outfit + quiet supports. Keep palette cohesive so it looks expensive, not noisy.",
+                "tags": ["festive", "bold"]
+              }
+            ]
+          }
+        },
+
+        "menswear_formulas": {
+          "safe": [
+            {
+              "id": "MN_S1",
+              "template": "Clean tee/shirt + well-fitting trousers/jeans + neat sneaker/loafer. Add one structured layer if needed.",
+              "tags": ["menswear", "smart-casual"]
+            },
+            {
+              "id": "MN_S2",
+              "template": "Tonal menswear formula: same-family top+bottom + one texture layer. Minimal accessories, sharp finish.",
+              "tags": ["menswear", "premium"]
+            },
+            {
+              "id": "MN_S3",
+              "template": "Overshirt/jacket as hero + simple base. Keep the fit clean through shoulders and torso.",
+              "tags": ["menswear", "structure"]
+            }
+          ],
+          "bold": [
+            {
+              "id": "MN_B1",
+              "template": "Neutral base + one statement layer (color/texture). Anchor with clean shoe.",
+              "tags": ["menswear", "bold"]
+            }
+          ]
+        }
+      },
+      "usage_rules": {
+        "max_formulas_per_response": 3,
+        "default_formulas_per_response": 3,
+        "default_mix": "2_safe_1_bold_if_allowed",
+        "if_user_requests_minimal": "return 2 safe formulas",
+        "if_user_is_vulnerable": "return 2 safe formulas only; suppress bold",
+        "avoid": [
+          "brand names",
+          "pricing",
+          "product links",
+          "body commentary"
+        ]
+      }
+    }
+  }
+}

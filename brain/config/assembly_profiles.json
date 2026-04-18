@@ -1,0 +1,180 @@
+{
+  "assembly_profiles": {
+    "version": "1.0",
+    "description": "Deterministic response assembly templates referenced by intent routing. Each profile defines which components are required/allowed and hard constraints (length, stacking, tone safety).",
+    "global_rules": {
+      "caps_mirroring": "never",
+      "punctuation_mirroring": "never",
+      "max_questions_per_response": 1,
+      "max_sentences_layer_1": 3,
+      "max_sentences_layer_2_option_item": 1,
+      "no_rude_or_corrective_language": true,
+      "no_body_shaming": true,
+      "confidence_no_critique_unless_requested": true,
+      "default_max_upgrade_suggestions": 1,
+      "default_max_overlays": 1
+    },
+    "profiles": {
+      "layer_1_default": {
+        "goal": "Short, human, helpful. Reaction + 1 intelligence + optional overlay + closer.",
+        "required_components": ["reaction_starter", "primary_intelligence_fragment", "invitation_closer"],
+        "optional_components": ["polish_intentionality_overlay", "occasion_overlay", "memory_reference_overlay"],
+        "component_selection_rules": {
+          "primary_intelligence_fragment": {
+            "choose_from_banks": [
+              "silhouette_proportion_bank",
+              "color_harmony_bank",
+              "balance_focal_point_bank",
+              "polish_intentionality_bank"
+            ],
+            "default": "pick_best_match_to_prompt"
+          },
+          "optional_overlay": {
+            "max_count": 1,
+            "priority_order": ["occasion_overlay", "memory_reference_overlay", "polish_intentionality_overlay"],
+            "only_include_when_signaled": true
+          }
+        },
+        "constraints": {
+          "max_fragments_total": 3,
+          "max_upgrade_suggestions": 0,
+          "tone": "follow_tone_engine_and_user_prefs"
+        }
+      },
+
+      "layer_1_default_with_upgrade": {
+        "goal": "Give one improvement move only. Keep it simple and actionable.",
+        "required_components": [
+          "reaction_starter",
+          "primary_intelligence_fragment (constructive_allowed_if_requested_or_dissatisfied)",
+          "upgrade_suggestion (1)",
+          "invitation_closer"
+        ],
+        "optional_components": ["occasion_overlay", "polish_intentionality_overlay"],
+        "constraints": {
+          "max_upgrade_suggestions": 1,
+          "max_overlays": 1,
+          "max_fragments_total": 4,
+          "avoid": ["multiple_critiques", "lists"]
+        }
+      },
+
+      "layer_2_expandable_depth": {
+        "goal": "Provide multiple options (default 3 max) while staying readable and not verbose.",
+        "required_components": ["reaction_starter", "options_mode", "invitation_closer"],
+        "optional_components": ["occasion_overlay", "memory_reference_overlay", "polish_intentionality_overlay"],
+        "options_mode": {
+          "default_count": 3,
+          "max_count": 3,
+          "format_rules": {
+            "each_option_max_sentences": 1,
+            "each_option_structure": "Option label + outfit formula in one sentence",
+            "avoid_overlays_per_option": true,
+            "max_overlays_per_response": 1
+          },
+          "option_balance_rule": "2 safe + 1 slightly bolder if user_requests_bold OR default_policy_allows",
+          "if_user_requests_minimal": "all_options_safe_minimal"
+        },
+        "constraints": {
+          "max_questions_in_closer": 1,
+          "avoid": ["deep_analysis", "multiple_suggestions_per_option"]
+        }
+      },
+
+      "occasion_overlay_required": {
+        "goal": "Occasion-first guidance: confirm vibe, then guide with one intelligence fragment and a gentle next step.",
+        "required_components": ["reaction_starter", "occasion_overlay", "primary_intelligence_fragment", "invitation_closer"],
+        "optional_components": ["polish_intentionality_overlay", "upgrade_suggestion (1 if asked_for_improvement)"],
+        "constraints": {
+          "max_overlays": 1,
+          "max_upgrade_suggestions": 1,
+          "avoid": ["strict_dress_code_tone", "shaming_overdressed_underdressed"]
+        }
+      },
+
+      "color_harmony_focus": {
+        "goal": "Answer color question directly using color bank. No unrelated critique.",
+        "required_components": ["reaction_starter", "primary_intelligence_fragment (color_harmony)", "invitation_closer"],
+        "optional_components": ["polish_intentionality_overlay"],
+        "constraints": {
+          "force_primary_bank": "color_harmony_bank",
+          "must_not_include": ["silhouette_proportion_bank unless asked", "upgrade_suggestion unless asked_for_improvement"],
+          "max_fragments_total": 3
+        }
+      },
+
+      "balance_focus": {
+        "goal": "Answer accessory/balance question using balance bank. Keep it gentle and actionable.",
+        "required_components": ["reaction_starter", "primary_intelligence_fragment (balance_focal_point)", "invitation_closer"],
+        "optional_components": ["upgrade_suggestion (1 if user asks to simplify or enhance)"],
+        "constraints": {
+          "force_primary_bank": "balance_focal_point_bank",
+          "max_upgrade_suggestions": 1,
+          "max_fragments_total": 4
+        }
+      },
+
+      "silhouette_focus": {
+        "goal": "Answer proportion/fit question using silhouette bank. Keep it simple, not technical.",
+        "required_components": ["reaction_starter", "primary_intelligence_fragment (silhouette_proportion)", "invitation_closer"],
+        "optional_components": ["upgrade_suggestion (1 if asked_for_improvement)", "polish_intentionality_overlay"],
+        "constraints": {
+          "force_primary_bank": "silhouette_proportion_bank",
+          "max_upgrade_suggestions": 1,
+          "avoid": ["body_commentary", "harsh_fit_language"]
+        }
+      },
+
+      "memory_overlay_allowed": {
+        "goal": "Personalize lightly without being creepy. Memory is optional and capped.",
+        "required_components": ["reaction_starter", "primary_intelligence_fragment", "invitation_closer"],
+        "optional_components": ["memory_reference_overlay"],
+        "memory_rules": {
+          "enabled_only_if": "styling_user_prefs.memory_refs_enabled == true",
+          "max_per_response": 1,
+          "frequency_cap": {
+            "max_per_window": 2,
+            "window_turns": 8
+          }
+        },
+        "constraints": {
+          "max_overlays": 1,
+          "avoid": ["overly_specific_history", "corrective_memory_tone"]
+        }
+      },
+
+      "rating_mode_exclusive": {
+        "goal": "Give a rating response only. No unrelated overlays or extra fragments.",
+        "required_components": ["rating_mode.template"],
+        "optional_components": ["optional invitation_closer"],
+        "constraints": {
+          "exclusive": true,
+          "must_not_include": [
+            "occasion_overlay",
+            "memory_reference_overlay",
+            "primary_intelligence_fragment",
+            "upgrade_suggestion (unless embedded in rating template)"
+          ],
+          "max_sentences": 4,
+          "tone": "gentle_honesty"
+        }
+      },
+
+      "route_to_shopping_engine": {
+        "goal": "Hand off to shopping engine or ask shopping-specific context if styling engine is handling it temporarily.",
+        "required_components": ["reaction_starter", "invitation_closer (ask_context)"],
+        "optional_components": ["primary_intelligence_fragment (if asked about styling compatibility)"],
+        "constraints": {
+          "avoid": ["numeric_rating", "long_lists"],
+          "notes": [
+            "Prefer questions about use case, wardrobe match, frequency of wear, budget, and comfort."
+          ]
+        }
+      }
+    },
+    "dev_notes": [
+      "Component names correspond to banks: reaction_starters_bank, invitation_closers_bank, silhouette_proportion_bank, color_harmony_bank, balance_focal_point_bank, polish_intentionality_bank, upgrade_suggestions_bank, rating_mode_bank, occasion_overlays_bank, memory_reference_bank.",
+      "The response builder should select components based on intent routing + emotion overrides + user prefs, then enforce profile constraints."
+    ]
+  }
+}

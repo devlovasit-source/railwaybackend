@@ -1,0 +1,238 @@
+{
+  "shopping_router_map_v2": {
+    "version": "2.0",
+    "description": "Routes shopping-related user messages into the correct AHVI shopping engine. Prioritizes purchase conviction using wardrobe-aware combos.",
+
+    "router_priority": [
+      "compare_mode",
+      "purchase_conviction_mode",
+      "style_with_it_mode",
+      "dupe_find_mode",
+      "wardrobe_gap_mode",
+      "fallback_shopping_chat"
+    ],
+
+    "signals_contract": {
+      "expected_signals": [
+        "context_mode",
+        "asked_for_options",
+        "user_asks_should_i_buy",
+        "user_asks_worth_it",
+        "user_requests_compare",
+        "user_shares_product_link",
+        "user_shares_product_image",
+        "user_says_buying_item",
+        "user_requests_style_with_it",
+        "user_mentions_budget",
+        "user_mentions_brand",
+        "user_mentions_category",
+        "user_mentions_color",
+        "user_mentions_occasion",
+        "user_mentions_place",
+        "emotion_state"
+      ],
+      "notes": [
+        "Router may infer intent using keyword matching if signals are missing.",
+        "Emotion state 'vulnerable' suppresses hard-sell behavior."
+      ]
+    },
+
+    "keyword_intents": {
+      "compare_mode": {
+        "keywords_any": [
+          "compare",
+          "which one",
+          "vs",
+          "versus",
+          "better",
+          "choose between"
+        ],
+        "keywords_soft": [
+          "help me pick",
+          "what should i buy",
+          "which is best"
+        ]
+      },
+
+      "purchase_conviction_mode": {
+        "keywords_any": [
+          "should i buy",
+          "worth it",
+          "is it worth",
+          "buy this",
+          "purchase",
+          "get this",
+          "checkout"
+        ],
+        "keywords_soft": [
+          "thinking of buying",
+          "tempted",
+          "convince me",
+          "do i need this"
+        ]
+      },
+
+      "style_with_it_mode": {
+        "keywords_any": [
+          "style this",
+          "wear this with",
+          "what can i wear it with",
+          "match this",
+          "pair this",
+          "outfits with"
+        ],
+        "keywords_soft": [
+          "how to style",
+          "ideas with this"
+        ]
+      },
+
+      "dupe_find_mode": {
+        "keywords_any": [
+          "dupe",
+          "similar",
+          "alternative",
+          "lookalike",
+          "cheaper version",
+          "same style"
+        ],
+        "keywords_soft": [
+          "something like this"
+        ]
+      },
+
+      "wardrobe_gap_mode": {
+        "keywords_any": [
+          "what am i missing",
+          "wardrobe gap",
+          "capsule wardrobe",
+          "basics i need"
+        ],
+        "keywords_soft": [
+          "what should i add next"
+        ]
+      }
+    },
+
+    "routes": [
+      {
+        "id": "R001_compare",
+        "mode": "compare_mode",
+        "when_any_of": [
+          "signals.user_requests_compare == true",
+          "keyword_match.compare_mode == true"
+        ],
+        "engine": {
+          "key": "shopping_compare_engine",
+          "file": "brain/shopping/rules/shopping_compare_engine_v1.json"
+        },
+        "output_mode": "comparison_plus_combos",
+        "notes": [
+          "Comparison mode may call purchase conviction for the winning item."
+        ]
+      },
+
+      {
+        "id": "R002_purchase_conviction",
+        "mode": "purchase_conviction_mode",
+        "when_any_of": [
+          "signals.user_asks_should_i_buy == true",
+          "signals.user_asks_worth_it == true",
+          "signals.user_says_buying_item == true",
+          "signals.user_shares_product_link == true",
+          "signals.user_shares_product_image == true",
+          "keyword_match.purchase_conviction_mode == true"
+        ],
+        "engine": {
+          "key": "purchase_conviction_engine",
+          "file": "brain/shopping/rules/purchase_conviction_engine_v1.json"
+        },
+        "output_mode": "conviction_3_combos",
+        "handoff": {
+          "needs_product_candidate": true,
+          "if_missing_product_candidate": {
+            "ask_one_question": "What are you buying — bag, shoes, jacket, top, or something else? And what color is it?",
+            "fallback_behavior": "Return 3 generic combos once category is known."
+          }
+        },
+        "suppression": {
+          "if_emotion_state_vulnerable": {
+            "suppress": [
+              "hard_sell_lines",
+              "price_pressure"
+            ],
+            "prefer": [
+              "comfort_first",
+              "gentle_questions"
+            ]
+          }
+        }
+      },
+
+      {
+        "id": "R003_style_with_it",
+        "mode": "style_with_it_mode",
+        "when_any_of": [
+          "signals.user_requests_style_with_it == true",
+          "keyword_match.style_with_it_mode == true"
+        ],
+        "engine": {
+          "key": "purchase_conviction_engine",
+          "file": "brain/shopping/rules/purchase_conviction_engine_v1.json"
+        },
+        "output_mode": "conviction_3_combos",
+        "notes": [
+          "Style-with-it uses the same engine to demonstrate versatility."
+        ]
+      },
+
+      {
+        "id": "R004_dupe_find",
+        "mode": "dupe_find_mode",
+        "when_any_of": [
+          "keyword_match.dupe_find_mode == true"
+        ],
+        "engine": {
+          "key": "shopping_dupe_engine",
+          "file": "brain/shopping/rules/shopping_dupe_engine_v1.json"
+        },
+        "output_mode": "dupe_suggestions",
+        "notes": [
+          "After suggesting dupes, optionally run conviction engine for the best dupe."
+        ]
+      },
+
+      {
+        "id": "R005_wardrobe_gap",
+        "mode": "wardrobe_gap_mode",
+        "when_any_of": [
+          "keyword_match.wardrobe_gap_mode == true"
+        ],
+        "engine": {
+          "key": "wardrobe_gap_engine",
+          "file": "brain/shopping/rules/wardrobe_gap_engine_v1.json"
+        },
+        "output_mode": "gap_report",
+        "notes": [
+          "Gap analysis may hand off to shopping_decision_engine."
+        ]
+      }
+    ],
+
+    "fallback": {
+      "mode": "fallback_shopping_chat",
+      "engine": {
+        "key": "shopping_decision_engine",
+        "file": "brain/shopping/rules/shopping_decision_engine_v1.json"
+      },
+      "behavior": "Ask one clarifying question if category or intent is unclear. Otherwise return 2-3 suggestions."
+    },
+
+    "dev_notes": [
+      "Purchase conviction should be default for product links or images.",
+      "Conviction engine should prioritize wardrobe-first matching.",
+      "Router must choose exactly one mode per turn.",
+      "Avoid starting responses with retailer names before item specification."
+    ]
+  }
+}

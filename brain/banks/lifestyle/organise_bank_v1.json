@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "bills_utilities": [
+    { "key": "monthly_bills_core", "items": ["Electricity", "Internet", "Mobile", "Rent/EMI"] }
+  ],
+  "expenses": {
+    "categories": ["Food", "Travel", "Shopping", "Bills", "Health", "Subscriptions"],
+    "budget_templates": [
+      { "key": "50_30_20", "split": [{ "name": "Needs", "pct": 50 }, { "name": "Wants", "pct": 30 }, { "name": "Savings", "pct": 20 }] }
+    ]
+  },
+  "medicine_schedules": [
+    {
+      "key": "daily_meds_basic",
+      "slots": ["morning", "afternoon", "night"],
+      "notes": ["Do not change dosage without doctor advice"]
+    }
+  ],
+  "weekly_routines": [
+    { "key": "home_reset_sunday_90min", "tasks": ["Laundry", "Bed sheets", "Clean vanity", "Plan week"] }
+  ]
+}

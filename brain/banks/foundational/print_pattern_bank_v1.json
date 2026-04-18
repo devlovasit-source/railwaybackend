@@ -1,0 +1,87 @@
+{
+  "styling_intelligence": {
+    "print_pattern_bank_v1": {
+      "version": "1.0",
+      "description": "Print/pattern intelligence: scale, density, contrast, and mixing rules. Keeps advice friendly, non-judgy, and practical.",
+      "categories": {
+        "positive_print_harmony": [
+          "The print placement feels balanced—nice.",
+          "This pattern reads intentional, not busy.",
+          "The scale of the print works really well on the outfit.",
+          "The pattern adds personality without taking over.",
+          "This print has a clean rhythm—easy on the eye.",
+          "The print + solid pairing is super smart here.",
+          "That pattern choice feels polished, not loud.",
+          "The print gives interest but still feels wearable.",
+          "The density is just right—doesn’t overwhelm the look.",
+          "This print feels elevated because the rest is clean."
+        ],
+        "print_scale_guidance": [
+          "This print scale feels balanced with the silhouette.",
+          "A smaller-scale print would read cleaner and more minimal.",
+          "A larger-scale print would make a stronger statement—if you want bold.",
+          "This scale is working because there’s enough solid space around it.",
+          "The print isn’t fighting the outfit shape, which is perfect.",
+          "If you want it more premium, keep the print scale consistent across pieces.",
+          "Large prints look best when the rest is very simple.",
+          "Small prints look best when the silhouette is clean and not too layered."
+        ],
+        "print_density_contrast": [
+          "The contrast level is controlled—so it looks polished.",
+          "The print density feels calm and wearable.",
+          "This high-contrast print works because everything else is neutral.",
+          "The print feels soft in contrast, which reads expensive.",
+          "The contrast is a bit strong, so it can steal focus quickly.",
+          "This print is dense, so keeping accessories minimal is the move.",
+          "If you want it cleaner, reduce contrast or density in one area.",
+          "A calmer contrast print would make it feel more refined."
+        ],
+        "constructive_print_clash_or_busy": [
+          "It’s cute, but the prints are slightly competing.",
+          "The eye doesn’t know where to land yet—just a bit busy.",
+          "The print density is high in multiple places, so it feels crowded.",
+          "The patterns aren’t speaking the same language right now.",
+          "The contrast is strong on both pieces, so it’s fighting a little.",
+          "It’s close—one piece just needs to calm down.",
+          "The prints are both trying to be the hero at once.",
+          "The pattern mix could be cleaner with one solid anchor.",
+          "The outfit feels slightly over-styled because of competing prints.",
+          "This would look more premium with one print and one solid."
+        ],
+        "refinement_suggestions": [
+          "Make one piece the hero print and keep the other solid.",
+          "Anchor the print with a neutral shoe/bag to calm it down.",
+          "If you’re mixing prints: keep one small-scale + one large-scale, and match at least one color.",
+          "If you want it premium: repeat one color (shoe/bag/top) so it feels intentional.",
+          "Reduce accessories when the print is busy—let the pattern do the talking.",
+          "If the print is high-contrast, keep the silhouette simple and clean.",
+          "Add a solid layer (jacket/overshirt) to break up the print density.",
+          "Choose one focal area for print (top OR bottom) and keep the rest quiet.",
+          "If you want minimal: swap to a lower-contrast version of the print.",
+          "Keep textures matte when prints are loud—matte makes it look expensive."
+        ],
+        "print_types_soft_tags": [
+          "stripes",
+          "checks",
+          "florals",
+          "polka dots",
+          "geometric",
+          "animal print",
+          "abstract",
+          "ikat",
+          "paisley",
+          "solid with texture"
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 print observation. Add 1 refinement only if user asks 'too much?' or says it feels off.",
+        "avoid": [
+          "Calling prints 'tacky' or 'cheap'.",
+          "Over-explaining print theory."
+        ],
+        "tone_integration": "Reaction → Print observation → Optional refinement → Invitation closer."
+      }
+    }
+  }
+}

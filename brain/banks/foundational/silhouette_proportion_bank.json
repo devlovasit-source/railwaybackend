@@ -1,0 +1,128 @@
+{
+  "styling_intelligence": {
+    "silhouette_proportion_bank_v1": {
+      "version": "1.1",
+      "description": "Modular silhouette and proportion observation fragments. Each line is 1 sentence (max 2 only when necessary). Designed to plug into structured responses without sounding clinical or judgmental.",
+      "categories": {
+        "positive_balanced": [
+          "The silhouette works really well.",
+          "The proportions feel balanced.",
+          "This creates a clean vertical line.",
+          "The structure sharpens the overall look.",
+          "There’s a nice balance between fitted and relaxed.",
+          "The shape feels intentional.",
+          "The cut flatters your natural frame.",
+          "The volume is evenly distributed.",
+          "This feels proportionate and put together.",
+          "The tailoring gives it a polished finish.",
+          "The fit looks clean and well balanced.",
+          "This sits nicely on your frame—nothing feels off.",
+          "The overall shape reads smooth and confident.",
+          "This has a really flattering outline.",
+          "The proportions feel easy and intentional.",
+          "The outfit reads really balanced overall.",
+          "The silhouette looks clean from top to bottom.",
+          "This sits in a really flattering way—nothing fights for space.",
+          "The proportions feel calm and intentional.",
+          "The shape feels polished without feeling try-hard.",
+          "This outline looks neat and confident.",
+          "The fit feels aligned—top and bottom are working together.",
+          "This creates a smooth, streamlined look.",
+          "The lengths are playing nicely together.",
+          "This reads put-together in a very easy way."
+        ],
+        "positive_shape_dynamics": [
+          "The fitted top and wider bottom create a strong contrast.",
+          "The cropped length helps elongate the silhouette.",
+          "The high waist balances the upper half nicely.",
+          "The longer layer adds depth without overwhelming it.",
+          "The clean lines make it feel sharp.",
+          "The waistline placement works in your favor here.",
+          "The lengths create a nice, streamlined look.",
+          "The layering is adding shape without adding bulk.",
+          "The volume is controlled, which makes it feel polished.",
+          "The line of the outfit feels long and clean.",
+          "The neckline and length pairing creates a strong vertical line.",
+          "The waist placement is doing a lot of good here.",
+          "That slight volume contrast makes it feel styled.",
+          "The balance between structure and softness is working.",
+          "The longer line in the outfit makes it feel elevated.",
+          "The cropped element adds definition without chopping the look.",
+          "The layering is adding depth, but it still feels clean.",
+          "The shape has a nice lift—it looks intentional.",
+          "The proportions feel modern and well chosen.",
+          "The silhouette has a strong, confident flow."
+        ],
+        "constructive_slightly_off": [
+          "The top feels structured, but the bottom is looser in comparison.",
+          "The proportions are slightly competing with each other.",
+          "There’s more visual weight on one side.",
+          "The silhouette could feel a little cleaner.",
+          "The fit looks slightly oversized in one area.",
+          "The layering adds bulk where it doesn’t need to.",
+          "The shape feels a bit undefined right now.",
+          "The lengths aren’t fully aligning.",
+          "It’s close, but the balance isn’t quite there.",
+          "The overall outline feels slightly heavy.",
+          "The waistline placement feels slightly off.",
+          "The top length is cutting the silhouette in an awkward spot.",
+          "The bottom is adding a bit more volume than needed.",
+          "The layers are slightly blurring the shape.",
+          "The overall fit feels a touch boxy right now.",
+          "The outfit is working, but one length feels a bit off.",
+          "The silhouette feels slightly interrupted in the middle.",
+          "The balance is close—just a bit heavy in one area.",
+          "One piece is adding extra volume where it doesn’t need to.",
+          "The top and bottom aren’t quite meeting in the middle yet.",
+          "The layering is slightly widening the outline.",
+          "The waist point is a little unclear right now.",
+          "The fit looks good, but the shape could be cleaner.",
+          "The proportions feel slightly split rather than blended.",
+          "It feels a touch unstructured in the overall outline."
+        ],
+        "refinement_suggestions": [
+          "If you tuck the top slightly, it’ll feel sharper.",
+          "Switching to a sleeker shoe would balance it out.",
+          "Defining the waist a bit more would elevate it.",
+          "Reducing volume on one side would help.",
+          "A more structured layer could tighten the silhouette.",
+          "If you shift the waistline up slightly, it’ll look more balanced.",
+          "A cleaner hemline choice would make this feel sharper.",
+          "If you swap one piece for a slightly more structured version, the silhouette will tighten up.",
+          "If you reduce volume in one area, the whole look will feel more streamlined.",
+          "A small fit adjustment at the waist or shoulder would elevate this fast.",
+          "If you define the waist slightly, it’ll instantly look more intentional.",
+          "If you adjust the top length with a tuck or half-tuck, it’ll balance out fast.",
+          "A cleaner outer layer would sharpen the whole silhouette.",
+          "If you reduce volume on one side, the outfit will feel more streamlined.",
+          "A slightly sleeker shoe would help elongate the line.",
+          "If you keep the layers lighter, the shape will read cleaner.",
+          "If you swap one piece for a more structured version, it’ll elevate immediately.",
+          "A small hem adjustment can change the proportions in a good way.",
+          "If you simplify the outline, the outfit will look more premium.",
+          "If you shift the balance between fitted and relaxed, it’ll click."
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 observation. Add 1 refinement only if the user requests improvement or signals dissatisfaction.",
+        "constructive_policy": {
+          "only_use_constructive_when": [
+            "signals.asked_for_improvement == true",
+            "signals.expressed_dissatisfaction == true",
+            "signals.asked_be_honest == true"
+          ],
+          "avoid_when": [
+            "signals.expressed_confidence == true AND signals.asked_for_improvement != true",
+            "signals.emotion_state == vulnerable"
+          ]
+        },
+        "avoid": [
+          "Stacking multiple constructive fragments in one short response.",
+          "Using more than one refinement suggestion unless the user asks for options."
+        ],
+        "tone_integration": "Wrap fragments inside AHVI's response structure (Reaction → Observation → Optional refinement → Invitation). Keep it human, not technical."
+      }
+    }
+  }
+}

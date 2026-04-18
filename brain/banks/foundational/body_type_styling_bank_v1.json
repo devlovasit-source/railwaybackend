@@ -1,0 +1,596 @@
+{
+  "styling_intelligence": {
+    "body_type_styling_bank_v1": {
+      "version": "1.2",
+      "description": "Body-type supportive styling guidance with height-aware modifiers. Focus: what tends to look great (by goal), not 'rules'. No shaming, no absolutes.",
+      "global_tone_policy": {
+        "do": [
+          "Talk about clothes, lines, balance—not the body.",
+          "Use optional language: 'can', 'often', 'if you want'.",
+          "Give 1–2 strongest ideas by default; expand only if user asks.",
+          "If user expresses confidence, affirm first; tweak only if asked."
+        ],
+        "dont": [
+          "Say 'fix', 'hide flaws', 'problem areas'.",
+          "Make weight/health assumptions.",
+          "Use gender stereotypes."
+        ]
+      },
+      "how_to_use": {
+        "default_pattern": "Reaction → 1 insight (optional) → 1 outfit formula → optional accessory tip → invitation closer.",
+        "max_body_type_mentions_per_response": 1,
+        "max_height_mentions_per_response": 1,
+        "when_to_use": [
+          "signals.user_asks_for_flattering == true",
+          "signals.user_requests_personalization == true",
+          "signals.user_mentions_body_type == true",
+          "signals.user_mentions_height == true",
+          "signals.user_mentions_fit_issue == true"
+        ],
+        "when_to_suppress": [
+          "signals.emotion_state == vulnerable",
+          "signals.user_requests_no_body_type == true"
+        ]
+      },
+
+      "shared_height_rules": {
+        "petite": {
+          "what_looks_good": [
+            "Higher waist placement + clean hemlines = instant length.",
+            "Tonal/monochrome looks read sleek and elevated.",
+            "Cropped/waist-length layers keep proportions sharp.",
+            "Smaller-scale prints and cleaner silhouettes (if you want minimal)."
+          ],
+          "quick_wins": [
+            "Half-tuck or shorter top length to lift the waistline.",
+            "Shoes closer to the trouser color to extend the line."
+          ]
+        },
+        "normal": {
+          "what_looks_good": [
+            "Most silhouettes work—keep one thing intentional (waistline, layer, or hero accessory).",
+            "One fitted + one relaxed piece reads balanced and styled."
+          ],
+          "quick_wins": [
+            "If it feels off: tweak tuck/hem/shoe first."
+          ]
+        },
+        "tall": {
+          "what_looks_good": [
+            "Long-line outerwear looks effortlessly premium.",
+            "Wide-leg trousers and maxi lengths look elegant and intentional.",
+            "Intentional breaks (belt/color-block) can look very chic."
+          ],
+          "quick_wins": [
+            "Add one waist-level anchor (belt/jacket length) to break the line cleanly."
+          ]
+        }
+      },
+
+      "women": {
+        "pear": {
+          "style_intent": "Add presence up top + keep the bottom clean and fluid (balance without hiding curves).",
+          "what_looks_good": {
+            "tops": [
+              "Structured shoulders or collars (blazer, shoulder detail, puff sleeve—controlled).",
+              "V / scoop / square necklines to open the upper frame.",
+              "Brighter or cleaner tops if you want attention higher."
+            ],
+            "bottoms": [
+              "High-rise straight, wide-leg, or bootcut (long clean line).",
+              "Solid/darker bottoms when you want the top to lead.",
+              "A-line or bias skirts that skim with movement."
+            ],
+            "dresses": [
+              "Wrap, fit-and-flare, A-line with a defined waist.",
+              "Midi lengths with movement (very balanced)."
+            ],
+            "outerwear": [
+              "Cropped jackets at the waist OR long-line layers worn open for vertical lines."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Cropped jacket + high-rise straight pant (keeps legs long).",
+                "A-line midi with a clean waist seam (not drop-waist).",
+                "Top and bottom in similar tones; let neckline/earrings do the focus."
+              ],
+              "avoid_if_goal_is_balance": [
+                "Very long tops that end at widest hip point (unless intentionally oversized)."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Structured top + wide-leg trouser (clean, confident).",
+                "Bright top + dark bottom + one hero accessory."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Long-line layer worn open + wide-leg trouser (premium verticals).",
+                "Maxi skirt with clean waistband + simple top (elegant balance)."
+              ]
+            }
+          },
+          "accessory_moves": [
+            "Statement earrings/necklace to pull focus upward.",
+            "Belt at natural waist to make the outfit feel intentional.",
+            "Shoes close to pant tone to extend the line."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Structured top + high-rise straight jeans + sleek shoe.",
+              "Clean top + dark wide-leg trousers + minimal accessories."
+            ],
+            "bold": [
+              "Statement sleeve/top + simple wide-leg bottom + quiet shoes."
+            ]
+          }
+        },
+
+        "hourglass": {
+          "style_intent": "Keep proportions clean; define the waist if you want (without bulky layers).",
+          "what_looks_good": {
+            "tops": [
+              "Wrap tops, fitted knits, clean bodysuits.",
+              "V / square / scoop necklines with structure."
+            ],
+            "bottoms": [
+              "High-rise straight/bootcut/wide-leg (pick vibe).",
+              "Clean waistbands; minimal bunching."
+            ],
+            "dresses": [
+              "Wrap, sheath, fit-and-flare with waist definition.",
+              "Belted shirt dress (subtle belt)."
+            ],
+            "outerwear": [
+              "Tailored blazers, belted coats, layers worn open with shape."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Shorter jacket lengths (waist/upper-hip) + high-rise bottoms.",
+                "Monochrome base + one crisp accessory (instant polish)."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Fitted top + straight pant + structured bag (clean formula)."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Long-line coat/blazer + defined waist moment underneath (very premium).",
+                "Wide-leg trouser + fitted knit (balanced, elegant)."
+              ]
+            }
+          },
+          "accessory_moves": [
+            "Belts (thin/medium) are an easy polish move.",
+            "Structured bags keep it refined.",
+            "One statement piece max (clean finish)."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Fitted top + high-rise straight pants + structured bag.",
+              "Wrap dress + simple shoe + one clean accessory."
+            ],
+            "bold": [
+              "Monochrome base + bold shoe or bag as the hero."
+            ]
+          }
+        },
+
+        "inverted_triangle": {
+          "style_intent": "Keep the top clean and let the lower half add balance (without hiding the upper frame).",
+          "what_looks_good": {
+            "tops": [
+              "Simple necklines; minimal shoulder detailing.",
+              "Drapey fabrics or clean shoulder lines."
+            ],
+            "bottoms": [
+              "Wide-leg, pleated, A-line skirts; lighter bottoms if you want balance.",
+              "High-rise for elongation."
+            ],
+            "dresses": [
+              "Fit-and-flare, A-line, wrap with gentle skirt volume."
+            ],
+            "outerwear": [
+              "Long-line layers worn open; minimal shoulder padding."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Clean top + high-rise A-line mini/midi (keeps legs long).",
+                "Wide-leg but not too long—hem clean and intentional."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Simple knit + A-line skirt + minimal jewelry."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Wide-leg trouser + clean top + longline layer (effortless balance).",
+                "Maxi A-line skirt + fitted top (very elegant)."
+              ]
+            }
+          },
+          "accessory_moves": [
+            "Crossbody or bag worn lower can add balance.",
+            "Shoes with a little presence can anchor the look."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Clean top + wide-leg trousers + sleek belt.",
+              "Simple knit + A-line skirt + minimal jewelry."
+            ],
+            "bold": [
+              "Neutral top + patterned bottom + simple shoes."
+            ]
+          }
+        },
+
+        "apple": {
+          "style_intent": "Comfortable structure + vertical lines + easy definition (not restrictive).",
+          "what_looks_good": {
+            "tops": [
+              "V / scoop necklines; open layers; longer tops with clean drape.",
+              "Structured-but-soft fabrics that skim, not cling."
+            ],
+            "bottoms": [
+              "High-rise straight/wide-leg with a clean front.",
+              "A-line or bias skirts with movement."
+            ],
+            "dresses": [
+              "Wrap/soft empire-ish waist placement; shifts with vertical seams."
+            ],
+            "outerwear": [
+              "Long-line open layers; light coats worn open; vertical seams."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Shorter open layer (ends around upper-hip) + high-rise straight pant.",
+                "Tonal dressing to keep the line long."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "V-neck top + straight trouser + open layer (clean vertical)."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Longline open coat + straight trouser (premium verticals).",
+                "Monochrome base + statement jacket worn open."
+              ]
+            }
+          },
+          "accessory_moves": [
+            "Lightweight longer necklace/scarf for a vertical line (optional).",
+            "Structured bag adds polish.",
+            "Shoes near pant tone lengthen the line."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "V-neck top + straight trousers + open layer.",
+              "Tonal set + structured bag + clean shoe."
+            ],
+            "bold": [
+              "Monochrome base + statement jacket worn open."
+            ]
+          }
+        },
+
+        "rectangle": {
+          "style_intent": "Add shape with waist placement/layering (or go sleek-minimal on purpose).",
+          "what_looks_good": {
+            "tops": [
+              "Wraps, belted shirts, cropped jackets.",
+              "Layering that creates a waist moment."
+            ],
+            "bottoms": [
+              "High-rise bottoms, pleats, wider legs; skirts with movement."
+            ],
+            "dresses": [
+              "Fit-and-flare, belted dresses, slip + layer for shape."
+            ],
+            "outerwear": [
+              "Cropped or belted outerwear; long-line worn open."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Cropped jacket + high-rise wide-leg (hem clean).",
+                "Belted shirt dress with a higher waist seam."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Contrast top/bottom + one clean belt detail (easy shape)."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Long-line coat + belt/waist detail underneath (super chic).",
+                "Wide-leg trouser + structured top (dimension without fuss)."
+              ]
+            }
+          },
+          "accessory_moves": [
+            "Belts/waist details add instant shape.",
+            "Statement earrings or neckline accessory adds dimension."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Belted shirt + straight pants + clean sneaker.",
+              "Cropped jacket + high-rise wide-leg + minimal jewelry."
+            ],
+            "bold": [
+              "Contrast top/bottom + statement belt + simple shoe."
+            ]
+          }
+        }
+      },
+
+      "men": {
+        "oval": {
+          "style_intent": "Comfortable structure + vertical lines + clean shoulder fit. Skim, don’t cling.",
+          "what_looks_good": {
+            "tops": [
+              "Open collars, henleys, button-down slightly open.",
+              "Structured overshirts/light jackets worn open."
+            ],
+            "bottoms": [
+              "Straight or slight taper with a clean waist.",
+              "Mid-rise often sits comfortably."
+            ],
+            "outerwear": [
+              "Longer open layers; clean lapels; simple bomber/overshirt."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Shorter jacket length + straight trouser (no stacking).",
+                "Tonal outfit + clean sneaker (length + polish)."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Tonal tee + straight trouser + open overshirt (easy upgrade)."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Long-line coat + straight trouser (premium vertical).",
+                "Relaxed straight trouser + clean knit polo (effortless)."
+              ]
+            }
+          },
+          "menswear_polish_notes": [
+            "Shoulder fit is the biggest ‘expensive’ lever.",
+            "Clean trouser break (no stacking) looks sharp instantly."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Tonal tee + straight trousers + open overshirt + clean sneaker.",
+              "Button-down + straight jeans + loafer/sneaker."
+            ],
+            "bold": [
+              "Neutral base + statement jacket (worn open) + simple shoe."
+            ]
+          }
+        },
+
+        "triangle": {
+          "style_intent": "Build presence up top (layering/collar/structure) and keep the lower half clean.",
+          "what_looks_good": {
+            "tops": [
+              "Structured jackets, overshirts, layered looks.",
+              "Crew/henley with good shoulder fit."
+            ],
+            "bottoms": [
+              "Dark, clean straight fits.",
+              "Avoid extreme skinny if balance is the goal."
+            ],
+            "outerwear": [
+              "Blazer, denim jacket, structured overshirt."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Cropped/waist-length overshirt + straight trouser (keeps it sharp).",
+                "Keep layers light—structure without bulk."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Structured jacket + simple tee + dark straight jeans."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Longer overshirt + straight trouser (very premium).",
+                "Textured top layer + clean dark bottom (top presence)."
+              ]
+            }
+          },
+          "menswear_polish_notes": [
+            "Top structure (collar/layer) is the fastest balance move.",
+            "Keep pants clean and simple so the top reads intentional."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Structured jacket + simple tee + dark straight jeans + clean sneaker.",
+              "Overshirt + tee + straight trousers + watch."
+            ],
+            "bold": [
+              "Statement top layer + neutral base + minimal accessories."
+            ]
+          }
+        },
+
+        "inverted_triangle": {
+          "style_intent": "Keep the upper body clean (not bulky) and balance with straighter/relaxed bottoms.",
+          "what_looks_good": {
+            "tops": [
+              "Clean tees/shirts with minimal shoulder bulk.",
+              "Avoid overly tight sleeves if you want softer lines."
+            ],
+            "bottoms": [
+              "Straight or relaxed fits to balance proportions.",
+              "Textures/pleats add subtle dimension."
+            ],
+            "outerwear": [
+              "Minimal-shoulder jackets; simple bomber; clean coat."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Straight trouser with clean hem + simple top (no extra bulk).",
+                "Short bomber/overshirt length (keeps proportions crisp)."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Clean shirt + straight trouser + minimal sneaker."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Relaxed straight trouser + clean top + long coat (effortless).",
+                "Textured bottom + neutral top (balanced)."
+              ]
+            }
+          },
+          "menswear_polish_notes": [
+            "Avoid stacking bulk on top—clean lines read premium.",
+            "Straight trousers balance athletic shoulders naturally."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Clean shirt + straight trousers + minimal sneaker.",
+              "Tee + relaxed trouser + simple jacket."
+            ],
+            "bold": [
+              "Patterned/texture bottom + neutral top + clean shoe."
+            ]
+          }
+        },
+
+        "trapezoid": {
+          "style_intent": "Lean into balanced proportions: clean fits + premium finishing.",
+          "what_looks_good": {
+            "tops": [
+              "Oxford, knit polo, clean tee—fit is the hero.",
+              "Most necklines work (choose vibe)."
+            ],
+            "bottoms": [
+              "Straight or slight taper for a clean line.",
+              "Tonal sets read very premium."
+            ],
+            "outerwear": [
+              "Blazer, coat, overshirt—clean fit wins."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Slight taper + clean hem + structured top (sharp).",
+                "Tonal outfit to lengthen."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Shirt + straight trouser + loafer + watch."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Long coat + wide/straight trouser (very elegant).",
+                "Monochrome base + statement outerwear."
+              ]
+            }
+          },
+          "menswear_polish_notes": [
+            "Trouser break + shoe cleanliness = instant ‘expensive’.",
+            "Collar sitting clean makes basics look elevated."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Tonal set + clean sneaker + structured jacket.",
+              "Shirt + straight trouser + loafer + watch."
+            ],
+            "bold": [
+              "Neutral base + statement shoe or outer layer."
+            ]
+          }
+        },
+
+        "rectangle": {
+          "style_intent": "Add dimension with layers/texture, or go sleek-minimal with sharp fits.",
+          "what_looks_good": {
+            "tops": [
+              "Overshirt/jacket adds shape fast.",
+              "Textured knits/collars add dimension."
+            ],
+            "bottoms": [
+              "Straight/taper fits; avoid extremes unless style choice."
+            ],
+            "outerwear": [
+              "Overshirt, bomber, structured jacket—fit is key."
+            ]
+          },
+          "height_modifiers": {
+            "petite": {
+              "best_bets": [
+                "Shorter overshirt length + straight trouser (no stacking).",
+                "One texture piece + tonal base."
+              ]
+            },
+            "normal": {
+              "best_bets": [
+                "Textured top + straight trouser + clean sneaker."
+              ]
+            },
+            "tall": {
+              "best_bets": [
+                "Longline layer + straight trouser + clean collar (premium).",
+                "Monochrome base + statement jacket."
+              ]
+            }
+          },
+          "menswear_polish_notes": [
+            "One textured piece makes the whole fit feel intentional.",
+            "Clean hemlines stop the look from feeling sloppy."
+          ],
+          "go_to_formulas": {
+            "safe": [
+              "Textured top + straight trouser + clean sneaker.",
+              "Tee + overshirt + jeans + watch."
+            ],
+            "bold": [
+              "Monochrome base + statement jacket."
+            ]
+          }
+        }
+      },
+
+      "dev_notes": [
+        "Height modifiers are applied AFTER selecting body type guidance. Use max 1 height snippet per response.",
+        "If user didn’t opt into body type: translate to neutral fit goals (vertical line, structure, balance) without labels.",
+        "Default output: pick ONE of (best_bets OR one formula). Keep it light, then ask one micro-question."
+      ]
+    }
+  }
+}

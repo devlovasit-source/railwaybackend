@@ -1,0 +1,93 @@
+{
+  "styling_intelligence": {
+    "details_cut_bank_v1": {
+      "version": "1.0",
+      "description": "Micro-intelligence for necklines, sleeves, hems, and cut details. Keeps advice flexible and confidence-first.",
+      "categories": {
+        "positive_neckline": [
+          "That neckline really frames the look nicely.",
+          "This neckline choice feels clean and intentional.",
+          "The neckline opens the outfit up in a flattering way.",
+          "This neckline adds polish without extra effort.",
+          "The neckline works with the silhouette—very balanced.",
+          "This neckline gives a sharp, confident finish.",
+          "It feels modern and clean around the face/neck area.",
+          "That neckline is doing a lot of styling work—quietly.",
+          "This reads elegant because the lines are clean.",
+          "The neckline detail feels premium and put together."
+        ],
+        "positive_sleeves": [
+          "The sleeve shape adds structure in a really good way.",
+          "That sleeve length is balancing the look nicely.",
+          "The sleeve volume feels controlled—polished.",
+          "This sleeve detail adds personality without chaos.",
+          "The sleeves make the outfit feel more intentional.",
+          "This sleeve length looks very clean and wearable.",
+          "The sleeve fit keeps the overall line sharp.",
+          "This gives a nice proportion break—very chic.",
+          "The sleeve shape complements the silhouette well.",
+          "This sleeve choice makes it feel more styled."
+        ],
+        "positive_hems_and_lengths": [
+          "That hem length is hitting at a really good point.",
+          "The length choice makes the silhouette look clean.",
+          "This proportion break feels intentional and balanced.",
+          "That length adds a nice vertical line.",
+          "This hemline makes the outfit feel polished.",
+          "The length works with the shoe choice nicely.",
+          "This reads premium because the lengths are aligned.",
+          "That hem gives a clean outline—no awkward cutting.",
+          "The proportions feel long and smooth here.",
+          "The length choice makes it feel effortlessly styled."
+        ],
+        "constructive_cut_feels_off": [
+          "The cut is good, but the neckline might be fighting the vibe a little.",
+          "This sleeve shape is slightly competing with the rest of the silhouette.",
+          "The hem is hitting at an awkward point—so it breaks the line.",
+          "The neckline is a bit closed/heavy for the look you’re going for.",
+          "The sleeve length is slightly shortening the overall line.",
+          "This cut feels slightly boxy in one spot—not bad, just less defined.",
+          "The lengths aren’t fully syncing, so it feels a touch off.",
+          "The neckline detail is pulling focus more than needed.",
+          "The sleeve volume is adding bulk where you may not want it.",
+          "It’s close—just one cut/length tweak would make it click."
+        ],
+        "refinement_suggestions": [
+          "If you open the neckline slightly (V/scoop/collar), it’ll feel lighter and more polished.",
+          "If you swap to a cleaner sleeve (less volume), the silhouette will read sharper.",
+          "If you adjust the hem (slightly shorter/longer), the proportions will look more intentional.",
+          "If you add a structured layer, it’ll clean up the neckline/shoulder line fast.",
+          "If you do one fitted element (neckline/sleeve/waist), the whole look looks more refined.",
+          "If you keep sleeves simple, you can go bolder on accessories—and vice versa.",
+          "Pair that hem with a sleeker shoe to keep the line long and clean.",
+          "If you want it more premium: clean neckline + tidy hem + minimal accessories.",
+          "If you want it more relaxed: softer neckline + easy sleeve + clean shoe.",
+          "Choose one detail to be the hero (neckline OR sleeves OR hem) and keep the rest calm."
+        ],
+        "cut_vocab_soft_tags": [
+          "v-neck",
+          "scoop neck",
+          "square neck",
+          "crew neck",
+          "collared",
+          "cap sleeve",
+          "full sleeve",
+          "puff sleeve",
+          "sleeveless",
+          "cropped hem",
+          "midi hem",
+          "maxi hem"
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 detail observation. Add 1 refinement only if user asks to tweak or says it feels off.",
+        "avoid": [
+          "Over-personal claims about the user’s body.",
+          "Making it sound like a rulebook."
+        ],
+        "tone_integration": "Reaction → Detail observation → Optional refinement → Invitation closer."
+      }
+    }
+  }
+}

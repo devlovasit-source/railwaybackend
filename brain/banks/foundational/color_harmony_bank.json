@@ -1,0 +1,134 @@
+{
+  "styling_intelligence": {
+    "color_harmony_bank_v1": {
+      "version": "1.2",
+      "description": "Modular color harmony and palette observation fragments. Designed for short, conversational styling feedback that feels human, supportive, and practical.",
+      "categories": {
+        "positive_harmony": [
+          "The colors work beautifully together.",
+          "The palette feels cohesive.",
+          "The tones complement each other nicely.",
+          "This color combination feels intentional.",
+          "There’s a smooth flow between the shades.",
+          "The contrast is balanced.",
+          "The color pairing feels elevated.",
+          "These tones sit well next to each other.",
+          "The palette looks clean and refined.",
+          "The combination feels effortless.",
+          "The shades blend in a really pleasing way.",
+          "This palette feels thoughtfully chosen.",
+          "The contrast level feels just right.",
+          "The tones create a calm, balanced look.",
+          "The color mix feels confident and put together.",
+          "This palette feels expensive and well coordinated.",
+          "The colors feel intentional, not accidental.",
+          "The tones are blending really smoothly.",
+          "This is a clean, confident color story.",
+          "The palette feels balanced—nothing is screaming.",
+          "This color mix photographs really well.",
+          "The contrast level feels stylish, not harsh.",
+          "The colors feel modern and put together.",
+          "This pairing looks polished and easy.",
+          "The shades feel like they belong together."
+        ],
+        "positive_skin_tone_alignment": [
+          "This color enhances your undertone.",
+          "That shade really brightens your complexion.",
+          "The tone adds warmth in a good way.",
+          "This color makes the whole look pop subtly.",
+          "The shade complements your natural coloring.",
+          "This tone brings out your natural glow.",
+          "The color adds depth without overpowering you.",
+          "This shade looks really fresh against your skin.",
+          "The warmth in this color works beautifully on you.",
+          "The tone feels harmonious with your overall coloring.",
+          "This shade makes your skin look brighter and fresher.",
+          "This tone brings out warmth in a really flattering way.",
+          "This color sits beautifully against your natural coloring.",
+          "This shade adds a nice glow effect without overpowering.",
+          "The undertone match here is really working.",
+          "This tone makes the whole look feel more alive.",
+          "This color lifts your overall vibe in a subtle way.",
+          "This shade gives a really clean, flattering contrast.",
+          "This tone feels very you on a skin level.",
+          "This color looks naturally harmonious on you."
+        ],
+        "constructive_flat_or_clashing": [
+          "The combination feels slightly flat.",
+          "There isn’t much contrast between the pieces.",
+          "The tones are competing a little.",
+          "The palette feels slightly disconnected.",
+          "The shades don’t fully harmonize.",
+          "It could use a stronger anchor color.",
+          "The colors are close in tone but not quite aligned.",
+          "The combination feels a bit muted.",
+          "There’s too much similarity between the pieces.",
+          "The contrast could be sharper.",
+          "The palette feels a little unstructured right now.",
+          "The tones are leaning in different directions.",
+          "The contrast is either too soft or slightly uneven.",
+          "The colors are individually nice but not fully cohesive together.",
+          "It needs a clearer color hierarchy.",
+          "The palette is fine, but it needs one clearer anchor color.",
+          "The tones are close, so the outfit reads a bit blended.",
+          "The colors feel slightly unbalanced in intensity.",
+          "One shade feels like it’s pulling away from the rest.",
+          "It’s not clashing, but it’s not fully clicking yet.",
+          "The palette feels a little undecided right now.",
+          "The contrast is either a bit too soft or uneven.",
+          "It needs a cleaner base plus accent structure.",
+          "The colors feel nice individually, but not unified together.",
+          "One tone is slightly dulling the overall look."
+        ],
+        "refinement_suggestions": [
+          "Adding one deeper tone would ground it.",
+          "Introducing a contrasting accessory could balance it.",
+          "A lighter layer would break this up nicely.",
+          "Switching one piece to a neutral could refine it.",
+          "Adding one bold accent would make it pop.",
+          "A cleaner color contrast would elevate it.",
+          "Reducing one competing shade would simplify it.",
+          "A warmer tone could soften the look.",
+          "A cooler shade might balance this better.",
+          "One statement color would anchor everything.",
+          "Keeping the palette to two or three tones would make it feel more intentional.",
+          "Adding a neutral base would make the other colors stand out more.",
+          "Swapping one piece to a slightly richer shade would elevate the whole look.",
+          "Choosing one dominant color and supporting it with softer tones would help.",
+          "A subtle contrast in accessories would add just enough interest.",
+          "If you add one neutral base (black, cream, or navy), the palette will look more intentional.",
+          "If you repeat one color in your shoes or bag, it’ll tie together instantly.",
+          "If you swap one piece to a richer shade, it’ll look more premium.",
+          "If you reduce one competing tone, everything will feel cleaner.",
+          "A slightly deeper accent would ground the look nicely.",
+          "A lighter layer would add contrast without changing the whole outfit.",
+          "A cleaner warm-or-cool direction would make it more cohesive.",
+          "One statement color—just one—would give the palette a focal point.",
+          "If you keep it to two or three tones, it’ll feel elevated immediately.",
+          "A tonal accessory in the same family would make it look expensive."
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 color observation. Add 1 refinement only if the user requests improvement or expresses dissatisfaction.",
+        "constructive_policy": {
+          "only_use_constructive_when": [
+            "signals.asked_for_improvement == true",
+            "signals.expressed_dissatisfaction == true",
+            "signals.asked_be_honest == true"
+          ],
+          "avoid_when": [
+            "signals.expressed_confidence == true AND signals.asked_for_improvement != true",
+            "signals.emotion_state == vulnerable"
+          ]
+        },
+        "avoid": [
+          "Stacking multiple constructive color critiques in one short reply.",
+          "Using technical color theory language unless the user asks for depth.",
+          "Making assumptions about skin tone beyond visible harmony comments."
+        ],
+        "tone_integration": "Fragments must follow AHVI response structure (Reaction → Observation → Optional refinement → Invitation). Keep it conversational and supportive."
+      }
+    }
+  }
+}

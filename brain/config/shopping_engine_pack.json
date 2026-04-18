@@ -1,0 +1,87 @@
+{
+  "shopping_engine_pack_v1": {
+    "version": "1.0",
+    "description": "Single entrypoint manifest for AHVI Shopping Intelligence. Loads router, purchase conviction (3 outfit combos), wardrobe tag normalizer, compare/dupe/gap stubs, and test suite. Designed to integrate with styling + tone engines without duplicating responsibilities.",
+    "paths": {
+      "root": "src/brain/shopping/",
+      "rules_root": "src/brain/shopping/rules/",
+      "routing_root": "src/brain/shopping/routing/",
+      "tests_root": "src/brain/shopping/tests/",
+      "shared_styling_root": "src/brain/styling/"
+    },
+    "load": {
+      "shopping_router": "src/brain/shopping/shopping_router_map_v1.json",
+
+      "purchase_conviction_engine": "src/brain/shopping/purchase_conviction_engine_v1.json",
+      "wardrobe_tag_normalizer": "src/brain/shopping/wardrobe_tag_normalizer_v1.json",
+
+      "shopping_decision_engine": "src/brain/shopping/shopping_decision_engine_v1.json",
+
+      "optional_engines": {
+        "shopping_compare_engine": "src/brain/shopping/shopping_compare_engine_v1.json",
+        "shopping_dupe_engine": "src/brain/shopping/shopping_dupe_engine_v1.json",
+        "wardrobe_gap_engine": "src/brain/shopping/wardrobe_gap_engine_v1.json"
+      },
+
+      "shared_dependencies": {
+        "tone_engine": "src/brain/tone/tone_engine.json",
+        "styling_banks_index": "src/brain/styling/banks/styling_banks_index.json",
+        "pairing_matrix_bank": "src/brain/styling/banks/pairing_matrix_bank_v1.json",
+        "seasonal_combinations_bank": "src/brain/styling/banks/seasonal_combinations_bank_v1.json",
+        "fabric_texture_bank": "src/brain/styling/banks/fabric_texture_bank_v1.json",
+        "print_pattern_bank": "src/brain/styling/banks/print_pattern_bank_v1.json",
+        "polish_intentionality_bank": "src/brain/styling/banks/polish_intentionality_bank_v1.json",
+        "upgrade_suggestions_bank": "src/brain/styling/banks/upgrade_suggestions_bank_v1.json"
+      },
+
+      "tests": {
+        "shopping_test_set": "src/brain/shopping/tests/shopping_test_set_v1.json"
+      }
+    },
+    "runtime_order": [
+      "NLU → signals (detect shopping intent + category + color + compare/dupe keywords)",
+      "extract product_candidate (from link/image/text) OR ask 1 clarifying question",
+      "normalize wardrobe items (wardrobe_tag_normalizer) into wardrobe_index",
+      "shopping_router selects mode (compare > conviction > style_with_it > dupe > gap > fallback)",
+      "selected engine produces response payload (combos + why + question close)",
+      "post-compose safety clamp (tone engine + style safety rules if applicable)"
+    ],
+    "mode_priority": [
+      "compare_mode",
+      "purchase_conviction_mode",
+      "style_with_it_mode",
+      "dupe_find_mode",
+      "wardrobe_gap_mode",
+      "fallback_shopping_chat"
+    ],
+    "mode_contracts": {
+      "purchase_conviction_mode": {
+        "must_output": ["3_combos_min", "why_it_works_line", "confidence_line", "single_choice_question"],
+        "constraints": [
+          "2_safe_1_elevated default",
+          "1 sentence per combo",
+          "no pushy language",
+          "wardrobe-first when wardrobe_coverage_score >= 0.35"
+        ]
+      },
+      "style_with_it_mode": {
+        "must_output": ["3_combos_min", "single_choice_question"],
+        "constraints": ["wardrobe-first if available", "no extra selling lines unless user asked should_i_buy"]
+      },
+      "compare_mode": {
+        "must_output": ["comparison_bullets_max_3", "best_pick_line", "3_combos_for_best_pick", "single_choice_question"],
+        "constraints": ["comparison must include wardrobe compatibility"]
+      }
+    },
+    "fallback_behavior": {
+      "if_missing_optional_engines": "Router must skip missing optional engine files and fall back to shopping_decision_engine.",
+      "if_missing_shared_dependencies": "Proceed without those enhancements; do not crash."
+    },
+    "dev_notes": [
+      "Shopping engine owns purchase persuasion + outfit combos tied to a product.",
+      "Styling engine owns outfit critique, silhouettes, and occasion overlays unless shopping engine explicitly requests them as shared dependencies.",
+      "Wardrobe tag normalizer is required for wardrobe-first matching; if not available, conviction engine must still return 3 generic combos based on vibe/occasion.",
+      "Tone engine controls lingo by age; do not mirror ALL CAPS or chaotic punctuation."
+    ]
+  }
+}

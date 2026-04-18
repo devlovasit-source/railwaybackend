@@ -1,0 +1,62 @@
+{
+  "styling_intelligence": {
+    "neckline_sleeve_cut_bank_v1": {
+      "version": "1.0",
+      "description": "Micro-brain for neckline/sleeve/cut decisions. High wow factor, framed as lines and balance—not body critique.",
+      "categories": {
+        "positive_line_effects": [
+          "That neckline creates such a clean, confident line.",
+          "This sleeve shape makes the whole look feel more intentional.",
+          "The cut is doing something really flattering for the overall silhouette.",
+          "This detail gives the outfit structure without trying too hard.",
+          "The neckline choice makes the look feel open and polished.",
+          "The sleeve + shoulder line reads sharp and elevated.",
+          "That hem/cut placement makes the proportions feel really clean.",
+          "This cut adds shape in a subtle, premium way.",
+          "The neckline and layers work together—very put-together.",
+          "This is one of those small details that makes the whole outfit feel ‘styled’."
+        ],
+        "constructive_line_issues": [
+          "The neckline is a bit competing with the rest of the outfit right now.",
+          "The sleeve shape adds a little more volume than the look needs.",
+          "The cut placement is interrupting the outfit’s line slightly.",
+          "The hem length feels a little undecided—almost there, not fully intentional yet.",
+          "The neckline is fine, but a cleaner shape would feel more premium.",
+          "The sleeve/shoulder detail is the one part that feels slightly busy.",
+          "This cut is close—just needs a cleaner proportion break.",
+          "The neckline is adding visual weight where you may not want it today.",
+          "The sleeve length is cutting the line at an awkward point.",
+          "The details are cute, but they’re distracting from the outfit’s main vibe."
+        ],
+        "refinement_suggestions": [
+          "If you switch to a cleaner neckline (V/square/scoop), it’ll feel instantly sharper.",
+          "A more minimal sleeve (or a cleaner cuff) would make this look expensive.",
+          "Try a slightly shorter or cleaner hem break—instant polish.",
+          "If you add one structured layer, the neckline issue disappears.",
+          "A half-tuck can fix the cut placement without changing the outfit.",
+          "If you keep the neckline simple, you can go bolder with accessories.",
+          "If you keep sleeves clean, you can add texture elsewhere and it’ll still feel premium.",
+          "If you want it more elegant, soften the neckline and keep the rest structured.",
+          "If you want it more sharp, keep the neckline structured and accessories minimal.",
+          "One clean line tweak (neckline OR sleeve) will make this click."
+        ],
+        "quick_logic": [
+          "V/scoop/square = open, clean line; great when you want polish.",
+          "High neck = strong structure; looks best when the rest is simple.",
+          "Statement sleeve = hero detail; keep neckline/accessories quieter.",
+          "Cropped hem = higher waist read; longline hem = relaxed vertical line.",
+          "If one detail is bold (neckline/sleeve), keep the other detail calm."
+        ]
+      },
+      "usage_rules": {
+        "max_fragments_per_response": 2,
+        "default_pattern": "Use 1 observation. Add 1 refinement only if user asks ‘what would you change?’ or expresses dissatisfaction.",
+        "avoid": [
+          "Body commentary (shoulders/chest/arms) framed negatively.",
+          "Too many micro-suggestions at once."
+        ],
+        "tone_integration": "Follow AHVI structure (Reaction → Observation → Optional refinement → Invitation)."
+      }
+    }
+  }
+}
