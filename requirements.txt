@@ -5,7 +5,7 @@ redis==5.2.0
 requests==2.32.3
 sentry-sdk[fastapi]==2.18.0
 deep-translator==1.11.4
-appwrite==5.0.0
+appwrite==4.0.0
 minio==7.2.10
 qdrant-client==1.12.1
 python-dotenv==1.0.1
