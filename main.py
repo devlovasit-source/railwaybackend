@@ -213,6 +213,24 @@ async def startup_event():
 
     try:
         await asyncio.to_thread(qdrant_service.init)
+        qstatus = qdrant_service.status()
+        if qstatus.get("enabled"):
+            logger.info(
+                "qdrant status enabled=%s initialized=%s collection=%s memory_collection=%s image_collection=%s",
+                qstatus.get("enabled"),
+                qstatus.get("initialized"),
+                qstatus.get("collection"),
+                qstatus.get("memory_collection"),
+                qstatus.get("image_collection"),
+            )
+        else:
+            logger.warning(
+                "qdrant disabled reason=%s error=%s url_configured=%s api_key_configured=%s",
+                qstatus.get("reason"),
+                qstatus.get("error"),
+                qstatus.get("url_configured"),
+                qstatus.get("api_key_configured"),
+            )
     except Exception as e:
         logger.exception("qdrant startup failed: %s", e)
 

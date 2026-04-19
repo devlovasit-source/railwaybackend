@@ -12,8 +12,10 @@ load_dotenv()
 class QdrantService:
 
     def __init__(self):
-        self.url = os.getenv("QDRANT_URL")
-        self.api_key = os.getenv("QDRANT_API_KEY")
+        raw_url = os.getenv("QDRANT_URL", "")
+        raw_api_key = os.getenv("QDRANT_API_KEY", "")
+        self.url = raw_url.strip() or None
+        self.api_key = raw_api_key.strip() or None
         self.collection = os.getenv("QDRANT_COLLECTION", "wardrobe")
         self.memory_collection = os.getenv("QDRANT_MEMORY_COLLECTION", "outfit_memory")
         self.image_collection = os.getenv("QDRANT_IMAGE_COLLECTION", "wardrobe_image")
@@ -27,13 +29,21 @@ class QdrantService:
         self.client = None
         self._vector_name_cache = {}
         self._vector_dim_cache = {}
+        self._disabled_reason = None
+        self._init_error = None
 
         if self.url:
             try:
                 self.client = QdrantClient(url=self.url, api_key=self.api_key)
+                self._disabled_reason = None
             except Exception as e:
+                self._disabled_reason = "client_init_failed"
+                self._init_error = str(e)
                 print("Qdrant client init failed:", str(e))
                 self.client = None
+        else:
+            self._disabled_reason = "missing_qdrant_url"
+            self._init_error = "QDRANT_URL not set"
 
     def enabled(self) -> bool:
         return self.client is not None
@@ -50,7 +60,15 @@ class QdrantService:
     # -------------------------
     def init(self):
         if not self.enabled():
-            print("Qdrant disabled: missing QDRANT_URL or client init failed")
+            print(
+                "Qdrant disabled:",
+                {
+                    "reason": self._disabled_reason or "not_enabled",
+                    "error": self._init_error,
+                    "url_configured": bool(self.url),
+                    "api_key_configured": bool(self.api_key),
+                },
+            )
             return
 
         if self._initialized:
@@ -736,12 +754,20 @@ class QdrantService:
 
     def status(self) -> dict:
         if not self.enabled():
-            return {"enabled": False, "initialized": False, "url_configured": bool(self.url)}
+            return {
+                "enabled": False,
+                "initialized": False,
+                "url_configured": bool(self.url),
+                "api_key_configured": bool(self.api_key),
+                "reason": self._disabled_reason,
+                "error": self._init_error,
+            }
 
         details = {
             "enabled": True,
             "initialized": self._initialized,
             "url_configured": bool(self.url),
+            "api_key_configured": bool(self.api_key),
             "collection": self.collection,
             "memory_collection": self.memory_collection,
             "image_collection": self.image_collection,
