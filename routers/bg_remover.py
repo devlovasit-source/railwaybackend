@@ -105,6 +105,7 @@ def _ensure_model_downloaded() -> str | None:
         return "huggingface_hub is not installed; cannot download RMBG model"
 
     try:
+        os.makedirs(MODEL_PATH, exist_ok=True)
         token = str(os.getenv("HF_TOKEN", "") or "").strip()
         if token and hf_login is not None:
             hf_login(token, add_to_git_credential=False)
@@ -113,7 +114,6 @@ def _ensure_model_downloaded() -> str | None:
         snapshot_download(
             repo_id=BG_HF_REPO_ID,
             local_dir=MODEL_PATH,
-            local_dir_use_symlinks=False,
         )
     except Exception as exc:
         return f"Model download failed: {exc}"
@@ -133,12 +133,6 @@ def load_model():
             return model
 
         print("Loading model from:", MODEL_PATH)
-
-        if not os.path.exists(MODEL_PATH):
-            model_last_error = f"Model folder not found: {MODEL_PATH}"
-            print("Model load failed:", model_last_error)
-            model = None
-            return model
 
         download_error = _ensure_model_downloaded()
         if download_error:
