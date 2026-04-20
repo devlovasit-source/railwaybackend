@@ -126,7 +126,9 @@ class OutfitDuplicateCheckRequest(BaseModel):
 
 
 _HEX_COLOR_RE = re.compile(r"#(?:[0-9a-fA-F]{6})\b")
-_UNKNOWN_ATTR_RE = re.compile(r'Unknown attribute:\s*"([^"]+)"')
+_UNKNOWN_ATTR_RE = re.compile(
+    r'Unknown attribute:\s*(?:\\?"([^"\\]+)\\?"|\'([^\']+)\')'
+)
 _KNOWN_PATTERNS = {
     "plain",
     "solid",
@@ -345,12 +347,22 @@ def _normalize_outfit_payload(payload: Dict[str, Any], request_user_id: Optional
         normalized["qdrant_point_id"] = qdrant_point_id
 
     normalized["name"] = name
-    normalized["occasions[]"] = json.dumps(occasions, ensure_ascii=False, separators=(",", ":"))
+    occasions_json = json.dumps(occasions, ensure_ascii=False, separators=(",", ":"))
+    # Prefer the current Appwrite schema field (`occasions`) by default.
+    # If a deployment still uses legacy `occasions[]`, it can opt in via env.
+    occasions_field = str(os.getenv("APPWRITE_OUTFITS_OCCASIONS_FIELD", "occasions") or "occasions").strip()
+    if occasions_field not in {"occasions", "occasions[]"}:
+        occasions_field = "occasions"
+    normalized[occasions_field] = occasions_json
+    # Keep alias for reads/parsing, but don't force-write both keys (can fail strict schemas).
+    if occasions_field == "occasions":
+        normalized.pop("occasions[]", None)
+    else:
+        normalized.pop("occasions", None)
     # Notes attribute is removed from Appwrite outfits schema; consume for parsing only.
     normalized.pop("notes", None)
     normalized.pop("note", None)
     normalized.pop("description", None)
-    normalized.pop("occasions", None)
     normalized.pop("occasion", None)
     normalized.pop("occasions_list", None)
     normalized.pop("tags", None)
@@ -373,7 +385,12 @@ def _normalize_outfit_payload(payload: Dict[str, Any], request_user_id: Optional
 def _unknown_attribute_from_error(exc: AppwriteProxyError) -> str:
     msg = str(exc or "")
     matched = _UNKNOWN_ATTR_RE.search(msg)
-    return (matched.group(1) if matched else "").strip()
+    if not matched:
+        return ""
+    # group(1) handles double-quoted/escaped double-quoted formats,
+    # group(2) handles single-quoted formats.
+    attr = matched.group(1) or matched.group(2) or ""
+    return str(attr).strip()
 
 
 def _create_document_with_schema_retries(
