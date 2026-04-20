@@ -11,7 +11,11 @@ from brain.tone.tone_engine import tone_engine
 # =========================
 load_dotenv()
 
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+# Text/chat Ollama endpoint. Falls back to legacy OLLAMA_URL.
+OLLAMA_TEXT_URL = os.getenv(
+    "OLLAMA_TEXT_URL",
+    os.getenv("OLLAMA_URL", "http://localhost:11434"),
+)
 DEFAULT_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
 MODEL_FALLBACKS = [
     m.strip()
@@ -41,7 +45,7 @@ session.mount("https://", HTTPAdapter(max_retries=retries))
 
 
 def _ollama_request_url(endpoint: str) -> str:
-    base = str(OLLAMA_URL or "").strip().rstrip("/")
+    base = str(OLLAMA_TEXT_URL or "").strip().rstrip("/")
     ep = str(endpoint or "").strip().lstrip("/")
     if base.endswith("/api"):
         return f"{base}/{ep}"

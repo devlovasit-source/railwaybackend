@@ -284,7 +284,14 @@ def _vision_model_candidates() -> List[str]:
 
 
 def _ollama_generate_url() -> str:
-    base = str(os.getenv("OLLAMA_URL", "http://localhost:11434/api") or "").strip().rstrip("/")
+    # Vision Ollama endpoint. Falls back to legacy OLLAMA_URL.
+    base = str(
+        os.getenv(
+            "OLLAMA_VISION_URL",
+            os.getenv("OLLAMA_URL", "http://localhost:11434/api"),
+        )
+        or ""
+    ).strip().rstrip("/")
     return f"{base}/generate" if base.endswith("/api") else f"{base}/api/generate"
 
 
