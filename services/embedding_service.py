@@ -1,6 +1,9 @@
 import os
 
-from sentence_transformers import SentenceTransformer
+try:
+    from sentence_transformers import SentenceTransformer
+except Exception:
+    SentenceTransformer = None
 
 # -------------------------
 # GLOBAL MODEL (LAZY LOAD)
@@ -15,6 +18,8 @@ _REMOTE_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "sentence-transformers/al
 
 def get_model():
     global _model
+    if SentenceTransformer is None:
+        raise RuntimeError("sentence_transformers is not installed")
 
     if _model is None:
         model_source = _LOCAL_MODEL_DIR if os.path.isdir(_LOCAL_MODEL_DIR) else _REMOTE_MODEL_NAME
