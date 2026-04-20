@@ -1,4 +1,5 @@
 import base64
+import concurrent.futures
 import os
 from collections import Counter
 
@@ -60,6 +61,14 @@ def _image_duplicate_threshold() -> float:
         return val if 0.0 < val <= 1.0 else 0.985
     except Exception:
         return 0.985
+
+
+def _vision_ai_timeout_seconds() -> int:
+    try:
+        val = int(os.getenv("VISION_ANALYZE_AI_TIMEOUT_SECONDS", "18"))
+        return max(3, min(val, 60))
+    except Exception:
+        return 18
 
 
 class ImageAnalyzeRequest(BaseModel):
@@ -334,11 +343,22 @@ def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
     llm_fallback = False
     model_used = None
     try:
-        final_data, model_used = ai_gateway.ollama_vision_json(
-            prompt=MASTER_VISION_PROMPT,
-            image_base64=base64_data,
-            usecase="vision",
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(
+                ai_gateway.ollama_vision_json,
+                prompt=MASTER_VISION_PROMPT,
+                image_base64=base64_data,
+                usecase="vision",
+            )
+            final_data, model_used = future.result(
+                timeout=_vision_ai_timeout_seconds()
+            )
+    except concurrent.futures.TimeoutError:
+        print(
+            f"[vision] AI Vision Timeout after {_vision_ai_timeout_seconds()}s, using fallback."
         )
+        llm_fallback = True
+        final_data = {}
     except Exception as e:
         print(f"[vision] AI Vision Error: {e}")
         llm_fallback = True
