@@ -347,13 +347,17 @@ def _normalize_outfit_payload(payload: Dict[str, Any], request_user_id: Optional
         normalized["qdrant_point_id"] = qdrant_point_id
 
     normalized["name"] = name
-    occasions_json = json.dumps(occasions, ensure_ascii=False, separators=(",", ":"))
     # Prefer the current Appwrite schema field (`occasions`) by default.
     # If a deployment still uses legacy `occasions[]`, it can opt in via env.
     occasions_field = str(os.getenv("APPWRITE_OUTFITS_OCCASIONS_FIELD", "occasions") or "occasions").strip()
     if occasions_field not in {"occasions", "occasions[]"}:
         occasions_field = "occasions"
-    normalized[occasions_field] = occasions_json
+    occasions_type = str(os.getenv("APPWRITE_OUTFITS_OCCASIONS_TYPE", "array") or "array").strip().lower()
+    if occasions_type in {"string", "json", "text"}:
+        normalized[occasions_field] = json.dumps(occasions, ensure_ascii=False, separators=(",", ":"))
+    else:
+        # Default for your current Appwrite schema: array attribute.
+        normalized[occasions_field] = list(occasions)
     # Keep alias for reads/parsing, but don't force-write both keys (can fail strict schemas).
     if occasions_field == "occasions":
         normalized.pop("occasions[]", None)

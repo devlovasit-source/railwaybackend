@@ -1,6 +1,7 @@
 import base64
 import concurrent.futures
 import os
+import time
 from collections import Counter
 
 import cv2
@@ -105,6 +106,18 @@ def _remove_bg_first(image_base64: str):
     try:
         req = BGRemoveRequest(image_base64=image_base64)
         result = remove_background_sync(req.image_base64)
+        fallback_reason = ""
+        if isinstance(result, dict):
+            fallback_reason = str(result.get("fallback_reason") or "").strip().lower()
+        should_retry = (
+            isinstance(result, dict)
+            and result.get("success")
+            and not bool(result.get("bg_removed", False))
+            and any(token in fallback_reason for token in ("warm", "load", "download", "init"))
+        )
+        if should_retry:
+            time.sleep(2)
+            result = remove_background_sync(req.image_base64)
         if isinstance(result, dict) and result.get("success") and result.get("image_base64"):
             processed = _to_png_data_uri(result.get("image_base64"))
             return processed, bool(result.get("bg_removed", True)), result.get("fallback_reason")
@@ -270,6 +283,31 @@ _VALID_CATEGORIES = {
 }
 
 
+def _normalize_category_from_subcategory(category: str, sub_category: str) -> str:
+    cat = _clean_text(category).title()
+    sub = _clean_text(sub_category).lower()
+    if not sub:
+        return cat
+
+    footwear_tokens = (
+        "shoe", "shoes", "sneaker", "loafer", "sandal", "heel", "boot",
+        "slipper", "flip flop", "flipflop", "crocs", "croc",
+    )
+    bottoms_tokens = (
+        "pant", "pants", "trouser", "trousers", "jean", "jeans", "jogger",
+        "legging", "leggings", "short", "shorts", "skirt", "cargo", "chino",
+    )
+    bags_tokens = ("bag", "backpack", "tote", "clutch", "purse", "sling")
+
+    if any(tok in sub for tok in footwear_tokens):
+        return "Footwear"
+    if any(tok in sub for tok in bottoms_tokens):
+        return "Bottoms"
+    if any(tok in sub for tok in bags_tokens):
+        return "Bags"
+    return cat
+
+
 def _shape_vision_output(raw_data, color_hex: str, decoded_img, cv_image) -> dict:
     data = dict(raw_data) if isinstance(raw_data, dict) else {}
 
@@ -295,6 +333,10 @@ def _shape_vision_output(raw_data, color_hex: str, decoded_img, cv_image) -> dic
     if len(occasions) < 3:
         print("[vision] AI missing occasions -> using emergency generic fallback")
         occasions = ["daily wear", "casual outing", "weekend", "travel", "office", "hangout"]
+
+    # Guardrail: if LLM gives a mismatched category (e.g., shoes as accessories),
+    # infer the main category from sub-category keywords.
+    category = _normalize_category_from_subcategory(category, sub_category)
 
     if category not in _VALID_CATEGORIES:
         category = "Tops"
