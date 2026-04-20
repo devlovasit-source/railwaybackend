@@ -11,7 +11,7 @@ from brain.tone.tone_engine import tone_engine
 # =========================
 load_dotenv()
 
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api")
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 DEFAULT_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
 MODEL_FALLBACKS = [
     m.strip()
@@ -37,6 +37,15 @@ def _is_heavy_model(model_name: str) -> bool:
 session = requests.Session()
 retries = Retry(total=2, backoff_factor=0.5, status_forcelist=[500, 502, 503, 504])
 session.mount("http://", HTTPAdapter(max_retries=retries))
+session.mount("https://", HTTPAdapter(max_retries=retries))
+
+
+def _ollama_request_url(endpoint: str) -> str:
+    base = str(OLLAMA_URL or "").strip().rstrip("/")
+    ep = str(endpoint or "").strip().lstrip("/")
+    if base.endswith("/api"):
+        return f"{base}/{ep}"
+    return f"{base}/api/{ep}"
 
 
 def _model_candidates(requested_model: str | None) -> list[str]:
@@ -112,7 +121,11 @@ def safe_request(endpoint: str, payload: dict, timeout: int = 30):
             local_payload = dict(payload)
             local_payload["model"] = model
             local_payload["options"] = _merged_options(local_payload.get("options"))
-            response = session.post(f"{OLLAMA_URL}/{endpoint}", json=local_payload, timeout=timeout)
+            response = session.post(
+                _ollama_request_url(endpoint),
+                json=local_payload,
+                timeout=timeout,
+            )
 
             if response.status_code == 200:
                 data = response.json()
