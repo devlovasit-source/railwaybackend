@@ -7,7 +7,11 @@ from dataclasses import dataclass
 from threading import Lock
 from typing import Any, Dict, List, Tuple
 
-import requests
+import httpx
+try:
+    import redis
+except Exception:
+    redis = None
 
 from services import llm_service
 from services.request_context import get_request_id
@@ -32,6 +36,31 @@ _BREAKER_FAIL_THRESHOLD = max(1, int(os.getenv("AI_GATEWAY_BREAKER_FAIL_THRESHOL
 _BREAKER_COOLDOWN_SECONDS = max(3, int(os.getenv("AI_GATEWAY_BREAKER_COOLDOWN_SECONDS", "20")))
 _breaker_lock = Lock()
 _breaker_state: Dict[str, Dict[str, float]] = {}
+_breaker_redis_client = None
+_BREAKER_REDIS_PREFIX = str(os.getenv("AI_GATEWAY_BREAKER_REDIS_PREFIX", "ahvi:breaker:") or "ahvi:breaker:")
+_vision_http_client = httpx.Client()
+
+
+def _breaker_redis():
+    global _breaker_redis_client
+    if _breaker_redis_client is not None:
+        return _breaker_redis_client
+    if redis is None:
+        return None
+    try:
+        redis_url = str(os.getenv("REDIS_URL", "redis://localhost:6379/0") or "").strip()
+        if not redis_url:
+            return None
+        _breaker_redis_client = redis.Redis.from_url(redis_url, decode_responses=True)
+        _breaker_redis_client.ping()
+        return _breaker_redis_client
+    except Exception:
+        _breaker_redis_client = None
+        return None
+
+
+def _breaker_redis_key(key: str) -> str:
+    return f"{_BREAKER_REDIS_PREFIX}{key}"
 
 
 def _policy(usecase: str | None) -> GatewayPolicy:
@@ -45,6 +74,13 @@ def _breaker_key(usecase: str | None, op: str) -> str:
 
 def _breaker_allows(key: str) -> bool:
     now = time.monotonic()
+    client = _breaker_redis()
+    if client is not None:
+        try:
+            opened_until = float(client.hget(_breaker_redis_key(key), "opened_until") or 0.0)
+            return now >= opened_until
+        except Exception:
+            pass
     with _breaker_lock:
         row = _breaker_state.get(key) or {}
         opened_until = float(row.get("opened_until") or 0.0)
@@ -53,6 +89,21 @@ def _breaker_allows(key: str) -> bool:
 
 def _breaker_mark_failure(key: str) -> None:
     now = time.monotonic()
+    client = _breaker_redis()
+    if client is not None:
+        try:
+            redis_key = _breaker_redis_key(key)
+            row = client.hgetall(redis_key) or {}
+            failures = float(row.get("failures") or 0.0) + 1.0
+            opened_until = float(row.get("opened_until") or 0.0)
+            if failures >= _BREAKER_FAIL_THRESHOLD:
+                opened_until = now + _BREAKER_COOLDOWN_SECONDS
+            ttl_seconds = max(_BREAKER_COOLDOWN_SECONDS * 2, 120)
+            client.hset(redis_key, mapping={"failures": failures, "opened_until": opened_until})
+            client.expire(redis_key, ttl_seconds)
+            return
+        except Exception:
+            pass
     with _breaker_lock:
         row = _breaker_state.setdefault(key, {"failures": 0.0, "opened_until": 0.0})
         row["failures"] = float(row.get("failures") or 0.0) + 1.0
@@ -61,6 +112,13 @@ def _breaker_mark_failure(key: str) -> None:
 
 
 def _breaker_mark_success(key: str) -> None:
+    client = _breaker_redis()
+    if client is not None:
+        try:
+            client.delete(_breaker_redis_key(key))
+            return
+        except Exception:
+            pass
     with _breaker_lock:
         _breaker_state[key] = {"failures": 0.0, "opened_until": 0.0}
 
@@ -337,7 +395,7 @@ def ollama_vision_json(
     started = time.perf_counter()
     for model in _vision_model_candidates():
         try:
-            response = requests.post(
+            response = _vision_http_client.post(
                 _ollama_generate_url(),
                 json={**payload, "model": model},
                 timeout=timeout,

@@ -12,6 +12,10 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import requests
+try:
+    import redis
+except Exception:
+    redis = None
 
 from services.appwrite_proxy import AppwriteProxy, AppwriteProxyError
 from services.embedding_service import encode_metadata
@@ -24,6 +28,13 @@ from services.image_fingerprint import (
 from services.qdrant_service import qdrant_service
 from services.r2_storage import R2Storage, R2StorageError
 from services import data_access_service
+from services.task_queue import enqueue_task
+from services.outfit_vector_sync_service import sync_outfit_vectors
+from services.request_context import get_request_id
+try:
+    from worker import sync_outfit_vectors_task
+except Exception:
+    sync_outfit_vectors_task = None
 
 router = APIRouter(prefix="/api/data", tags=["data"])
 proxy = AppwriteProxy()
@@ -32,6 +43,26 @@ _DUPLICATE_ONE_SHOT_TTL_SECONDS = max(10, int(os.getenv("OUTFIT_DUPLICATE_ONE_SH
 _DUPLICATE_ONE_SHOT_MAX = max(32, int(os.getenv("OUTFIT_DUPLICATE_ONE_SHOT_MAX", "512")))
 _DUPLICATE_ONE_SHOT_CACHE: Dict[str, Dict[str, Any]] = {}
 _DUPLICATE_ONE_SHOT_LOCK = Lock()
+_DUP_CACHE_REDIS_KEY_PREFIX = "ahvi:dup1:"
+_dup_cache_redis_client = None
+
+
+def _dup_cache_redis():
+    global _dup_cache_redis_client
+    if _dup_cache_redis_client is not None:
+        return _dup_cache_redis_client
+    if redis is None:
+        return None
+    try:
+        redis_url = str(os.getenv("REDIS_URL", "redis://localhost:6379/0") or "").strip()
+        if not redis_url:
+            return None
+        _dup_cache_redis_client = redis.Redis.from_url(redis_url, decode_responses=True)
+        _dup_cache_redis_client.ping()
+        return _dup_cache_redis_client
+    except Exception:
+        _dup_cache_redis_client = None
+        return None
 
 RESOURCE_ALIASES = {
     "meal_planner": "meal_plans",
@@ -69,12 +100,19 @@ def _dup_cache_key(*, user_id: str, pixel_hash: str) -> str:
     if not uid or not ph:
         return ""
     digest = hashlib.sha1(f"{uid}|{ph}".encode("utf-8")).hexdigest()
-    return f"dup1:{digest}"
+    return f"{_DUP_CACHE_REDIS_KEY_PREFIX}{digest}"
 
 
 def _dup_cache_put(*, key: str, result: Dict[str, Any]) -> None:
     if not key or not isinstance(result, dict):
         return
+    client = _dup_cache_redis()
+    if client is not None:
+        try:
+            client.setex(key, int(_DUPLICATE_ONE_SHOT_TTL_SECONDS), json.dumps(result, ensure_ascii=True))
+            return
+        except Exception:
+            pass
     now = time.time()
     with _DUPLICATE_ONE_SHOT_LOCK:
         _DUPLICATE_ONE_SHOT_CACHE[key] = {"ts": now, "result": dict(result)}
@@ -90,6 +128,26 @@ def _dup_cache_put(*, key: str, result: Dict[str, Any]) -> None:
 def _dup_cache_pop(*, key: str) -> Dict[str, Any] | None:
     if not key:
         return None
+    client = _dup_cache_redis()
+    if client is not None:
+        try:
+            raw = None
+            if hasattr(client, "getdel"):
+                raw = client.getdel(key)
+            else:
+                pipe = client.pipeline()
+                pipe.get(key)
+                pipe.delete(key)
+                vals = pipe.execute()
+                if isinstance(vals, list) and vals:
+                    raw = vals[0]
+            if raw:
+                parsed = json.loads(raw)
+                if isinstance(parsed, dict):
+                    return parsed
+            return None
+        except Exception:
+            pass
     now = time.time()
     with _DUPLICATE_ONE_SHOT_LOCK:
         row = _DUPLICATE_ONE_SHOT_CACHE.pop(key, None)
@@ -2468,64 +2526,66 @@ def create_document(request: CreateRequest):
         image_qdrant_saved = False
         image_qdrant_error = None
         point_id = None
+        qdrant_job_id = None
+        qdrant_mode = "skipped"
         if resource == "outfits" and qdrant_enabled:
-            try:
-                if not payload_image_vector:
-                    payload_image_vector = incoming_image_vector or _compute_payload_image_vector(payload)
-                if not payload_pixel_hash:
-                    payload_pixel_hash = incoming_pixel_hash or _compute_payload_pixel_hash(payload)
-                point_id = (
-                    str(doc.get("qdrant_point_id") or "").strip()
-                    or str(payload.get("qdrant_point_id") or "").strip()
-                    or _to_uuid_point_id(doc.get("$id") or request.document_id)
-                )
-                vector_input = {
-                    "category": doc.get("category", ""),
-                    "sub_category": doc.get("sub_category", ""),
-                    "color_code": doc.get("color_code", ""),
-                    "pattern": doc.get("pattern", ""),
-                    "occasions": (
-                        doc.get("occasions", [])
-                        if isinstance(doc.get("occasions", []), list)
-                        else _to_string_list(doc.get("occasions[]"))
-                    ),
-                }
-                vector = encode_metadata(vector_input)
-                qdrant_payload = dict(doc)
-                qdrant_payload["userId"] = str(
-                    doc.get("userId") or payload.get("userId") or request.user_id or ""
-                )
-                if payload_pixel_hash:
-                    qdrant_payload["pixel_hash"] = payload_pixel_hash
-                qdrant_service.upsert_item(point_id, vector, qdrant_payload)
-                qdrant_saved = True
-
-                if payload_image_vector:
-                    image_payload = {
-                        "userId": qdrant_payload.get("userId"),
-                        "category": doc.get("category", ""),
-                        "sub_category": doc.get("sub_category", ""),
-                        "color_code": doc.get("color_code", ""),
-                        "image_url": doc.get("masked_url") or doc.get("image_url") or payload.get("masked_url") or payload.get("image_url") or "",
-                        "pixel_hash": payload_pixel_hash or "",
+            point_id = (
+                str(doc.get("qdrant_point_id") or "").strip()
+                or str(payload.get("qdrant_point_id") or "").strip()
+                or _to_uuid_point_id(doc.get("$id") or request.document_id)
+            )
+            if sync_outfit_vectors_task is not None:
+                try:
+                    if not payload_image_vector:
+                        payload_image_vector = incoming_image_vector or _compute_payload_image_vector(payload)
+                    if not payload_pixel_hash:
+                        payload_pixel_hash = incoming_pixel_hash or _compute_payload_pixel_hash(payload)
+                    if point_id:
+                        payload["qdrant_point_id"] = point_id
+                    request_id = str(get_request_id() or "").strip()
+                    task_payload = {
+                        "document_id": str(doc.get("$id") or ""),
+                        "document": dict(doc),
+                        "payload": {
+                            **dict(payload),
+                            "image_vector": payload_image_vector,
+                            "pixel_hash": payload_pixel_hash,
+                            "qdrant_point_id": point_id,
+                        },
+                        "user_id": str(doc.get("userId") or payload.get("userId") or request.user_id or ""),
                     }
-                    qdrant_service.upsert_image_vector(point_id, payload_image_vector, image_payload)
-                    image_qdrant_saved = True
-
-                # Persist the Qdrant point id if schema has this attribute.
-                if isinstance(doc, dict) and "qdrant_point_id" in doc and str(doc.get("qdrant_point_id") or "") != point_id:
-                    try:
-                        doc = data_access_service.update_document(
-                            resource="outfits",
-                            document_id=doc.get("$id"),
-                            payload={"qdrant_point_id": point_id},
-                        )
-                    except AppwriteProxyError as exc:
-                        print(f"[data.create_document] outfits qdrant_point_id update skipped: {exc}")
-            except Exception as exc:
-                qdrant_error = str(exc)
-                image_qdrant_error = str(exc)
-                print(f"[data.create_document] outfits qdrant upsert failed: {exc}")
+                    qdrant_job_id = enqueue_task(
+                        task_func=sync_outfit_vectors_task,
+                        args=[task_payload],
+                        kwargs={"request_id": request_id},
+                        kind="outfit_vector_sync",
+                        user_id=task_payload.get("user_id"),
+                        request_id=request_id,
+                        source="api:/api/data",
+                        meta={"resource": "outfits", "document_id": task_payload.get("document_id")},
+                    )
+                    qdrant_mode = "queued"
+                except Exception as exc:
+                    qdrant_error = str(exc)
+                    qdrant_mode = "queue_failed_inline_fallback"
+                    print(f"[data.create_document] outfits qdrant queue failed, using inline fallback: {exc}")
+            if qdrant_mode != "queued":
+                sync_result = sync_outfit_vectors(
+                    document=dict(doc),
+                    payload={
+                        **dict(payload),
+                        "image_vector": payload_image_vector,
+                        "pixel_hash": payload_pixel_hash,
+                        "qdrant_point_id": point_id,
+                    },
+                    user_id=str(doc.get("userId") or payload.get("userId") or request.user_id or ""),
+                )
+                qdrant_saved = bool(sync_result.get("qdrant_saved"))
+                qdrant_error = str(sync_result.get("qdrant_error") or qdrant_error or "") or None
+                image_qdrant_saved = bool(sync_result.get("image_qdrant_saved"))
+                image_qdrant_error = str(sync_result.get("image_qdrant_error") or "") or None
+                point_id = str(sync_result.get("qdrant_point_id") or point_id or "").strip() or None
+                qdrant_mode = "inline"
 
         return {
             "document": doc,
@@ -2538,6 +2598,8 @@ def create_document(request: CreateRequest):
                 "image_qdrant_saved": image_qdrant_saved,
                 "image_qdrant_error": image_qdrant_error,
                 "qdrant_point_id": point_id,
+                "qdrant_mode": qdrant_mode,
+                "qdrant_job_id": qdrant_job_id,
             },
         }
     except HTTPException:

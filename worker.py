@@ -153,4 +153,53 @@ def bg_remove_task(self, image_base64: str, request_id: str = ""):
         _retry_or_fail(self, e, request_id=request_id)
 
 
+@celery_app.task(name="sync_outfit_vectors_task", bind=True)
+def sync_outfit_vectors_task(self, payload: dict, request_id: str = ""):
+    from services.outfit_vector_sync_service import (
+        mark_outfit_vector_status,
+        sync_outfit_vectors,
+    )
+
+    payload_map = dict(payload or {})
+    user_id = str(payload_map.get("user_id") or "").strip()
+    document_id = str(payload_map.get("document_id") or "").strip()
+    job_id = str(getattr(self.request, "id", "") or "").strip()
+
+    _mark_started(self, request_id=request_id, user_id=user_id)
+    if document_id:
+        mark_outfit_vector_status(
+            document_id=document_id,
+            status="processing",
+            job_id=job_id,
+        )
+    try:
+        result = sync_outfit_vectors(
+            document=dict(payload_map.get("document") or {}),
+            payload=dict(payload_map.get("payload") or {}),
+            user_id=user_id,
+        )
+        if document_id:
+            mark_outfit_vector_status(
+                document_id=document_id,
+                status="completed" if result.get("qdrant_saved") else "failed",
+                job_id=job_id,
+                error=str(result.get("qdrant_error") or result.get("image_qdrant_error") or ""),
+                point_id=str(result.get("qdrant_point_id") or ""),
+            )
+        _mark_succeeded(
+            self,
+            {"task": "sync_outfit_vectors_task", "request_id": request_id, **result},
+            request_id=request_id,
+        )
+        return {"status": "success", "result": result}
+    except Exception as e:
+        if document_id:
+            mark_outfit_vector_status(
+                document_id=document_id,
+                status="failed",
+                job_id=job_id,
+                error=str(e),
+            )
+        logger.exception("OUTFIT VECTOR SYNC TASK ERROR")
+        _retry_or_fail(self, e, request_id=request_id)
 

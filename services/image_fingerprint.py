@@ -3,7 +3,7 @@ from typing import Any
 
 import cv2
 import numpy as np
-import requests
+import httpx
 
 
 _URL_HASH_CACHE: dict[str, str] = {}
@@ -102,7 +102,7 @@ def compute_pixel_hash_from_url(url: Any, timeout_seconds: float = 8.0, hash_siz
         return cached
 
     try:
-        response = requests.get(normalized, timeout=timeout_seconds)
+        response = httpx.get(normalized, timeout=timeout_seconds)
         response.raise_for_status()
         pixel_hash = compute_pixel_hash_from_bytes(response.content, hash_size=hash_size)
         if pixel_hash:

@@ -2,8 +2,7 @@ import os
 import json
 from typing import Any, Dict, List, Optional
 
-import requests
-from requests.exceptions import RequestException
+import httpx
 
 
 class AppwriteProxyError(Exception):
@@ -154,6 +153,8 @@ class AppwriteProxy:
             "memories": {"method": "orderDesc", "attribute": "$updatedAt"},
             "jobs": {"method": "orderDesc", "attribute": "$createdAt"},
         }
+        timeout_seconds = float(os.getenv("APPWRITE_TIMEOUT_SECONDS", "8"))
+        self._http = httpx.Client(timeout=timeout_seconds)
 
     def _normalize_resource(self, resource: str) -> str:
         key = str(resource or "").strip()
@@ -221,16 +222,14 @@ class AppwriteProxy:
     ) -> Dict[str, Any]:
         self._ensure_config()
         try:
-            timeout_seconds = float(os.getenv("APPWRITE_TIMEOUT_SECONDS", "8"))
-            response = requests.request(
+            response = self._http.request(
                 method=method,
                 url=url,
                 headers=self._headers(),
                 params=params,
                 json=payload,
-                timeout=timeout_seconds,
             )
-        except RequestException as exc:
+        except httpx.HTTPError as exc:
             raise AppwriteProxyError(f"Appwrite connection failed: {exc}") from exc
         if response.status_code >= 400:
             raise AppwriteProxyError(
@@ -242,6 +241,12 @@ class AppwriteProxy:
             return response.json()
         except Exception as exc:
             raise AppwriteProxyError("Appwrite returned invalid JSON response.") from exc
+
+    def close(self) -> None:
+        try:
+            self._http.close()
+        except Exception:
+            pass
 
     def _list_documents_page(
         self,

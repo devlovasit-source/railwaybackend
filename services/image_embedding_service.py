@@ -3,7 +3,7 @@ import io
 import os
 from typing import Any
 
-import requests
+import httpx
 from PIL import Image
 try:
     import torch
@@ -123,7 +123,7 @@ def encode_image_url(url: Any, timeout_seconds: float = 8.0) -> list:
         return cached
 
     try:
-        response = requests.get(normalized, timeout=timeout_seconds)
+        response = httpx.get(normalized, timeout=timeout_seconds)
         response.raise_for_status()
         vector = encode_image_bytes(response.content)
         if vector:
