@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import traceback
+import time
 from typing import Callable
 from typing import Any, Dict
 from uuid import uuid4
@@ -498,15 +499,28 @@ def remove_bg_compat(payload: BgCompatRequest):
             detail=f"BG remover unavailable: {exc}",
         )
 
-    try:
-        result = remove_background_sync(image_base64)
-    except Exception as exc:
-        raise HTTPException(
-            status_code=503,
-            detail=f"Background removal failed: {exc}",
-        )
-    if not isinstance(result, dict) or result.get("bg_removed") is not True:
+    max_attempts = 3
+    result = None
+    fallback = ""
+    for attempt in range(max_attempts):
+        try:
+            result = remove_background_sync(image_base64)
+        except Exception as exc:
+            fallback = f"Background removal failed: {exc}"
+            if attempt < max_attempts - 1:
+                time.sleep(2)
+                continue
+            raise HTTPException(status_code=503, detail=fallback)
+
+        if isinstance(result, dict) and result.get("bg_removed") is True:
+            break
+
         fallback = result.get("fallback_reason") if isinstance(result, dict) else "Background removal failed"
+        fallback_text = str(fallback or "").lower()
+        warmup_hint = any(token in fallback_text for token in ("warm", "load", "download", "init"))
+        if warmup_hint and attempt < max_attempts - 1:
+            time.sleep(2)
+            continue
         raise HTTPException(
             status_code=503,
             detail=fallback or "Background removal failed",
