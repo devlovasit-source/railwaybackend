@@ -4,6 +4,7 @@ import base64
 import gc
 import torch
 import threading
+import time
 import numpy as np
 import cv2
 from collections import deque
@@ -19,10 +20,6 @@ except Exception:
     snapshot_download = None
     hf_login = None
 
-try:
-    from worker import bg_remove_task
-except Exception:
-    bg_remove_task = None
 try:
     from services.job_tracker import job_tracker
 except Exception:
@@ -50,12 +47,15 @@ class BGRemoveRequest(BaseModel):
 model = None
 model_last_error = None
 model_lock = threading.Lock()
+model_fail_count = 0
+model_disabled_until = 0.0
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 onnx_session = None
 onnx_lock = threading.Lock()
 onnx_last_error = None
 onnx_runtime_disabled = False
-USE_TORCH_MODEL = os.getenv("BG_USE_TORCH_MODEL", "1") == "1"
+_default_bg_use_torch = "1" if device.type == "cuda" else "0"
+USE_TORCH_MODEL = os.getenv("BG_USE_TORCH_MODEL", _default_bg_use_torch) == "1"
 BG_DISABLE_ONNX = os.getenv("BG_DISABLE_ONNX", "0") == "1"
 BG_AUTO_DOWNLOAD = os.getenv("BG_AUTO_DOWNLOAD", "1") == "1"
 BG_HF_REPO_ID = os.getenv("BG_HF_REPO_ID", "briaai/RMBG-2.0")
@@ -78,6 +78,7 @@ ONNX_INPUT_SIZES = [1024]
 BG_MAX_INPUT_BYTES = int(os.getenv("BG_MAX_INPUT_BYTES", os.getenv("UPLOAD_MAX_BYTES", str(50 * 1024 * 1024))))
 BG_MAX_LONG_EDGE = max(1024, int(os.getenv("BG_MAX_LONG_EDGE", "2048")))
 BG_MAX_PIXELS = max(2_000_000, int(os.getenv("BG_MAX_PIXELS", "16000000")))
+BG_MODEL_RETRY_COOLDOWN_SECONDS = max(30, int(os.getenv("BG_MODEL_RETRY_COOLDOWN_SECONDS", "300")))
 
 
 def _resize_for_bg(image: Image.Image) -> Image.Image:
@@ -146,14 +147,25 @@ def _ensure_model_downloaded() -> str | None:
     return None
 
 def load_model():
-    global model, model_last_error
+    global model, model_last_error, model_fail_count, model_disabled_until
 
     if model is not None:
         return model
 
+    now = time.time()
+    if model_disabled_until and now < model_disabled_until:
+        wait_seconds = int(model_disabled_until - now)
+        model_last_error = f"Model load temporarily disabled for {wait_seconds}s after repeated failures"
+        return None
+
     with model_lock:
         if model is not None:
             return model
+        now = time.time()
+        if model_disabled_until and now < model_disabled_until:
+            wait_seconds = int(model_disabled_until - now)
+            model_last_error = f"Model load temporarily disabled for {wait_seconds}s after repeated failures"
+            return None
 
         print("Loading model from:", MODEL_PATH)
 
@@ -161,6 +173,9 @@ def load_model():
         if download_error:
             model_last_error = download_error
             print("Model load failed:", model_last_error)
+            model_fail_count += 1
+            if model_fail_count >= 2:
+                model_disabled_until = time.time() + BG_MODEL_RETRY_COOLDOWN_SECONDS
             model = None
             return model
 
@@ -188,6 +203,8 @@ def load_model():
                 model_local.eval()
                 model = model_local
                 model_last_error = None
+                model_fail_count = 0
+                model_disabled_until = 0.0
                 print("Model ready.")
                 return model
             except Exception as exc:
@@ -195,6 +212,10 @@ def load_model():
 
         model_last_error = " | ".join(errors)
         print("Model load failed:", model_last_error)
+        model_fail_count += 1
+        lower_error = model_last_error.lower()
+        if model_fail_count >= 2 or ("out of memory" in lower_error) or ("cannot allocate" in lower_error):
+            model_disabled_until = time.time() + BG_MODEL_RETRY_COOLDOWN_SECONDS
         model = None
 
     return model
@@ -425,6 +446,10 @@ def remove_background(request: BGRemoveRequest):
 
 @router.post("/remove-bg/async", status_code=status.HTTP_202_ACCEPTED)
 async def remove_background_async(http_request: Request, request: BGRemoveRequest):
+    try:
+        from worker import bg_remove_task  # lazy import: avoid worker/celery side effects at web startup
+    except Exception:
+        bg_remove_task = None
     if bg_remove_task is None:
         raise HTTPException(status_code=503, detail="Celery worker not configured")
     try:
