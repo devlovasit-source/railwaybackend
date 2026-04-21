@@ -352,11 +352,6 @@ def _shape_vision_output(raw_data, color_hex: str, decoded_img, cv_image) -> dic
     }
 
 
-@router.post("/analyze-image")
-def analyze_image(request: ImageAnalyzeRequest):
-    return vision_analyze_core(request.image_base64, request.userId)
-
-
 def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
     vision_input_base64, bg_removed, bg_fallback_reason = _remove_bg_first(image_base64)
     if not bg_removed:
@@ -391,7 +386,6 @@ def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid image payload: {str(e)}")
 
-    llm_fallback = False
     model_used = None
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
@@ -405,15 +399,11 @@ def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
                 timeout=_vision_ai_timeout_seconds()
             )
     except concurrent.futures.TimeoutError:
-        print(
-            f"[vision] AI Vision Timeout after {_vision_ai_timeout_seconds()}s, using fallback."
-        )
-        llm_fallback = True
-        final_data = {}
+        print(f"[vision] AI Vision Timeout after {_vision_ai_timeout_seconds()}s.")
+        raise Exception("The Vision AI timed out.")
     except Exception as e:
         print(f"[vision] AI Vision Error: {e}")
-        llm_fallback = True
-        final_data = {}
+        raise Exception(f"The Vision AI failed: {e}")
 
     final_data = _shape_vision_output(final_data, extracted_color_hex, decoded, cv_image)
     final_data["userId"] = user_id
@@ -467,7 +457,7 @@ def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
         "meta": {
             "bg_removed": bg_removed,
             "bg_fallback_reason": bg_fallback_reason,
-            "llm_fallback": llm_fallback,
+            "llm_fallback": False,
             "vision_model_used": model_used,
             "similarity_enabled": _vision_enable_similarity(),
             "embedding_created": vector is not None,

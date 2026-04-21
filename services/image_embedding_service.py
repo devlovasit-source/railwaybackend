@@ -1,5 +1,4 @@
 import base64
-import hashlib
 import io
 import os
 from typing import Any
@@ -31,9 +30,6 @@ _URL_VECTOR_CACHE: dict[str, list] = {}
 _URL_VECTOR_CACHE_MAX = 512
 
 _EMBEDDING_PROVIDER = str(os.getenv("IMAGE_EMBEDDING_PROVIDER", "clip")).strip().lower()
-_OPENAI_EMBEDDING_MODEL = str(os.getenv("IMAGE_EMBEDDING_OPENAI_MODEL", "text-embedding-3-small")).strip()
-_OPENAI_BASE_URL = str(os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")).strip().rstrip("/")
-_OPENAI_API_KEY = str(os.getenv("OPENAI_API_KEY", "")).strip()
 
 
 def _cache_get(url: str):
@@ -84,70 +80,14 @@ def _load_model():
     return _model, _processor
 
 
-def _image_descriptor(image_bytes: bytes) -> str:
-    if not image_bytes:
-        return ""
-    digest = hashlib.sha256(image_bytes).hexdigest()
-    size = len(image_bytes)
-    width = 0
-    height = 0
-    mode = ""
-    avg_rgb = (0, 0, 0)
-    try:
-        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        width, height = image.size
-        mode = image.mode
-        tiny = image.resize((16, 16))
-        pixels = list(tiny.getdata())
-        if pixels:
-            r = int(sum(p[0] for p in pixels) / len(pixels))
-            g = int(sum(p[1] for p in pixels) / len(pixels))
-            b = int(sum(p[2] for p in pixels) / len(pixels))
-            avg_rgb = (r, g, b)
-    except Exception:
-        pass
-    return (
-        f"image hash={digest} size={size} width={width} height={height} "
-        f"mode={mode} avg_rgb={avg_rgb[0]},{avg_rgb[1]},{avg_rgb[2]}"
-    )
-
-
-def _encode_via_openai_text_embedding(image_bytes: bytes) -> list:
-    if not image_bytes or not _OPENAI_API_KEY:
-        return []
-    descriptor = _image_descriptor(image_bytes)
-    if not descriptor:
-        return []
-    try:
-        response = requests.post(
-            f"{_OPENAI_BASE_URL}/embeddings",
-            headers={
-                "Authorization": f"Bearer {_OPENAI_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": _OPENAI_EMBEDDING_MODEL,
-                "input": descriptor,
-            },
-            timeout=20,
-        )
-        response.raise_for_status()
-        data = response.json()
-        arr = data.get("data") if isinstance(data, dict) else None
-        if isinstance(arr, list) and arr:
-            vec = arr[0].get("embedding") if isinstance(arr[0], dict) else None
-            if isinstance(vec, list):
-                return [float(x) for x in vec]
-    except Exception:
-        return []
-    return []
-
-
 def encode_image_bytes(image_bytes: bytes) -> list:
     if not image_bytes:
         return []
     if _EMBEDDING_PROVIDER == "openai":
-        return _encode_via_openai_text_embedding(image_bytes)
+        print(
+            "WARNING: OpenAI text embeddings cannot be used for image similarity. "
+            "Falling back to local CLIP."
+        )
     try:
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         model, processor = _load_model()
