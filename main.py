@@ -547,6 +547,7 @@ def analyze_compat(payload: VisionCompatRequest):
     try:
         from routers.vision import vision_analyze_core
     except Exception as exc:
+        logger.exception("vision analyze import failed: %s", exc)
         raise HTTPException(status_code=503, detail=f"Analyze endpoint unavailable: {exc}")
 
     user_id = str(payload.user_id or payload.userId or "demo_user").strip() or "demo_user"
