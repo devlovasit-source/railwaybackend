@@ -57,8 +57,10 @@ class AhviOrchestrator:
         logger.info("orchestrator.start request_id=%s user_id=%s", request_id, user_id)
 
         appwrite = AppwriteProxy()
+        stage = "init"
 
         try:
+            stage = "early_organize"
             early_organize = self._resolve_organize_request(text=text, context=context, slots={}, intent="general")
             if early_organize.get("active") and ("organize" in str(text or "").lower() or "organize" in str(context.get("module_context") or "").lower()):
                 return self._finalize_response(
@@ -72,6 +74,7 @@ class AhviOrchestrator:
                     request_id=request_id,
                 )
 
+            stage = "plan_pack_precheck"
             if self._is_plan_pack_request(text=text, context=context):
                 pp = build_plan_pack_response(text=text, context=context, user_id=user_id)
                 return self._finalize_response({
@@ -87,6 +90,7 @@ class AhviOrchestrator:
                     "data": pp.get("data", {}),
                 }, request_id=request_id)
 
+            stage = "daily_dependency_precheck"
             if self._is_daily_dependency_request(text=text, context=context):
                 return self._finalize_response({
                     "success": True,
@@ -99,6 +103,7 @@ class AhviOrchestrator:
                     ),
                 }, request_id=request_id)
 
+            stage = "intent_detection"
             intent_data = detect_intent(
                 text,
                 context.get("history"),
@@ -106,6 +111,7 @@ class AhviOrchestrator:
             )
             intent = intent_data.get("intent", "general")
 
+            stage = "daily_dependency_intent"
             if intent == "daily_dependency":
                 return self._finalize_response({
                     "success": True,
@@ -117,6 +123,7 @@ class AhviOrchestrator:
                     ),
                 }, request_id=request_id)
 
+            stage = "slot_extraction"
             fallback_slots = self._extract_slots(text=text, context=context)
             llm_slots = intent_data.get("slots", {}) or {}
             slots = {**fallback_slots, **llm_slots}
@@ -127,6 +134,7 @@ class AhviOrchestrator:
                 "emotion_state": self._infer_emotion_state(text),
             }
 
+            stage = "try_on_response"
             if intent == "try_on":
                 return self._finalize_response(
                     self._try_on_response(
@@ -138,6 +146,7 @@ class AhviOrchestrator:
                     request_id=request_id,
                 )
 
+            stage = "wardrobe_query_response"
             if intent == "wardrobe_query" or self._is_wardrobe_count_query(text):
                 return self._finalize_response(
                     self._wardrobe_query_response(
@@ -149,6 +158,7 @@ class AhviOrchestrator:
                     request_id=request_id,
                 )
 
+            stage = "plan_pack_intent"
             if intent == "plan_pack" or self._is_plan_pack_request(text=text, context=context):
                 pp = build_plan_pack_response(text=text, context=context, user_id=user_id)
                 return self._finalize_response({
@@ -164,6 +174,7 @@ class AhviOrchestrator:
                     "data": pp.get("data", {}),
                 }, request_id=request_id)
 
+            stage = "organize_resolution"
             organize_signal = self._resolve_organize_request(text=text, context=context, slots=slots, intent=intent)
             if organize_signal.get("active"):
                 return self._finalize_response(
@@ -177,6 +188,7 @@ class AhviOrchestrator:
                     request_id=request_id,
                 )
 
+            stage = "styling_response"
             if intent in ("daily_outfit", "occasion_outfit", "explore_styles"):
                 return self._finalize_response(
                     self._styling_response(
@@ -193,6 +205,7 @@ class AhviOrchestrator:
                     request_id=request_id,
                 )
 
+            stage = "general_generation"
             general_message = generate_text(
                 text,
                 user_profile=context.get("user_profile"),
@@ -215,15 +228,18 @@ class AhviOrchestrator:
             }, request_id=request_id)
 
         except Exception:
-            logger.exception("orchestrator.error request_id=%s", request_id)
+            logger.exception("orchestrator.error request_id=%s stage=%s", request_id, stage)
             _safe_log("ERROR: Orchestrator error\n" + traceback.format_exc())
             return self._finalize_response({
                 "success": False,
                 "request_id": request_id,
                 "error": {
                     "code": "ORCHESTRATOR_ERROR",
-                    "message": "Something went wrong",
-                    "details": request_id,
+                    "message": f"Something went wrong at stage: {stage}",
+                    "details": {
+                        "request_id": request_id,
+                        "stage": stage,
+                    },
                 },
             }, request_id=request_id)
 

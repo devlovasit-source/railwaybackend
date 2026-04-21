@@ -41,7 +41,7 @@ account = Account(client)
 databases = Databases(client)
 
 
-def _build_client() -> Client:
+def _build_client(include_api_key: bool = True) -> Client:
     local_client = Client()
     local_client.set_endpoint(
         _env_first(
@@ -58,12 +58,12 @@ def _build_client() -> Client:
             default="69958f25003190519213",
         )
     )
-    if _appwrite_api_key:
+    if include_api_key and _appwrite_api_key:
         local_client.set_key(_appwrite_api_key)
     return local_client
 
 
 def build_account_for_jwt(token: str) -> Account:
-    local_client = _build_client()
+    local_client = _build_client(include_api_key=False)
     local_client.set_jwt(str(token or "").strip())
     return Account(local_client)

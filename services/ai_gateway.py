@@ -207,6 +207,7 @@ def extract_json(text: str) -> Any:
         candidates.append(clean[obj_start : obj_end + 1])
     if arr_start != -1 and arr_end > arr_start:
         candidates.append(clean[arr_start : arr_end + 1])
+    candidates.sort(key=len, reverse=True)
 
     for candidate in candidates:
         try:

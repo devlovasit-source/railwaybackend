@@ -134,7 +134,7 @@ def run_ai(payload: dict, request: Request):
             )
             if isinstance(result, dict):
                 result = validate_orchestrator_response(result, request_id=request_id)
-            if isinstance(result, dict) and result.get("success", True):
+            if isinstance(result, dict):
                 ai_gateway.log_control_event(
                     "tier_success",
                     request_id=request_id,
@@ -142,7 +142,7 @@ def run_ai(payload: dict, request: Request):
                     details={"model": model_name, "depth": index},
                 )
                 return result
-            errors.append(f"tier={index} model={model_name} soft_fail")
+            errors.append(f"tier={index} model={model_name} soft_fail: invalid_format")
             ai_gateway.log_control_event(
                 "tier_soft_fail",
                 request_id=request_id,

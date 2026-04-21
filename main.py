@@ -177,6 +177,7 @@ class StreamBodyLimitMiddleware:
                 pass
 
         received = 0
+        response_started = False
 
         async def limited_receive():
             nonlocal received
@@ -188,9 +189,17 @@ class StreamBodyLimitMiddleware:
                     raise PayloadTooLargeError()
             return message
 
+        async def tracked_send(message):
+            nonlocal response_started
+            if message.get("type") == "http.response.start":
+                response_started = True
+            await send(message)
+
         try:
-            await self.app(scope, limited_receive, send)
+            await self.app(scope, limited_receive, tracked_send)
         except PayloadTooLargeError:
+            if response_started:
+                return
             response = JSONResponse(
                 status_code=413,
                 content={
@@ -307,50 +316,6 @@ app.add_middleware(StreamBodyLimitMiddleware, max_bytes=settings.upload_max_byte
 
 
 @app.middleware("http")
-async def request_tracing_middleware(request: Request, call_next):
-    incoming = request.headers.get("X-Request-ID")
-    request_id = str(incoming or "").strip() or str(uuid4())
-    set_request_id(request_id)
-    request.state.request_id = request_id
-    started = perf_counter()
-    status_code = 500
-    try:
-        response = await call_next(request)
-        status_code = int(getattr(response, "status_code", 500))
-        response.headers["X-Request-ID"] = request_id
-        return response
-    except Exception:
-        logger.exception("request failed request_id=%s method=%s path=%s", request_id, request.method, request.url.path)
-        raise
-    finally:
-        elapsed_ms = int((perf_counter() - started) * 1000)
-        logger.info(
-            "request request_id=%s method=%s path=%s status=%s latency_ms=%s",
-            request_id,
-            request.method,
-            request.url.path,
-            status_code,
-            elapsed_ms,
-        )
-
-
-@app.middleware("http")
-async def auth_guard_middleware(request: Request, call_next):
-    if not settings.auth_required:
-        return await call_next(request)
-    path = str(request.url.path or "")
-    if path in {"/", "/health"} or path.startswith("/docs") or path.startswith("/openapi"):
-        return await call_next(request)
-    if path.startswith("/api/tasks/"):
-        return await call_next(request)
-    try:
-        request.state.user = await get_current_user(request)
-    except HTTPException as exc:
-        return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
-    return await call_next(request)
-
-
-@app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
     if not settings.rate_limit_enabled:
         return await call_next(request)
@@ -407,6 +372,50 @@ async def rate_limit_middleware(request: Request, call_next):
     response.headers["X-RateLimit-Window"] = str(settings.rate_limit_window_seconds)
     response.headers["X-RateLimit-Backend"] = "redis" if redis_ready else "local"
     return response
+
+
+@app.middleware("http")
+async def auth_guard_middleware(request: Request, call_next):
+    if not settings.auth_required:
+        return await call_next(request)
+    path = str(request.url.path or "")
+    if path in {"/", "/health"} or path.startswith("/docs") or path.startswith("/openapi"):
+        return await call_next(request)
+    if path.startswith("/api/tasks/"):
+        return await call_next(request)
+    try:
+        request.state.user = await get_current_user(request)
+    except HTTPException as exc:
+        return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+    return await call_next(request)
+
+
+@app.middleware("http")
+async def request_tracing_middleware(request: Request, call_next):
+    incoming = request.headers.get("X-Request-ID")
+    request_id = str(incoming or "").strip() or str(uuid4())
+    set_request_id(request_id)
+    request.state.request_id = request_id
+    started = perf_counter()
+    status_code = 500
+    try:
+        response = await call_next(request)
+        status_code = int(getattr(response, "status_code", 500))
+        response.headers["X-Request-ID"] = request_id
+        return response
+    except Exception:
+        logger.exception("request failed request_id=%s method=%s path=%s", request_id, request.method, request.url.path)
+        raise
+    finally:
+        elapsed_ms = int((perf_counter() - started) * 1000)
+        logger.info(
+            "request request_id=%s method=%s path=%s status=%s latency_ms=%s",
+            request_id,
+            request.method,
+            request.url.path,
+            status_code,
+            elapsed_ms,
+        )
 
 
 # -------------------------

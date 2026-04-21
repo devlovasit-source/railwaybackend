@@ -358,11 +358,21 @@ def _normalize_detected_items(items: List[Any]) -> List[DetectedItem]:
         elif isinstance(item, dict):
             normalized.append(DetectedItem(**item))
         else:
-            if hasattr(item, "model_dump"):
-                normalized.append(DetectedItem(**item.model_dump()))
-            else:
-                normalized.append(DetectedItem(**item.dict()))
+            normalized.append(DetectedItem(**_model_to_dict(item)))
     return normalized
+
+
+def _model_to_dict(value: Any) -> Dict[str, Any]:
+    if isinstance(value, dict):
+        return dict(value)
+    if hasattr(value, "model_dump"):
+        dumped = value.model_dump()
+        return dict(dumped) if isinstance(dumped, dict) else {}
+    if hasattr(value, "dict"):
+        dumped = value.dict()
+        return dict(dumped) if isinstance(dumped, dict) else {}
+    raw = getattr(value, "__dict__", {})
+    return dict(raw) if isinstance(raw, dict) else {}
 
 
 def save_selected_core(
@@ -380,7 +390,7 @@ def save_selected_core(
     pixel_max_distance = _pixel_duplicate_distance()
     image_duplicate_threshold = _image_duplicate_threshold()
     normalized_payload = [
-        item.model_dump() if hasattr(item, "model_dump") else item.dict()
+        _model_to_dict(item)
         for item in normalized_items
     ]
     return persist_selected_items(
@@ -400,10 +410,7 @@ def save_selected_async(http_request: Request, request: SaveSelectedRequest):
     try:
         detected = []
         for item in request.detected_items:
-            if hasattr(item, "model_dump"):
-                detected.append(item.model_dump())
-            else:
-                detected.append(item.dict())
+            detected.append(_model_to_dict(item))
         payload = {
             "user_id": request.user_id,
             "selected_item_ids": request.selected_item_ids,
