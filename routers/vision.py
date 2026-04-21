@@ -26,9 +26,11 @@ except Exception:
 
 try:
     from routers.bg_remover import BGRemoveRequest, remove_background_sync
-except Exception:
+    BG_REMOVER_IMPORT_ERROR = None
+except Exception as exc:
     BGRemoveRequest = None
     remove_background_sync = None
+    BG_REMOVER_IMPORT_ERROR = str(exc)
 
 router = APIRouter()
 VISION_MAX_INPUT_BYTES = int(os.getenv("VISION_MAX_INPUT_BYTES", os.getenv("UPLOAD_MAX_BYTES", str(50 * 1024 * 1024))))
@@ -126,7 +128,11 @@ def _remove_bg_first(image_base64: str):
     if _input_has_alpha(image_base64):
         return image_base64, True, "input_already_has_alpha"
     if BGRemoveRequest is None or remove_background_sync is None:
-        return image_base64, False, "bg_remover_unavailable"
+        reason = "bg_remover_unavailable"
+        if BG_REMOVER_IMPORT_ERROR:
+            reason = f"{reason}: {BG_REMOVER_IMPORT_ERROR}"
+        print(f"[vision] BG remover unavailable: {reason}")
+        return image_base64, False, reason
     try:
         req = BGRemoveRequest(image_base64=image_base64)
         result = remove_background_sync(req.image_base64)
