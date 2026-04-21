@@ -39,6 +39,7 @@ def _env_int(name: str, default: int, min_value: int, max_value: int) -> int:
 
 MAX_CHAT_MESSAGES = _env_int("CHAT_MESSAGES_MAX", 300, 30, 1000)
 MAX_HISTORY_CONTEXT = _env_int("CHAT_HISTORY_CONTEXT_MAX", 200, 20, 800)
+MAX_HISTORY_CONTEXT_CHARS = _env_int("CHAT_HISTORY_CONTEXT_MAX_CHARS", 14000, 2000, 120000)
 
 
 def _build_history(messages: List["Message"], limit: int = MAX_HISTORY_CONTEXT) -> List[Dict[str, Any]]:
@@ -111,6 +112,31 @@ def _merge_history(memory_history: List[Dict[str, Any]], request_history: List[D
         last_role = role
         last_text = text
     return cleaned[-MAX_HISTORY_CONTEXT:]
+
+
+def _prune_history_by_chars(history: List[Dict[str, Any]], max_chars: int = MAX_HISTORY_CONTEXT_CHARS) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
+    budget = max(500, int(max_chars))
+    for row in reversed(history or []):
+        if not isinstance(row, dict):
+            continue
+        role = str(row.get("role") or "").strip().lower()
+        text = str(row.get("text") or row.get("content") or "").strip()
+        if role not in {"user", "assistant", "system"} or not text:
+            continue
+        cost = len(text)
+        if rows and budget - cost < 0:
+            break
+        if cost > budget and not rows:
+            rows.append({"role": role, "text": text[-budget:]})
+            budget = 0
+            break
+        rows.append({"role": role, "text": text})
+        budget -= cost
+        if budget <= 0:
+            break
+    rows.reverse()
+    return rows
 
 
 def _sanitize_thread_id(value: Any) -> str:
@@ -255,6 +281,7 @@ def text_chat(request: TextChatRequest, http_request: Request):
         [h for h in memory_history if isinstance(h, dict)],
     )
     merged_history = _merge_history(stored_plus_memory, history)
+    merged_history = _prune_history_by_chars(merged_history, MAX_HISTORY_CONTEXT_CHARS)
 
     slot_hints: Dict[str, Any] = {}
     if request.module_context:

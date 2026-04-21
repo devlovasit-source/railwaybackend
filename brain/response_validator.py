@@ -7,6 +7,7 @@ _TAG_RE = re.compile(r"<[^>]+>")
 _CONTROL_RE = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F]")
 _MULTISPACE_RE = re.compile(r"[ \t]{2,}")
 _SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
+_TRAILING_COMMA_RE = re.compile(r",\s*([}\]])")
 
 
 def to_plain_text(value: Any, *, fallback: str = "I can help with that.") -> str:
@@ -44,6 +45,22 @@ def _to_two_sentences(text: str) -> str:
     if "?" not in combined:
         combined = combined.rstrip(".!?") + ". What vibe are we going for?"
     return combined.strip()
+
+
+def clean_llm_json_text(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    text = _CODE_FENCE_RE.sub("", text).strip()
+    # Remove obvious preambles before the first JSON token.
+    first_obj = text.find("{")
+    first_arr = text.find("[")
+    starts = [x for x in (first_obj, first_arr) if x >= 0]
+    if starts:
+        text = text[min(starts):].strip()
+    # Remove trailing commas before object/array close tokens.
+    text = _TRAILING_COMMA_RE.sub(r"\1", text)
+    return text
 
 
 def validate_orchestrator_response(

@@ -5,6 +5,7 @@ import uuid
 import hashlib
 import logging
 import json
+import os
 from datetime import datetime
 from time import perf_counter
 from typing import Any, Dict
@@ -440,7 +441,7 @@ class AhviOrchestrator:
             
             # FIX: Ensure we use the raw context wardrobe, since enriched_context was stripping it out!
             raw_wardrobe = context.get("wardrobe") or enriched_context.get("wardrobe", [])
-            safe_wardrobe = self._normalize_documents(raw_wardrobe)
+            safe_wardrobe = self._select_wardrobe_for_styling(raw_wardrobe, text)
 
             state["pipeline_result"] = get_daily_outfits(
                 {
@@ -525,16 +526,60 @@ class AhviOrchestrator:
             value = context.get("style_dna")
             return value if isinstance(value, dict) else {}
         if hasattr(style_dna_engine, "build"):
+            wardrobe_for_dna = self._select_wardrobe_for_styling(
+                context.get("wardrobe", []),
+                str((context.get("slots") or {}).get("occasion") or ""),
+            )
             return style_dna_engine.build(
                 {
                     "user_id": context.get("user_id"),
                     "user_profile": context.get("user_profile"),
                     "history": context.get("history", []),
                     "signals": context.get("signals"),
-                    "wardrobe": context.get("wardrobe", []),
+                    "wardrobe": wardrobe_for_dna,
                 }
             )
         return {}
+
+    def _styling_wardrobe_limit(self) -> int:
+        raw = str(os.getenv("STYLING_WARDROBE_MAX_ITEMS", "80") or "").strip()
+        try:
+            value = int(raw)
+        except Exception:
+            value = 80
+        return max(20, min(200, value))
+
+    def _select_wardrobe_for_styling(self, wardrobe: Any, query_text: str = "") -> list[dict]:
+        docs = self._normalize_documents(wardrobe)
+        cap = self._styling_wardrobe_limit()
+        if len(docs) <= cap:
+            return docs
+
+        words = [w.strip().lower() for w in str(query_text or "").split() if len(w.strip()) >= 3]
+
+        def _score(doc: dict) -> float:
+            cat = str(doc.get("category") or doc.get("type") or "").lower()
+            sub = str(doc.get("sub_category") or "").lower()
+            name = str(doc.get("name") or "").lower()
+            pattern = str(doc.get("pattern") or "").lower()
+            occasions = " ".join(
+                str(x).lower() for x in (doc.get("occasions") or []) if isinstance(x, (str, int, float))
+            )
+            blob = f"{cat} {sub} {name} {pattern} {occasions}"
+            score = 0.0
+            for w in words:
+                if w in blob:
+                    score += 3.0
+            if doc.get("liked") is True:
+                score += 0.4
+            try:
+                score -= min(5.0, float(doc.get("worn", 0) or 0) * 0.05)
+            except Exception:
+                pass
+            return score
+
+        ranked = sorted(docs, key=_score, reverse=True)
+        return ranked[:cap]
 
     def _try_on_response(
         self,

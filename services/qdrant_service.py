@@ -1,4 +1,5 @@
 import os
+import asyncio
 from dotenv import load_dotenv
 
 from qdrant_client import QdrantClient
@@ -437,6 +438,73 @@ class QdrantService:
 
         raise AttributeError("Qdrant client has neither 'search' nor 'query_points'")
 
+    async def _client_search_async(self, collection_name: str, vector: list, user_id: str, limit: int):
+        if self.async_client is None:
+            return await asyncio.to_thread(self._client_search, collection_name, vector, user_id, limit)
+
+        query_filter = {
+            "must": [{"key": "userId", "match": {"value": user_id}}],
+            "must_not": [{"key": "feedback", "match": {"value": "down"}}],
+        }
+        query_points_query = self._query_points_query(collection_name, vector)
+        using_name = self._query_points_using(collection_name)
+
+        if hasattr(self.async_client, "query_points"):
+            try:
+                kwargs = {
+                    "collection_name": collection_name,
+                    "query": query_points_query,
+                    "limit": limit,
+                    "query_filter": query_filter,
+                }
+                if using_name:
+                    kwargs["using"] = using_name
+                response = await self.async_client.query_points(**kwargs)
+                return self._extract_points_from_query_response(response)
+            except TypeError:
+                try:
+                    response = await self.async_client.query_points(
+                        collection_name=collection_name,
+                        query_vector=query_points_query,
+                        limit=limit,
+                        query_filter=query_filter,
+                    )
+                    return self._extract_points_from_query_response(response)
+                except Exception:
+                    pass
+            except Exception:
+                pass
+
+            # fallback without server-side filter
+            try:
+                kwargs = {
+                    "collection_name": collection_name,
+                    "query": query_points_query,
+                    "limit": max(limit * 20, 50),
+                }
+                if using_name:
+                    kwargs["using"] = using_name
+                response = await self.async_client.query_points(**kwargs)
+                points = self._extract_points_from_query_response(response)
+                return self._client_side_filter_points(points, user_id, limit)
+            except Exception:
+                return await asyncio.to_thread(self._client_search, collection_name, vector, user_id, limit)
+
+        if hasattr(self.async_client, "search"):
+            try:
+                query_vector = self._query_vector(collection_name, vector)
+                points = await self.async_client.search(
+                    collection_name=collection_name,
+                    query_vector=query_vector,
+                    limit=limit,
+                    query_filter=query_filter,
+                )
+                return points
+            except Exception:
+                return await asyncio.to_thread(self._client_search, collection_name, vector, user_id, limit)
+
+        return await asyncio.to_thread(self._client_search, collection_name, vector, user_id, limit)
+
     # -------------------------
     # UPSERT
     # -------------------------
@@ -688,6 +756,40 @@ class QdrantService:
             print("Image duplicate check failed:", str(e))
         return result
 
+    async def find_image_duplicate_async(self, vector: list, user_id: str, threshold: float = 0.985):
+        result = {
+            "checked": False,
+            "is_duplicate": False,
+            "id": None,
+            "score": 0.0,
+            "threshold": float(threshold),
+            "payload": {},
+        }
+        if not self._ensure_ready():
+            return result
+        if not vector:
+            return result
+        result["checked"] = True
+        try:
+            points = await self._client_search_async(self.image_collection, vector, user_id, limit=1)
+            if not points:
+                return result
+            top = points[0]
+            score = float(getattr(top, "score", 0.0))
+            payload = getattr(top, "payload", {}) or {}
+            point_id = str(getattr(top, "id", "") or "")
+            result.update(
+                {
+                    "is_duplicate": score >= float(threshold),
+                    "id": point_id,
+                    "score": score,
+                    "payload": payload,
+                }
+            )
+        except Exception:
+            return await asyncio.to_thread(self.find_image_duplicate, vector, user_id, threshold)
+        return result
+
     def find_pixel_duplicate(
         self,
         user_id: str,
@@ -757,6 +859,22 @@ class QdrantService:
 
         return result
 
+    async def find_pixel_duplicate_async(
+        self,
+        user_id: str,
+        pixel_hash: str,
+        max_distance: int = 6,
+        scan_limit: int = 512,
+    ):
+        # Async scroll compatibility varies by client versions; use thread offload safely.
+        return await asyncio.to_thread(
+            self.find_pixel_duplicate,
+            user_id,
+            pixel_hash,
+            max_distance,
+            scan_limit,
+        )
+
     def find_duplicate(self, vector: list, user_id: str, threshold: float = 0.97):
         result = {
             "is_duplicate": False,
@@ -787,6 +905,36 @@ class QdrantService:
             )
         except Exception as e:
             print("Duplicate check failed:", str(e))
+        return result
+
+    async def find_duplicate_async(self, vector: list, user_id: str, threshold: float = 0.97):
+        result = {
+            "is_duplicate": False,
+            "id": None,
+            "score": 0.0,
+            "threshold": float(threshold),
+            "payload": {},
+        }
+        if not self._ensure_ready():
+            return result
+        try:
+            points = await self._client_search_async(self.collection, vector, user_id, limit=1)
+            if not points:
+                return result
+            top = points[0]
+            score = float(getattr(top, "score", 0.0))
+            payload = getattr(top, "payload", {}) or {}
+            point_id = str(getattr(top, "id", "") or "")
+            result.update(
+                {
+                    "id": point_id,
+                    "score": score,
+                    "payload": payload,
+                    "is_duplicate": score >= float(threshold),
+                }
+            )
+        except Exception:
+            return await asyncio.to_thread(self.find_duplicate, vector, user_id, threshold)
         return result
 
     def is_duplicate(self, vector: list, user_id: str, threshold: float = 0.97):

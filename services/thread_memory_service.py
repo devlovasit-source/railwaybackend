@@ -37,6 +37,8 @@ class ThreadMemoryService:
         self._ttl_seconds = _env_int("THREAD_MEMORY_TTL_SECONDS", 7 * 24 * 3600, 300, 60 * 24 * 3600)
         self._max_turns = _env_int("THREAD_MEMORY_MAX_TURNS", 400, 40, 2000)
         self._retain_turns = _env_int("THREAD_MEMORY_RETAIN_TURNS", 220, 20, 1600)
+        self._history_char_budget = _env_int("THREAD_MEMORY_HISTORY_MAX_CHARS", 24000, 4000, 200000)
+        self._turn_char_limit = _env_int("THREAD_MEMORY_TURN_MAX_CHARS", 1200, 120, 8000)
         self._summary_limit = _env_int("THREAD_MEMORY_SUMMARY_MAX_CHARS", 5000, 400, 40000)
         self._lock = threading.Lock()
         self._local: Dict[str, Dict[str, Any]] = {}
@@ -78,8 +80,23 @@ class ThreadMemoryService:
                 continue
             if not text:
                 continue
+            if len(text) > self._turn_char_limit:
+                text = text[: self._turn_char_limit].strip()
             out.append({"role": role, "text": text})
         return out
+
+    def _enforce_history_char_budget(self, history: List[Dict[str, str]], summary: str) -> tuple[List[Dict[str, str]], str]:
+        if not history:
+            return history, summary
+        total_chars = sum(len(t.get("text", "")) for t in history)
+        if total_chars <= self._history_char_budget:
+            return history, summary
+        # Spill oldest turns into summary until within budget.
+        while history and total_chars > self._history_char_budget:
+            spilled = history.pop(0)
+            total_chars -= len(spilled.get("text", ""))
+            summary = self._append_summary(summary, [spilled])
+        return history, summary
 
     def _append_summary(self, current: str, turns: List[Dict[str, str]]) -> str:
         if not turns:
@@ -100,6 +117,7 @@ class ThreadMemoryService:
             spill = history[: max(0, len(history) - self._retain_turns)]
             history = history[-self._retain_turns :]
             summary = self._append_summary(summary, spill)
+        history, summary = self._enforce_history_char_budget(history, summary)
         return {"summary": summary, "history": history}
 
     def _read_redis(self, key: str) -> Dict[str, Any] | None:
@@ -195,4 +213,3 @@ class ThreadMemoryService:
 
 
 thread_memory_service = ThreadMemoryService()
-

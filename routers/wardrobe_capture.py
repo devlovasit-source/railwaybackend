@@ -106,8 +106,9 @@ def _decode_image_base64(value: str) -> Image.Image:
     text = (value or "").strip()
     if "," in text:
         text = text.split(",", 1)[1]
+    text += "=" * ((4 - len(text) % 4) % 4)
     try:
-        data = base64.b64decode(text, validate=True)
+        data = base64.b64decode(text)
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Invalid image_base64: {exc}")
     if len(data) > 15 * 1024 * 1024:

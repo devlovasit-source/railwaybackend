@@ -1,6 +1,7 @@
 ﻿import os
 import io
 import base64
+import gc
 import torch
 import threading
 import numpy as np
@@ -250,6 +251,14 @@ def remove_background_sync(image_base64: str):
     global onnx_runtime_disabled
     model_instance = load_model() if USE_TORCH_MODEL else None
     onnx_instance = None
+    input_tensor = None
+    preds = None
+    mask = None
+    mask_u8 = None
+    mask_pil = None
+    final_image = None
+    buffer = None
+    image_data = b""
 
     if model_instance is None:
         onnx_instance = load_onnx_session()
@@ -367,6 +376,20 @@ def remove_background_sync(image_base64: str):
             return _original_png_response(image_data, f"Unhandled BG error: {e}")
         except Exception:
             raise HTTPException(status_code=500, detail="Processing failed")
+    finally:
+        try:
+            del input_tensor, preds, mask, mask_u8, mask_pil, final_image, buffer, image_data
+        except Exception:
+            pass
+        try:
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except Exception:
+            pass
+        try:
+            gc.collect()
+        except Exception:
+            pass
 
 
 @router.post("/remove-bg")

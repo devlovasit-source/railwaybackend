@@ -29,7 +29,7 @@ from services.qdrant_service import qdrant_service
 from services.r2_storage import R2Storage, R2StorageError
 from services import data_access_service
 from services.task_queue import enqueue_task
-from services.outfit_vector_sync_service import sync_outfit_vectors
+from services.outfit_vector_sync_service import mark_outfit_vector_status
 from services.request_context import get_request_id
 try:
     from worker import sync_outfit_vectors_task
@@ -2085,6 +2085,94 @@ def _run_outfit_duplicate_check(
     }
 
 
+async def _run_outfit_duplicate_check_async(
+    *,
+    payload: Dict[str, Any],
+    duplicate_user_id: str,
+    incoming_image_vector: Optional[list] = None,
+    incoming_pixel_hash: str = "",
+) -> Dict[str, Any]:
+    duplicate_meta = _new_duplicate_meta(force_save=False)
+    duplicate_meta["checked"] = bool(duplicate_user_id)
+    payload_image_vector: List[float] = []
+    payload_pixel_hash = ""
+    duplicate: Dict[str, Any] = {}
+
+    if not duplicate_user_id:
+        return {
+            "duplicate_meta": duplicate_meta,
+            "duplicate": duplicate,
+            "payload_image_vector": payload_image_vector,
+            "payload_pixel_hash": payload_pixel_hash,
+        }
+
+    try:
+        payload_image_vector = incoming_image_vector or _compute_payload_image_vector(payload)
+        if payload_image_vector:
+            image_duplicate = await qdrant_service.find_image_duplicate_async(
+                payload_image_vector,
+                duplicate_user_id,
+                threshold=duplicate_meta["image_threshold"],
+            )
+            duplicate_meta["image_checked"] = bool(image_duplicate.get("checked"))
+            duplicate_meta["image_score"] = float(image_duplicate.get("score") or 0.0)
+            if image_duplicate.get("is_duplicate"):
+                duplicate_meta["is_duplicate"] = True
+                duplicate_meta["point_id"] = image_duplicate.get("id")
+                duplicate_meta["reason"] = "image_vector"
+                duplicate = dict(image_duplicate or {})
+
+        payload_pixel_hash = str(incoming_pixel_hash or "").strip().lower() or _compute_payload_pixel_hash(payload)
+        duplicate_meta["pixel_hash"] = payload_pixel_hash or None
+        if payload_pixel_hash and not duplicate_meta["is_duplicate"]:
+            pixel_duplicate = await qdrant_service.find_pixel_duplicate_async(
+                duplicate_user_id,
+                payload_pixel_hash,
+                max_distance=duplicate_meta["pixel_max_distance"],
+            )
+            duplicate_meta["pixel_checked"] = bool(pixel_duplicate.get("checked"))
+            duplicate_meta["pixel_distance"] = pixel_duplicate.get("distance")
+            if pixel_duplicate.get("is_duplicate"):
+                duplicate_meta["is_duplicate"] = True
+                duplicate_meta["point_id"] = pixel_duplicate.get("id")
+                duplicate_meta["reason"] = "pixel_hash"
+                duplicate = dict(pixel_duplicate or {})
+
+        duplicate_vector_input = {
+            "category": payload.get("category", ""),
+            "sub_category": payload.get("sub_category", ""),
+            "color_code": payload.get("color_code", ""),
+            "pattern": payload.get("pattern", ""),
+            "occasions": payload.get("occasions", [])
+            if isinstance(payload.get("occasions", []), list)
+            else [],
+        }
+        if not duplicate_meta["is_duplicate"]:
+            duplicate_vector = encode_metadata(duplicate_vector_input)
+            semantic_duplicate = await qdrant_service.find_duplicate_async(
+                duplicate_vector,
+                duplicate_user_id,
+                threshold=duplicate_meta["threshold"],
+            )
+            duplicate_meta["is_duplicate"] = bool(semantic_duplicate.get("is_duplicate"))
+            duplicate_meta["score"] = float(semantic_duplicate.get("score") or 0.0)
+            duplicate_meta["point_id"] = semantic_duplicate.get("id")
+            if duplicate_meta["is_duplicate"]:
+                duplicate_meta["reason"] = "semantic"
+                duplicate = dict(semantic_duplicate or {})
+        else:
+            duplicate_meta["score"] = 1.0
+    except Exception as exc:
+        duplicate_meta["error"] = str(exc)
+
+    return {
+        "duplicate_meta": duplicate_meta,
+        "duplicate": duplicate,
+        "payload_image_vector": payload_image_vector,
+        "payload_pixel_hash": payload_pixel_hash,
+    }
+
+
 def _build_existing_duplicate_preview(
     *,
     duplicate_user_id: str,
@@ -2222,7 +2310,7 @@ async def get_document(resource: str, document_id: str):
 
 
 @router.post("/outfits/duplicate-check")
-def check_outfit_duplicate(request: OutfitDuplicateCheckRequest):
+async def check_outfit_duplicate(request: OutfitDuplicateCheckRequest):
     raw_payload = dict(request.data or {})
     if not qdrant_service.enabled():
         return {
@@ -2246,7 +2334,7 @@ def check_outfit_duplicate(request: OutfitDuplicateCheckRequest):
 
     payload = _normalize_outfit_payload(raw_payload, request.user_id)
     duplicate_user_id = str(payload.get("userId") or request.user_id or "").strip()
-    result = _run_outfit_duplicate_check(
+    result = await _run_outfit_duplicate_check_async(
         payload=payload,
         duplicate_user_id=duplicate_user_id,
         incoming_image_vector=incoming_image_vector,
@@ -2534,14 +2622,26 @@ def create_document(request: CreateRequest):
                 or str(payload.get("qdrant_point_id") or "").strip()
                 or _to_uuid_point_id(doc.get("$id") or request.document_id)
             )
-            if sync_outfit_vectors_task is not None:
+            if point_id:
+                payload["qdrant_point_id"] = point_id
+            if not payload_image_vector:
+                payload_image_vector = incoming_image_vector or []
+            if not payload_pixel_hash:
+                payload_pixel_hash = incoming_pixel_hash or ""
+            if sync_outfit_vectors_task is None:
+                qdrant_mode = "worker_unavailable"
+                qdrant_error = "vector_sync_worker_unavailable"
                 try:
-                    if not payload_image_vector:
-                        payload_image_vector = incoming_image_vector or _compute_payload_image_vector(payload)
-                    if not payload_pixel_hash:
-                        payload_pixel_hash = incoming_pixel_hash or _compute_payload_pixel_hash(payload)
-                    if point_id:
-                        payload["qdrant_point_id"] = point_id
+                    mark_outfit_vector_status(
+                        document_id=str(doc.get("$id") or ""),
+                        status="failed",
+                        error=qdrant_error,
+                        point_id=point_id or "",
+                    )
+                except Exception:
+                    pass
+            else:
+                try:
                     request_id = str(get_request_id() or "").strip()
                     task_payload = {
                         "document_id": str(doc.get("$id") or ""),
@@ -2565,27 +2665,27 @@ def create_document(request: CreateRequest):
                         meta={"resource": "outfits", "document_id": task_payload.get("document_id")},
                     )
                     qdrant_mode = "queued"
+                    try:
+                        mark_outfit_vector_status(
+                            document_id=str(doc.get("$id") or ""),
+                            status="queued",
+                            job_id=str(qdrant_job_id or ""),
+                            point_id=point_id or "",
+                        )
+                    except Exception:
+                        pass
                 except Exception as exc:
                     qdrant_error = str(exc)
-                    qdrant_mode = "queue_failed_inline_fallback"
-                    print(f"[data.create_document] outfits qdrant queue failed, using inline fallback: {exc}")
-            if qdrant_mode != "queued":
-                sync_result = sync_outfit_vectors(
-                    document=dict(doc),
-                    payload={
-                        **dict(payload),
-                        "image_vector": payload_image_vector,
-                        "pixel_hash": payload_pixel_hash,
-                        "qdrant_point_id": point_id,
-                    },
-                    user_id=str(doc.get("userId") or payload.get("userId") or request.user_id or ""),
-                )
-                qdrant_saved = bool(sync_result.get("qdrant_saved"))
-                qdrant_error = str(sync_result.get("qdrant_error") or qdrant_error or "") or None
-                image_qdrant_saved = bool(sync_result.get("image_qdrant_saved"))
-                image_qdrant_error = str(sync_result.get("image_qdrant_error") or "") or None
-                point_id = str(sync_result.get("qdrant_point_id") or point_id or "").strip() or None
-                qdrant_mode = "inline"
+                    qdrant_mode = "queue_failed"
+                    try:
+                        mark_outfit_vector_status(
+                            document_id=str(doc.get("$id") or ""),
+                            status="failed",
+                            error=qdrant_error,
+                            point_id=point_id or "",
+                        )
+                    except Exception:
+                        pass
 
         return {
             "document": doc,

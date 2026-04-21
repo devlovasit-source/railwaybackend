@@ -15,6 +15,7 @@ except Exception:
 
 from services import llm_service
 from services.request_context import get_request_id
+from brain.response_validator import clean_llm_json_text
 
 logger = logging.getLogger("ahvi.ai_gateway")
 
@@ -248,7 +249,9 @@ def extract_json(text: str) -> Any:
     if not raw:
         raise ValueError("empty response")
 
-    clean = re.sub(r"```(?:json)?", "", raw, flags=re.IGNORECASE).replace("```", "").strip()
+    clean = clean_llm_json_text(raw)
+    if not clean:
+        raise ValueError("empty response")
 
     try:
         return json.loads(clean)
@@ -269,7 +272,8 @@ def extract_json(text: str) -> Any:
 
     for candidate in candidates:
         try:
-            return json.loads(candidate)
+            normalized = clean_llm_json_text(candidate)
+            return json.loads(normalized)
         except Exception:
             continue
 

@@ -31,8 +31,10 @@ class AvatarUploadRequest(BaseModel):
 
 class WardrobeUploadRequest(BaseModel):
     file_id: str
-    raw_image_base64: str = Field(..., min_length=10)
-    masked_image_base64: str = Field(..., min_length=10)
+    raw_image_base64: Optional[str] = Field(default=None, min_length=10)
+    masked_image_base64: Optional[str] = Field(default=None, min_length=10)
+    raw_image_url: Optional[str] = None
+    masked_image_url: Optional[str] = None
 
 
 @router.post("/api/anthropic")
@@ -106,6 +108,8 @@ def upload_wardrobe_images(request: WardrobeUploadRequest):
             file_id=request.file_id,
             raw_image_base64=request.raw_image_base64,
             masked_image_base64=request.masked_image_base64,
+            raw_image_url=request.raw_image_url,
+            masked_image_url=request.masked_image_url,
         )
         return result
     except R2StorageError as exc:
