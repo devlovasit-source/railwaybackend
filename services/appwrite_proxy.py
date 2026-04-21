@@ -1,5 +1,7 @@
 import os
 import json
+import time
+import asyncio
 from typing import Any, Dict, List, Optional
 
 import httpx
@@ -155,6 +157,10 @@ class AppwriteProxy:
         }
         timeout_seconds = float(os.getenv("APPWRITE_TIMEOUT_SECONDS", "8"))
         self._http = httpx.Client(timeout=timeout_seconds)
+        self._http_async = httpx.AsyncClient(timeout=timeout_seconds)
+        self.max_retries = max(1, int(os.getenv("APPWRITE_HTTP_MAX_RETRIES", "3")))
+        self.retry_delay_seconds = max(0.05, float(os.getenv("APPWRITE_HTTP_RETRY_DELAY_SECONDS", "0.25")))
+        self._retryable_statuses = {429, 500, 502, 503, 504}
 
     def _normalize_resource(self, resource: str) -> str:
         key = str(resource or "").strip()
@@ -221,28 +227,119 @@ class AppwriteProxy:
         payload: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         self._ensure_config()
-        try:
-            response = self._http.request(
-                method=method,
-                url=url,
-                headers=self._headers(),
-                params=params,
-                json=payload,
-            )
-        except httpx.HTTPError as exc:
-            raise AppwriteProxyError(f"Appwrite connection failed: {exc}") from exc
-        if response.status_code >= 400:
+        last_error: Exception | None = None
+        for attempt in range(self.max_retries):
+            try:
+                response = self._http.request(
+                    method=method,
+                    url=url,
+                    headers=self._headers(),
+                    params=params,
+                    json=payload,
+                )
+            except httpx.RequestError as exc:
+                last_error = exc
+                if attempt >= self.max_retries - 1:
+                    raise AppwriteProxyError(f"Appwrite connection failed: {exc}") from exc
+                time.sleep(self.retry_delay_seconds * (2 ** attempt))
+                continue
+
+            status_code = int(getattr(response, "status_code", 0) or 0)
+            if status_code < 400:
+                if not response.text:
+                    return {}
+                try:
+                    return response.json()
+                except Exception as exc:
+                    raise AppwriteProxyError("Appwrite returned invalid JSON response.") from exc
+
+            # Never retry non-rate-limit 4xx: these are client-side request/auth/path errors.
+            if 400 <= status_code < 500 and status_code != 429:
+                raise AppwriteProxyError(
+                    f"Appwrite request failed ({status_code}): {response.text}"
+                )
+
+            if status_code in self._retryable_statuses and attempt < self.max_retries - 1:
+                time.sleep(self.retry_delay_seconds * (2 ** attempt))
+                continue
+
             raise AppwriteProxyError(
-                f"Appwrite request failed ({response.status_code}): {response.text}"
+                f"Appwrite request failed ({status_code}): {response.text}"
             )
-        if not response.text:
-            return {}
-        try:
-            return response.json()
-        except Exception as exc:
-            raise AppwriteProxyError("Appwrite returned invalid JSON response.") from exc
+
+        raise AppwriteProxyError(f"Appwrite request failed: {last_error or 'unknown error'}")
+
+    async def _request_async(
+        self,
+        method: str,
+        url: str,
+        *,
+        params: Optional[Dict[str, Any]] = None,
+        payload: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        self._ensure_config()
+        last_error: Exception | None = None
+        for attempt in range(self.max_retries):
+            try:
+                response = await self._http_async.request(
+                    method=method,
+                    url=url,
+                    headers=self._headers(),
+                    params=params,
+                    json=payload,
+                )
+            except httpx.RequestError as exc:
+                last_error = exc
+                if attempt >= self.max_retries - 1:
+                    raise AppwriteProxyError(f"Appwrite connection failed: {exc}") from exc
+                await asyncio.sleep(self.retry_delay_seconds * (2 ** attempt))
+                continue
+
+            status_code = int(getattr(response, "status_code", 0) or 0)
+            if status_code < 400:
+                if not response.text:
+                    return {}
+                try:
+                    return response.json()
+                except Exception as exc:
+                    raise AppwriteProxyError("Appwrite returned invalid JSON response.") from exc
+
+            if 400 <= status_code < 500 and status_code != 429:
+                raise AppwriteProxyError(
+                    f"Appwrite request failed ({status_code}): {response.text}"
+                )
+
+            if status_code in self._retryable_statuses and attempt < self.max_retries - 1:
+                await asyncio.sleep(self.retry_delay_seconds * (2 ** attempt))
+                continue
+
+            raise AppwriteProxyError(
+                f"Appwrite request failed ({status_code}): {response.text}"
+            )
+
+        raise AppwriteProxyError(f"Appwrite request failed: {last_error or 'unknown error'}")
 
     def close(self) -> None:
+        try:
+            self._http.close()
+        except Exception:
+            pass
+        try:
+            loop = asyncio.get_running_loop()
+            loop.create_task(self._http_async.aclose())
+        except RuntimeError:
+            try:
+                asyncio.run(self._http_async.aclose())
+            except Exception:
+                pass
+        except Exception:
+            pass
+
+    async def close_async(self) -> None:
+        try:
+            await self._http_async.aclose()
+        except Exception:
+            pass
         try:
             self._http.close()
         except Exception:
@@ -298,6 +395,65 @@ class AppwriteProxy:
 
         if int(offset) == 0:
             data = self._request(
+                "GET",
+                self._url(collection_id),
+            )
+            docs = data.get("documents", [])
+            if isinstance(docs, list):
+                return {
+                    "documents": docs,
+                    "total": data.get("total"),
+                    "used_query_syntax": False,
+                }
+        return {"documents": [], "total": None, "used_query_syntax": False}
+
+    async def _list_documents_page_async(
+        self,
+        collection_id: str,
+        *,
+        page_limit: int,
+        offset: int,
+        queries: Optional[List[Any]] = None,
+    ) -> Dict[str, Any]:
+        query_tokens = list(queries or [])
+        query_tokens.extend(
+            [
+                {"method": "limit", "values": [int(page_limit)]},
+                {"method": "offset", "values": [int(offset)]},
+            ]
+        )
+        serialized_tokens = [self._serialize_query_token(token) for token in query_tokens]
+        indexed_queries: Dict[str, Any] = {}
+        for idx, token in enumerate(serialized_tokens):
+            indexed_queries[f"queries[{idx}]"] = token
+
+        param_candidates: List[Dict[str, Any]] = [
+            {"queries[]": serialized_tokens},
+            {"queries": serialized_tokens},
+            indexed_queries,
+            {"limit": int(page_limit), "offset": int(offset)},
+        ]
+        for params in param_candidates:
+            try:
+                data = await self._request_async(
+                    "GET",
+                    self._url(collection_id),
+                    params=params,
+                )
+                docs = data.get("documents", [])
+                if isinstance(docs, list):
+                    return {
+                        "documents": docs,
+                        "total": data.get("total"),
+                        "used_query_syntax": ("queries[]" in params or "queries" in params),
+                    }
+            except AppwriteProxyError:
+                continue
+            except Exception:
+                continue
+
+        if int(offset) == 0:
+            data = await self._request_async(
                 "GET",
                 self._url(collection_id),
             )
@@ -369,6 +525,74 @@ class AppwriteProxy:
                 if len(filtered_docs) >= target_count:
                     break
 
+            if len(docs) < page_limit:
+                break
+            raw_offset += page_limit
+
+        page_docs = filtered_docs[safe_offset : safe_offset + safe_limit]
+        has_more = len(filtered_docs) > (safe_offset + len(page_docs))
+        return {
+            "documents": page_docs,
+            "total": None,
+            "has_more": has_more,
+            "next_offset": safe_offset + len(page_docs) if has_more else None,
+        }
+
+    async def _list_documents_local_filtered_async(
+        self,
+        collection_id: str,
+        *,
+        user_field: Optional[str],
+        user_id: Optional[str],
+        occasion: Optional[str],
+        thread_id: Optional[str],
+        request_id: Optional[str],
+        status: Optional[str],
+        type: Optional[str],
+        order_query: Optional[Dict[str, Any]],
+        limit: int,
+        offset: int,
+    ) -> Dict[str, Any]:
+        safe_limit = max(1, int(limit))
+        safe_offset = max(0, int(offset))
+        target_count = safe_offset + safe_limit + 1
+        page_limit = min(100, max(25, safe_limit))
+        raw_offset = 0
+        max_scan = max(target_count * 5, 500)
+
+        filtered_docs: List[Dict[str, Any]] = []
+        seen_ids = set()
+        while len(filtered_docs) < target_count and raw_offset < max_scan:
+            page = await self._list_documents_page_async(
+                collection_id,
+                page_limit=page_limit,
+                offset=raw_offset,
+                queries=[order_query] if order_query else [],
+            )
+            docs = page.get("documents", [])
+            if not docs:
+                break
+            for d in docs:
+                doc_id = str(d.get("$id", ""))
+                if doc_id and doc_id in seen_ids:
+                    continue
+                if not self._matches_user(d, user_field, user_id):
+                    continue
+                if occasion and str(d.get("occasion", "")) != str(occasion):
+                    continue
+                if thread_id and str(d.get("threadId", "")) != str(thread_id):
+                    continue
+                if request_id and str(d.get("request_id", "")) != str(request_id):
+                    continue
+                if status and str(d.get("status", "")).strip().lower() != str(status).strip().lower():
+                    continue
+                if type and str(d.get("type", "")).strip().lower() != str(type).strip().lower():
+                    continue
+                if doc_id:
+                    seen_ids.add(doc_id)
+                filtered_docs.append(d)
+                if len(filtered_docs) >= target_count:
+                    break
             if len(docs) < page_limit:
                 break
             raw_offset += page_limit
@@ -536,10 +760,121 @@ class AppwriteProxy:
         }
         return payload if return_meta else docs
 
+    async def list_documents_async(
+        self,
+        resource: str,
+        *,
+        user_id: Optional[str] = None,
+        occasion: Optional[str] = None,
+        thread_id: Optional[str] = None,
+        request_id: Optional[str] = None,
+        status: Optional[str] = None,
+        type: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0,
+        return_meta: bool = False,
+    ):
+        resource = self._normalize_resource(resource)
+        collection_id = self._collection_id(resource)
+        user_field = self.user_field_map.get(resource)
+        try:
+            page_max = int(os.getenv("APPWRITE_PAGE_MAX", "100"))
+        except Exception:
+            page_max = 100
+        safe_limit = max(1, min(int(limit), max(1, page_max)))
+        safe_offset = max(0, int(offset))
+        order_query = self.order_query_map.get(resource)
+
+        query_tokens: List[Any] = []
+        if order_query:
+            query_tokens.append(order_query)
+        if user_field and user_id:
+            query_tokens.append(self._equal_query(user_field, str(user_id)))
+        if occasion:
+            query_tokens.append(self._equal_query("occasion", str(occasion)))
+        if thread_id:
+            query_tokens.append(self._equal_query("threadId", str(thread_id)))
+        if request_id:
+            query_tokens.append(self._equal_query("request_id", str(request_id)))
+        if status:
+            query_tokens.append(self._equal_query("status", str(status)))
+        if type:
+            query_tokens.append(self._equal_query("type", str(type)))
+
+        page = await self._list_documents_page_async(
+            collection_id,
+            page_limit=safe_limit,
+            offset=safe_offset,
+            queries=query_tokens,
+        )
+        docs = page.get("documents", [])
+        total = page.get("total")
+        used_query_syntax = bool(page.get("used_query_syntax"))
+        filters_requested = bool((user_field and user_id) or occasion or thread_id or request_id or status or type)
+        low_result_with_filter = filters_requested and safe_offset == 0 and len(docs) <= 1
+        fallback_needed = ((not used_query_syntax) and (filters_requested or bool(order_query))) or low_result_with_filter
+
+        if fallback_needed:
+            fallback = await self._list_documents_local_filtered_async(
+                collection_id,
+                user_field=user_field,
+                user_id=user_id,
+                occasion=occasion,
+                thread_id=thread_id,
+                request_id=request_id,
+                status=status,
+                type=type,
+                order_query=order_query,
+                limit=safe_limit,
+                offset=safe_offset,
+            )
+            docs = fallback.get("documents", [])
+            payload = {
+                "documents": docs,
+                "meta": {
+                    "limit": safe_limit,
+                    "offset": safe_offset,
+                    "has_more": bool(fallback.get("has_more")),
+                    "next_offset": fallback.get("next_offset"),
+                    "total": None,
+                    "mode": "local_fallback",
+                },
+            }
+            return payload if return_meta else docs
+
+        has_more = False
+        next_offset = None
+        try:
+            if total is not None:
+                has_more = (safe_offset + len(docs)) < int(total)
+            else:
+                has_more = len(docs) >= safe_limit
+        except Exception:
+            has_more = len(docs) >= safe_limit
+        if has_more:
+            next_offset = safe_offset + len(docs)
+        payload = {
+            "documents": docs,
+            "meta": {
+                "limit": safe_limit,
+                "offset": safe_offset,
+                "has_more": has_more,
+                "next_offset": next_offset,
+                "total": total,
+                "mode": "query" if used_query_syntax else "plain_params",
+            },
+        }
+        return payload if return_meta else docs
+
     def get_document(self, resource: str, document_id: str) -> Dict[str, Any]:
         resource = self._normalize_resource(resource)
         collection_id = self._collection_id(resource)
         return self._request("GET", self._url(collection_id, document_id))
+
+    async def get_document_async(self, resource: str, document_id: str) -> Dict[str, Any]:
+        resource = self._normalize_resource(resource)
+        collection_id = self._collection_id(resource)
+        return await self._request_async("GET", self._url(collection_id, document_id))
 
     def create_document(self, resource: str, data: Dict[str, Any], document_id: str = "unique()") -> Dict[str, Any]:
         resource = self._normalize_resource(resource)
@@ -547,13 +882,30 @@ class AppwriteProxy:
         payload = {"documentId": document_id, "data": data}
         return self._request("POST", self._url(collection_id), payload=payload)
 
+    async def create_document_async(self, resource: str, data: Dict[str, Any], document_id: str = "unique()") -> Dict[str, Any]:
+        resource = self._normalize_resource(resource)
+        collection_id = self._collection_id(resource)
+        payload = {"documentId": document_id, "data": data}
+        return await self._request_async("POST", self._url(collection_id), payload=payload)
+
     def update_document(self, resource: str, document_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
         resource = self._normalize_resource(resource)
         collection_id = self._collection_id(resource)
         payload = {"data": data}
         return self._request("PATCH", self._url(collection_id, document_id), payload=payload)
 
+    async def update_document_async(self, resource: str, document_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        resource = self._normalize_resource(resource)
+        collection_id = self._collection_id(resource)
+        payload = {"data": data}
+        return await self._request_async("PATCH", self._url(collection_id, document_id), payload=payload)
+
     def delete_document(self, resource: str, document_id: str) -> None:
         resource = self._normalize_resource(resource)
         collection_id = self._collection_id(resource)
         self._request("DELETE", self._url(collection_id, document_id))
+
+    async def delete_document_async(self, resource: str, document_id: str) -> None:
+        resource = self._normalize_resource(resource)
+        collection_id = self._collection_id(resource)
+        await self._request_async("DELETE", self._url(collection_id, document_id))

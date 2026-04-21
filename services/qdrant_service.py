@@ -2,6 +2,10 @@ import os
 from dotenv import load_dotenv
 
 from qdrant_client import QdrantClient
+try:
+    from qdrant_client import AsyncQdrantClient
+except Exception:
+    AsyncQdrantClient = None
 from qdrant_client.models import PointStruct, Distance, VectorParams
 from services.image_fingerprint import hamming_distance_hex
 
@@ -27,26 +31,37 @@ class QdrantService:
             self.image_vector_size = 512
         self._initialized = False
         self.client = None
+        self.async_client = None
         self._vector_name_cache = {}
         self._vector_dim_cache = {}
         self._disabled_reason = None
         self._init_error = None
+        try:
+            self.upsert_dedupe_threshold = float(os.getenv("QDRANT_UPSERT_DEDUPE_THRESHOLD", "0.99"))
+        except Exception:
+            self.upsert_dedupe_threshold = 0.99
 
         if self.url:
             try:
                 self.client = QdrantClient(url=self.url, api_key=self.api_key)
+                if AsyncQdrantClient is not None:
+                    self.async_client = AsyncQdrantClient(url=self.url, api_key=self.api_key)
                 self._disabled_reason = None
             except Exception as e:
                 self._disabled_reason = "client_init_failed"
                 self._init_error = str(e)
                 print("Qdrant client init failed:", str(e))
                 self.client = None
+                self.async_client = None
         else:
             self._disabled_reason = "missing_qdrant_url"
             self._init_error = "QDRANT_URL not set"
 
     def enabled(self) -> bool:
         return self.client is not None
+
+    def async_enabled(self) -> bool:
+        return self.async_client is not None
 
     def _ensure_ready(self) -> bool:
         if not self.enabled():
@@ -429,6 +444,19 @@ class QdrantService:
         if not self._ensure_ready():
             return
         try:
+            user_id = str((payload or {}).get("userId") or "").strip()
+            if vector and user_id:
+                duplicate = self.find_duplicate(vector, user_id, threshold=self.upsert_dedupe_threshold)
+                dup_id = str(duplicate.get("id") or "").strip()
+                if duplicate.get("is_duplicate") and dup_id and dup_id != str(item_id):
+                    print(
+                        f"Upsert skipped: near-duplicate vector detected for user={user_id} "
+                        f"existing={dup_id} incoming={item_id} score={duplicate.get('score')}"
+                    )
+                    return
+        except Exception:
+            pass
+        try:
             self.client.upsert(
                 collection_name=self.collection,
                 points=[PointStruct(id=item_id, vector=self._point_vector(self.collection, vector), payload=payload)],
@@ -452,6 +480,19 @@ class QdrantService:
             return
         if not vector:
             return
+        try:
+            user_id = str((payload or {}).get("userId") or "").strip()
+            if user_id:
+                duplicate = self.find_image_duplicate(vector, user_id, threshold=self.upsert_dedupe_threshold)
+                dup_id = str(duplicate.get("id") or "").strip()
+                if duplicate.get("is_duplicate") and dup_id and dup_id != str(point_id):
+                    print(
+                        f"Image upsert skipped: near-duplicate image vector detected for user={user_id} "
+                        f"existing={dup_id} incoming={point_id} score={duplicate.get('score')}"
+                    )
+                    return
+        except Exception:
+            pass
         try:
             self.client.upsert(
                 collection_name=self.image_collection,
@@ -756,6 +797,7 @@ class QdrantService:
         if not self.enabled():
             return {
                 "enabled": False,
+                "async_enabled": bool(self.async_client is not None),
                 "initialized": False,
                 "url_configured": bool(self.url),
                 "api_key_configured": bool(self.api_key),
@@ -765,6 +807,7 @@ class QdrantService:
 
         details = {
             "enabled": True,
+            "async_enabled": bool(self.async_client is not None),
             "initialized": self._initialized,
             "url_configured": bool(self.url),
             "api_key_configured": bool(self.api_key),
@@ -784,6 +827,13 @@ class QdrantService:
             details["error"] = str(e)
 
         return details
+
+    async def close_async(self) -> None:
+        try:
+            if self.async_client is not None and hasattr(self.async_client, "close"):
+                await self.async_client.close()
+        except Exception:
+            pass
 
 
 # -------------------------

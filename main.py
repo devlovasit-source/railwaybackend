@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 from typing import Callable
 from typing import Any, Dict
 from uuid import uuid4
@@ -12,7 +13,6 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 import importlib.util
-import os
 
 # ?? QDRANT SERVICE
 from services.qdrant_service import qdrant_service
@@ -42,6 +42,11 @@ def _load_optional_router(module_name: str, attr: str = "router"):
     except Exception as exc:
         logger.warning("router load failed module=%s error=%s", module_name, exc)
         return None
+
+
+def _split_csv_env(name: str, default: str) -> list[str]:
+    raw = str(os.getenv(name, default) or "").strip()
+    return [part.strip() for part in raw.split(",") if part.strip()]
 
 
 # -------------------------
@@ -248,6 +253,12 @@ async def startup_event():
 async def shutdown_event():
     logger.info("shutdown begin")
     try:
+        async_client = getattr(qdrant_service, "async_client", None)
+        if async_client is not None and hasattr(async_client, "close"):
+            await async_client.close()
+    except Exception as e:
+        logger.exception("qdrant async shutdown failed: %s", e)
+    try:
         client = getattr(qdrant_service, "client", None)
         if client is not None and hasattr(client, "close"):
             await asyncio.to_thread(client.close)
@@ -304,12 +315,21 @@ async def global_exception_handler(request: Request, exc: Exception):
 # -------------------------
 # MIDDLEWARE
 # -------------------------
+_cors_origins = _split_csv_env(
+    "CORS_ALLOW_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000,https://your-production-app.com",
+)
+_cors_credentials = str(os.getenv("CORS_ALLOW_CREDENTIALS", "true")).strip().lower() in {"1", "true", "yes", "on"}
+if "*" in _cors_origins and _cors_credentials:
+    logger.warning("CORS_ALLOW_ORIGINS includes '*' so credentials have been disabled for safety.")
+    _cors_credentials = False
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=_cors_origins,
+    allow_credentials=_cors_credentials,
+    allow_methods=_split_csv_env("CORS_ALLOW_METHODS", "GET,POST,PUT,DELETE,OPTIONS"),
+    allow_headers=_split_csv_env("CORS_ALLOW_HEADERS", "Authorization,Content-Type,X-Request-ID"),
 )
 
 app.add_middleware(StreamBodyLimitMiddleware, max_bytes=settings.upload_max_bytes)

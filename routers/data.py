@@ -2135,7 +2135,7 @@ def _http_error_from_proxy(exc: AppwriteProxyError) -> HTTPException:
 
 
 @router.get("/{resource}")
-def list_documents(
+async def list_documents(
     resource: str,
     user_id: Optional[str] = None,
     occasion: Optional[str] = None,
@@ -2148,7 +2148,7 @@ def list_documents(
 ):
     try:
         normalized_resource = _normalize_resource_key(resource)
-        page = proxy.list_documents(
+        page = await proxy.list_documents_async(
             normalized_resource,
             user_id=user_id,
             occasion=occasion,
@@ -2185,10 +2185,10 @@ def list_documents(
 
 
 @router.get("/{resource}/{document_id}")
-def get_document(resource: str, document_id: str):
+async def get_document(resource: str, document_id: str):
     try:
         normalized_resource = _normalize_resource_key(resource)
-        doc = proxy.get_document(normalized_resource, document_id)
+        doc = await proxy.get_document_async(normalized_resource, document_id)
         return {"document": doc}
     except AppwriteProxyError as exc:
         if resource == "users" and "(404)" in str(exc):

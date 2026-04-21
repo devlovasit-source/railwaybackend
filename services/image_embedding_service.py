@@ -29,9 +29,6 @@ _REMOTE_MODEL_NAME = os.getenv("IMAGE_EMBEDDING_MODEL_NAME", "openai/clip-vit-ba
 _URL_VECTOR_CACHE: dict[str, list] = {}
 _URL_VECTOR_CACHE_MAX = 512
 
-_EMBEDDING_PROVIDER = str(os.getenv("IMAGE_EMBEDDING_PROVIDER", "clip")).strip().lower()
-
-
 def _cache_get(url: str):
     return _URL_VECTOR_CACHE.get(url)
 
@@ -83,11 +80,6 @@ def _load_model():
 def encode_image_bytes(image_bytes: bytes) -> list:
     if not image_bytes:
         return []
-    if _EMBEDDING_PROVIDER == "openai":
-        print(
-            "WARNING: OpenAI text embeddings cannot be used for image similarity. "
-            "Falling back to local CLIP."
-        )
     try:
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         model, processor = _load_model()
