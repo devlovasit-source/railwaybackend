@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import traceback
 from typing import Callable
 from typing import Any, Dict
 from uuid import uuid4
@@ -548,6 +549,8 @@ def analyze_compat(payload: VisionCompatRequest):
         from routers.vision import vision_analyze_core
     except Exception as exc:
         logger.exception("vision analyze import failed: %s", exc)
+        print(f"[vision] analyze import failed: {exc}")
+        traceback.print_exc()
         raise HTTPException(status_code=503, detail=f"Analyze endpoint unavailable: {exc}")
 
     user_id = str(payload.user_id or payload.userId or "demo_user").strip() or "demo_user"
