@@ -388,8 +388,14 @@ def _normalize_outfit_payload(payload: Dict[str, Any], request_user_id: Optional
 
     if image_url:
         normalized["image_url"] = image_url
+        normalized["imageUrl"] = image_url
+        normalized["raw_image_url"] = image_url
+        normalized["rawImageUrl"] = image_url
     if masked_url:
         normalized["masked_url"] = masked_url
+        normalized["maskedUrl"] = masked_url
+        normalized["image_masked_url"] = masked_url
+        normalized["maskedImageUrl"] = masked_url
     if image_id:
         normalized["image_id"] = image_id
     if masked_id:
@@ -2600,8 +2606,14 @@ def create_document(request: CreateRequest):
 
             if image_url:
                 payload["image_url"] = image_url
+                payload["imageUrl"] = image_url
+                payload["raw_image_url"] = image_url
+                payload["rawImageUrl"] = image_url
             if masked_url:
                 payload["masked_url"] = masked_url
+                payload["maskedUrl"] = masked_url
+                payload["image_masked_url"] = masked_url
+                payload["maskedImageUrl"] = masked_url
 
         doc = _create_document_with_schema_retries(
             resource=resource,
