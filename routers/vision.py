@@ -379,11 +379,13 @@ def _shape_vision_output(raw_data, color_hex: str, decoded_img, cv_image) -> dic
 def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
     vision_input_base64, bg_removed, bg_fallback_reason = _remove_bg_first(image_base64)
     if not bg_removed:
+        reason = str(bg_fallback_reason or "unknown_bg_failure").strip()
+        print(f"[vision] Background removal failed: {reason}")
         raise HTTPException(
             status_code=422,
             detail=(
                 "Background removal failed. Please take a photo of the garment "
-                "against a plain, contrasting background."
+                f"against a plain, contrasting background. reason={reason}"
             ),
         )
 
