@@ -75,6 +75,28 @@ ONNX_MODEL_CANDIDATES = [
     "model.onnx",
 ]
 ONNX_INPUT_SIZES = [1024]
+BG_MAX_INPUT_BYTES = int(os.getenv("BG_MAX_INPUT_BYTES", os.getenv("UPLOAD_MAX_BYTES", str(50 * 1024 * 1024))))
+BG_MAX_LONG_EDGE = max(1024, int(os.getenv("BG_MAX_LONG_EDGE", "2048")))
+BG_MAX_PIXELS = max(2_000_000, int(os.getenv("BG_MAX_PIXELS", "16000000")))
+
+
+def _resize_for_bg(image: Image.Image) -> Image.Image:
+    w, h = image.size
+    if w <= 0 or h <= 0:
+        return image
+    long_edge = max(w, h)
+    pixels = w * h
+    scale = 1.0
+    if long_edge > BG_MAX_LONG_EDGE:
+        scale = min(scale, float(BG_MAX_LONG_EDGE) / float(long_edge))
+    if pixels > BG_MAX_PIXELS:
+        scale = min(scale, (float(BG_MAX_PIXELS) / float(pixels)) ** 0.5)
+    if scale >= 0.999:
+        return image
+    nw = max(1, int(round(w * scale)))
+    nh = max(1, int(round(h * scale)))
+    print(f"BG resize: {w}x{h} -> {nw}x{nh}")
+    return image.resize((nw, nh), Image.LANCZOS)
 
 def _to_model_input_tensor(image: Image.Image, side: int = 1024):
     rgb = image.convert("RGB").resize((side, side), Image.BILINEAR)
@@ -270,8 +292,11 @@ def remove_background_sync(image_base64: str):
         except Exception:
             raise HTTPException(status_code=400, detail="Invalid base64 image")
 
-        if len(image_data) > 5 * 1024 * 1024:
-            raise HTTPException(status_code=413, detail="Image too large")
+        if len(image_data) > BG_MAX_INPUT_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail=f"Image too large for background remover (max {BG_MAX_INPUT_BYTES} bytes)",
+            )
 
         if model_instance is None and onnx_instance is None:
             detail = "Model unavailable"
@@ -283,6 +308,7 @@ def remove_background_sync(image_base64: str):
             return _original_png_response(image_data, detail)
 
         orig_image = Image.open(io.BytesIO(image_data)).convert("RGB")
+        orig_image = _resize_for_bg(orig_image)
         w, h = orig_image.size
 
         if model_instance is not None:

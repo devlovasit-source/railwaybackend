@@ -1,5 +1,6 @@
 import base64
 import concurrent.futures
+import io
 import os
 import time
 from collections import Counter
@@ -7,6 +8,7 @@ from collections import Counter
 import cv2
 import numpy as np
 from fastapi import APIRouter, HTTPException, Request, status
+from PIL import Image
 from pydantic import BaseModel, Field
 from sklearn.cluster import KMeans
 
@@ -29,6 +31,8 @@ except Exception:
     remove_background_sync = None
 
 router = APIRouter()
+VISION_MAX_INPUT_BYTES = int(os.getenv("VISION_MAX_INPUT_BYTES", os.getenv("UPLOAD_MAX_BYTES", str(50 * 1024 * 1024))))
+VISION_MODEL_MAX_LONG_EDGE = max(1024, int(os.getenv("VISION_MODEL_MAX_LONG_EDGE", "1600")))
 
 
 def _env_bool(name: str, default: bool) -> bool:
@@ -85,6 +89,26 @@ def _normalize_base64_for_model(value: str) -> str:
 def _to_png_data_uri(base64_text: str) -> str:
     text = _normalize_base64_for_model(base64_text)
     return f"data:image/png;base64,{text}"
+
+
+def _prepare_vision_payload(base64_text: str) -> str:
+    raw = _normalize_base64_for_model(base64_text)
+    data = base64.b64decode(raw, validate=True)
+    if len(data) > VISION_MAX_INPUT_BYTES:
+        raise HTTPException(status_code=413, detail=f"image payload too large (max {VISION_MAX_INPUT_BYTES} bytes)")
+    image = Image.open(io.BytesIO(data)).convert("RGB")
+    w, h = image.size
+    if w <= 0 or h <= 0:
+        raise HTTPException(status_code=400, detail="invalid image payload")
+    long_edge = max(w, h)
+    if long_edge > VISION_MODEL_MAX_LONG_EDGE:
+        scale = float(VISION_MODEL_MAX_LONG_EDGE) / float(long_edge)
+        nw = max(1, int(round(w * scale)))
+        nh = max(1, int(round(h * scale)))
+        image = image.resize((nw, nh), Image.LANCZOS)
+    buf = io.BytesIO()
+    image.save(buf, format="JPEG", quality=90, optimize=True)
+    return base64.b64encode(buf.getvalue()).decode("utf-8")
 
 
 def _input_has_alpha(image_base64: str) -> bool:
@@ -363,11 +387,9 @@ def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
             ),
         )
 
-    base64_data = _normalize_base64_for_model(vision_input_base64)
+    base64_data = _prepare_vision_payload(vision_input_base64)
     try:
         img_data = base64.b64decode(base64_data, validate=True)
-        if len(img_data) > 12 * 1024 * 1024:
-            raise HTTPException(status_code=413, detail="image payload too large (max 12MB)")
         np_arr = np.frombuffer(img_data, np.uint8)
         decoded = cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
         if decoded is None:
