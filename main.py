@@ -344,19 +344,9 @@ async def rate_limit_middleware(request: Request, call_next):
         return await call_next(request)
     redis_ready = await is_redis_rate_limit_ready()
     if settings.rate_limit_require_redis and not redis_ready:
-        status_code = 429 if settings.rate_limit_fail_closed else 503
-        return JSONResponse(
-            status_code=status_code,
-            content={
-                "success": False,
-                "request_id": str(getattr(request.state, "request_id", "") or ""),
-                "error": {
-                    "code": "RATE_LIMIT_BACKEND_UNAVAILABLE",
-                    "message": "Rate-limit backend unavailable",
-                },
-            },
-            headers={"Retry-After": str(settings.rate_limit_window_seconds)},
-        )
+        # Graceful degradation: use in-process fallback limiter from security_limits
+        # instead of hard-failing every request when Redis is temporarily unavailable.
+        logger.warning("rate limit redis unavailable; using local fallback windows")
     request_id = str(getattr(request.state, "request_id", "") or "")
     ip = extract_client_ip(request.headers, request.client.host if request.client else None)
     user_id = ""
@@ -593,7 +583,11 @@ def analyze_compat(payload: VisionCompatRequest):
     user_id = str(payload.user_id or payload.userId or "demo_user").strip() or "demo_user"
     try:
         core = vision_analyze_core(payload.image_base64, user_id)
-    except HTTPException:
+    except HTTPException as exc:
+        # Keep user-correctable errors as-is (e.g., 400/413/422),
+        # but never leak upstream/server 5xx to the mobile flow.
+        if int(getattr(exc, "status_code", 500)) >= 500:
+            return _manual_vision_fallback_payload(str(getattr(exc, "detail", exc)))
         raise
     except Exception as exc:
         return _manual_vision_fallback_payload(str(exc))
