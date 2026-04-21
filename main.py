@@ -523,6 +523,8 @@ def analyze_compat(payload: VisionCompatRequest):
     user_id = str(payload.user_id or payload.userId or "demo_user").strip() or "demo_user"
     try:
         core = vision_analyze_core(payload.image_base64, user_id)
+    except HTTPException:
+        raise
     except Exception as exc:
         user_input_payload = {
             "name": "",

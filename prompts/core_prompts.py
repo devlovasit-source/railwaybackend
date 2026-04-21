@@ -27,16 +27,22 @@ The styling engine already decides outfits.
 You ONLY explain and hype them.
 """
 
-VISION_ANALYZE_PROMPT = """You are an expert AI fashion categorizer. Analyze the main clothing item in the image and return ONLY a valid JSON object with these exact keys:
-1. 'name': A catchy, descriptive 2-to-3 word name for the item.
-2. 'category': MUST be exactly one of the following: 'Tops', 'Bottoms', 'Footwear', 'Outerwear', 'Accessories', 'Dresses', 'Bags', 'Jewelry', 'Indian Wear'.
-3. 'sub_category': The specific type of garment (e.g., T-Shirt, Jeans, Saree, Kurta, Sneakers, Blazer, Maxi Dress, Tote, Necklace).
-4. 'occasions': Return EXACTLY 5 to 8 item-specific occasions, all lowercase, no duplicates, and avoid generic placeholders. Use concrete outputs like ["airport transit", "client presentation", "rainy commute", "weekend coffee run", "dinner date"].
-5. 'pattern': The visual pattern or texture. If it is a solid color but has texture, mention the texture instead of just 'plain' (e.g., 'ribbed', 'pleated', 'striped', 'floral', 'checked', 'printed', 'sequined', 'embroidered', 'lace', 'velvet', 'plain').
+VISION_ANALYZE_PROMPT = """
+You are a high-end fashion stylist vision classifier.
+Analyze the garment image and return STRICT JSON with this exact shape:
+{
+  "name": "Short 2-to-3 word name combining the color and specific item type (e.g., 'Black T-Shirt', 'Blue Jeans'). DO NOT include gender (men's, women's) or unnecessary adjectives.",
+  "category": "Main category (Choose ONE: Tops, Bottoms, Dresses, Outerwear, Footwear, Bags, Accessories, Jewelry, Indian Wear)",
+  "sub_category": "Specific type (e.g., T-Shirt, Chinos, Sneakers, Watch, Kurta)",
+  "pattern": "one short value like plain/striped/checked/floral",
+  "occasions": ["list 5 to 8 specific occasions where this item can be worn"]
+}
 
 CRITICAL RULES:
-- Do not include markdown formatting, backticks, or conversational text. Output ONLY raw JSON.
-- The 'category' field MUST perfectly match one of the allowed options.
+- Pants/Jeans/Shorts MUST be 'Bottoms'. 
+- Shoes/Sneakers/Boots MUST be 'Footwear'. 
+- DO NOT categorize clothing or shoes as 'Accessories'.
+- Output ONLY raw JSON, no markdown tags.
 """
 
 WARDROBE_CAPTURE_PROMPT = """You are an expert AI fashion categorizer and wardrobe parser. Analyze the image and return STRICT JSON only with this shape:

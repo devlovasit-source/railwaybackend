@@ -292,6 +292,18 @@ def _ollama_generate_url() -> str:
         )
         or ""
     ).strip().rstrip("/")
+    if not base:
+        raise RuntimeError("OLLAMA_VISION_URL is not configured.")
+    allow_local = str(os.getenv("OLLAMA_VISION_ALLOW_LOCAL", "false")).strip().lower() in {"1", "true", "yes", "on"}
+    lowered = base.lower()
+    if not allow_local and (
+        "localhost" in lowered
+        or "127.0.0.1" in lowered
+        or lowered.startswith("http://0.0.0.0")
+    ):
+        raise RuntimeError(
+            "OLLAMA_VISION_URL is pointing to localhost. Set OLLAMA_VISION_URL to your Runpod proxy URL."
+        )
     return f"{base}/generate" if base.endswith("/api") else f"{base}/api/generate"
 
 

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field, field_validator
 from typing import List, Dict, Any
+import json
 import re
 import os
 import logging
@@ -22,20 +23,107 @@ from services.task_queue import enqueue_task
 
 # 🔥 NEW
 from services.weather_service import get_hourly_weather
+from services.thread_memory_service import thread_memory_service
 
 router = APIRouter()
 logger = logging.getLogger("ahvi.routers.chat")
 
+def _env_int(name: str, default: int, min_value: int, max_value: int) -> int:
+    raw = str(os.getenv(name, str(default))).strip()
+    try:
+        value = int(raw)
+    except Exception:
+        value = default
+    return max(min_value, min(max_value, value))
 
-def _build_history(messages: List["Message"]) -> List[Dict[str, Any]]:
+
+MAX_CHAT_MESSAGES = _env_int("CHAT_MESSAGES_MAX", 300, 30, 1000)
+MAX_HISTORY_CONTEXT = _env_int("CHAT_HISTORY_CONTEXT_MAX", 200, 20, 800)
+
+
+def _build_history(messages: List["Message"], limit: int = MAX_HISTORY_CONTEXT) -> List[Dict[str, Any]]:
     history: List[Dict[str, Any]] = []
-    for msg in messages[-8:]:
+    for msg in messages[-limit:]:
         role = str(getattr(msg, "role", "user")).lower()
         content = str(getattr(msg, "content", "")).strip()
         if not content:
             continue
         history.append({"role": role, "text": content})
     return history
+
+
+def _parse_memory_payload(payload: Any) -> Dict[str, Any]:
+    if isinstance(payload, dict):
+        return payload
+    if isinstance(payload, str):
+        text = payload.strip()
+        if not text:
+            return {}
+        try:
+            decoded = json.loads(text)
+            if isinstance(decoded, dict):
+                return decoded
+            return {"summary": text}
+        except Exception:
+            return {"summary": text}
+    return {}
+
+
+def _merge_history(memory_history: List[Dict[str, Any]], request_history: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    base: List[Dict[str, str]] = []
+    incoming: List[Dict[str, str]] = []
+
+    for row in memory_history:
+        if not isinstance(row, dict):
+            continue
+        role = str(row.get("role") or "").strip().lower()
+        text = str(row.get("text") or row.get("content") or "").strip()
+        if role and text:
+            base.append({"role": role, "text": text})
+
+    for row in request_history:
+        if not isinstance(row, dict):
+            continue
+        role = str(row.get("role") or "").strip().lower()
+        text = str(row.get("text") or row.get("content") or "").strip()
+        if role and text:
+            incoming.append({"role": role, "text": text})
+
+    overlap = 0
+    max_overlap = min(len(base), len(incoming))
+    for size in range(max_overlap, 0, -1):
+        if base[-size:] == incoming[:size]:
+            overlap = size
+            break
+
+    merged = [*base, *incoming[overlap:]]
+    cleaned: List[Dict[str, Any]] = []
+    last_role = ""
+    last_text = ""
+    for row in merged:
+        role = str(row.get("role") or "").strip().lower()
+        text = str(row.get("text") or "").strip()
+        if not role or not text:
+            continue
+        if role == last_role and text == last_text:
+            continue
+        cleaned.append({"role": role, "text": text})
+        last_role = role
+        last_text = text
+    return cleaned[-MAX_HISTORY_CONTEXT:]
+
+
+def _sanitize_thread_id(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    safe: List[str] = []
+    for ch in text:
+        if ch.isalnum() or ch in {"-", "_", ":"}:
+            safe.append(ch)
+        else:
+            safe.append("_")
+    return "".join(safe)[:160]
 
 
 # -------------------------
@@ -55,7 +143,7 @@ class Message(BaseModel):
 
 
 class TextChatRequest(BaseModel):
-    messages: List[Message] = Field(..., min_length=1, max_length=30)
+    messages: List[Message] = Field(..., min_length=1, max_length=MAX_CHAT_MESSAGES)
     language: str = Field(default="en", min_length=2, max_length=8)
     current_memory: Any = Field(default_factory=dict)
     user_profile: Dict[str, Any] = Field(default_factory=dict)
@@ -64,6 +152,8 @@ class TextChatRequest(BaseModel):
     user_id: str | None = None
     userID: str | None = None
     module_context: str | None = None
+    thread_id: str | None = None
+    threadId: str | None = None
 
 
 class OutfitFeedbackRequest(BaseModel):
@@ -146,12 +236,25 @@ def text_chat(request: TextChatRequest, http_request: Request):
     except Exception as e:
         logger.warning("weather lookup failed user_id=%s error=%s", request.user_id or request.userID or "user_1", e)
 
+    user_id = request.user_id or request.userID or "user_1"
+    memory_payload = _parse_memory_payload(request.current_memory)
+    requested_thread_id = request.thread_id or request.threadId or memory_payload.get("thread_id")
+    fallback_thread = f"{str(request.module_context or 'chat').strip().lower() or 'chat'}:default"
+    thread_id = _sanitize_thread_id(requested_thread_id) or _sanitize_thread_id(fallback_thread) or "chat_default"
+
     # -------------------------
     # ORCHESTRATOR CALL
     # -------------------------
-    history = _build_history(request.messages[:-1]) if len(request.messages) > 1 else []
-    memory_history = request.current_memory.get("history", []) if isinstance(request.current_memory, dict) else []
-    merged_history = [h for h in memory_history if isinstance(h, dict)] + history
+    history = _build_history(request.messages[:-1], limit=MAX_HISTORY_CONTEXT) if len(request.messages) > 1 else []
+    memory_history = memory_payload.get("history", []) if isinstance(memory_payload, dict) else []
+    stored_memory = thread_memory_service.get(user_id=user_id, thread_id=thread_id)
+    stored_history = stored_memory.get("history", []) if isinstance(stored_memory, dict) else []
+    merged_summary = str(stored_memory.get("summary") or memory_payload.get("summary") or "").strip()
+    stored_plus_memory = _merge_history(
+        [h for h in stored_history if isinstance(h, dict)],
+        [h for h in memory_history if isinstance(h, dict)],
+    )
+    merged_history = _merge_history(stored_plus_memory, history)
 
     slot_hints: Dict[str, Any] = {}
     if request.module_context:
@@ -164,14 +267,18 @@ def text_chat(request: TextChatRequest, http_request: Request):
     try:
         result = ahvi_orchestrator.run(
             text=english_input,
-            user_id=request.user_id or request.userID or "user_1",
+            user_id=user_id,
             context={
-                "memory": request.current_memory,
+                "memory": {
+                    **memory_payload,
+                    "summary": merged_summary,
+                    "thread_id": thread_id,
+                },
                 "user_profile": request.user_profile,
                 "wardrobe_items": request.wardrobe_items,
                 "wardrobe_attached": bool(request.wardrobe_attached),
                 "module_context": request.module_context,
-                "history": merged_history[-20:],
+                "history": merged_history,
                 "slots": slot_hints,
                 "request_id": str(getattr(http_request.state, "request_id", "") or ""),
 
@@ -208,7 +315,7 @@ def text_chat(request: TextChatRequest, http_request: Request):
                 args=[message, target_lang],
                 kwargs={"request_id": request_id},
                 kind="audio_generate",
-                user_id=request.user_id or request.userID or "user_1",
+                user_id=user_id,
                 request_id=request_id,
                 source="api:/api/text",
                 meta={"task_type": "generate_audio"},
@@ -217,6 +324,16 @@ def text_chat(request: TextChatRequest, http_request: Request):
             audio_job_id = "offline"
     except Exception:
         audio_job_id = "offline"
+
+    persisted = thread_memory_service.append_turns(
+        user_id=user_id,
+        thread_id=thread_id,
+        turns=[
+            {"role": "user", "text": english_input},
+            {"role": "assistant", "text": message},
+        ],
+        incoming_summary=str(memory_payload.get("summary") or ""),
+    )
 
     # -------------------------
     # FINAL RESPONSE
@@ -234,8 +351,11 @@ def text_chat(request: TextChatRequest, http_request: Request):
         "meta": {
             **result.get("meta", {}),
             "weather": weather_data,
-            "history_used": len(merged_history[-20:])
+            "history_used": len(merged_history),
+            "thread_id": thread_id,
         },
+        "thread_id": thread_id,
+        "updated_memory": persisted.get("summary", ""),
         "audio_job_id": audio_job_id,
     }
 

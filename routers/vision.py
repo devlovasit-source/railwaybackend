@@ -236,17 +236,18 @@ MASTER_VISION_PROMPT = """
 You are a high-end fashion stylist vision classifier.
 Analyze the garment image and return STRICT JSON with this exact shape:
 {
-  "name": "Highly descriptive name including the target gender if apparent (e.g., 'Men's Plain White Shirt', 'Women's Floral Midi Dress', 'Unisex Black Hoodie') if possible try to give in clour with sub category",
+  "name": "Short 2-to-3 word name combining the color and specific item type (e.g., 'Black T-Shirt', 'Blue Jeans'). DO NOT include gender (men's, women's) or unnecessary adjectives.",
   "category": "Main category (Choose ONE: Tops, Bottoms, Dresses, Outerwear, Footwear, Bags, Accessories, Jewelry, Indian Wear)",
   "sub_category": "Specific type (e.g., T-Shirt, Chinos, Sneakers, Watch, Kurta)",
-  "pattern": "one short value like plain/striped/checked/floral/graphic/printed/textured/denim",
+  "pattern": "one short value like plain/striped/checked/floral",
   "occasions": ["list 5 to 8 specific occasions where this item can be worn"]
 }
 
-Rules:
-- Accurately detect Footwear, Bags, and Accessories if applicable.
-- Return EXACTLY 5 to 8 specific, highly creative occasions.
-- Use lowercase strings for pattern and occasions.
+CRITICAL RULES:
+- Pants/Jeans/Shorts MUST be 'Bottoms'. 
+- Shoes/Sneakers/Boots MUST be 'Footwear'. 
+- DO NOT categorize clothing or shoes as 'Accessories'.
+- Output ONLY raw JSON, no markdown tags.
 """
 
 
@@ -358,6 +359,14 @@ def analyze_image(request: ImageAnalyzeRequest):
 
 def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
     vision_input_base64, bg_removed, bg_fallback_reason = _remove_bg_first(image_base64)
+    if not bg_removed:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "Background removal failed. Please take a photo of the garment "
+                "against a plain, contrasting background."
+            ),
+        )
 
     base64_data = _normalize_base64_for_model(vision_input_base64)
     try:
