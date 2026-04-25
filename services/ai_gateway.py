@@ -357,7 +357,14 @@ def _ollama_generate_url() -> str:
     ).strip().rstrip("/")
     if not base:
         raise RuntimeError("OLLAMA_VISION_URL is not configured.")
-    allow_local = str(os.getenv("OLLAMA_VISION_ALLOW_LOCAL", "false")).strip().lower() in {"1", "true", "yes", "on"}
+    allow_local_raw = os.getenv("OLLAMA_VISION_ALLOW_LOCAL", os.getenv("OLLAMA_ALLOW_LOCAL"))
+    if allow_local_raw is None:
+        # Developer-friendly default:
+        # if no explicit flag is set, allow localhost vision endpoints.
+        # Production deployments should still point to a remote URL.
+        allow_local = True
+    else:
+        allow_local = str(allow_local_raw).strip().lower() in {"1", "true", "yes", "on"}
     lowered = base.lower()
     if not allow_local and (
         "localhost" in lowered
@@ -365,7 +372,9 @@ def _ollama_generate_url() -> str:
         or lowered.startswith("http://0.0.0.0")
     ):
         raise RuntimeError(
-            "OLLAMA_VISION_URL is pointing to localhost. Set OLLAMA_VISION_URL to your Runpod proxy URL."
+            "OLLAMA_VISION_URL is pointing to localhost. "
+            "For local Ollama, set OLLAMA_VISION_ALLOW_LOCAL=true. "
+            "For remote mode, set OLLAMA_VISION_URL to your Runpod proxy URL."
         )
     return f"{base}/generate" if base.endswith("/api") else f"{base}/api/generate"
 
@@ -383,15 +392,19 @@ def ollama_vision_json(
     p = _policy(case)
     timeout = int(timeout_seconds or p.timeout_seconds or int(os.getenv("OLLAMA_VISION_TIMEOUT_SECONDS", "1000")))
     vision_num_ctx = max(256, int(os.getenv("OLLAMA_VISION_NUM_CTX", "512")))
+    vision_num_predict = max(64, int(os.getenv("OLLAMA_VISION_NUM_PREDICT", "256")))
     payload = {
         "prompt": prompt,
         "images": [str(image_base64 or "").strip()],
         "stream": False,
-        "format": "json",
+        # NOTE:
+        # Ollama vision models can return HTTP 500 when `format: "json"` is used
+        # together with image inputs (observed on local 0.21.x builds).
+        # We request plain text and parse JSON robustly via `parse_json_object`.
         "keep_alive": "0s",
         "options": {
             "num_ctx": vision_num_ctx,
-            "num_predict": 512,
+            "num_predict": vision_num_predict,
         },
     }
 
@@ -405,8 +418,11 @@ def ollama_vision_json(
                 timeout=timeout,
             )
             if response.status_code >= 400:
+                body_snippet = (response.text or "").strip()
+                if len(body_snippet) > 400:
+                    body_snippet = body_snippet[:400] + "...(truncated)"
                 raise RuntimeError(
-                    f"Ollama vision request failed model={model} status={response.status_code}"
+                    f"Ollama vision request failed model={model} status={response.status_code} body={body_snippet or '<empty>'}"
                 )
             raw = response.json().get("response", "{}")
             parsed = parse_json_object(raw)

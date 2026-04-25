@@ -73,7 +73,7 @@ def _image_duplicate_threshold() -> float:
 def _vision_ai_timeout_seconds() -> int:
     try:
         val = int(os.getenv("VISION_ANALYZE_AI_TIMEOUT_SECONDS", "18"))
-        return max(3, min(val, 60))
+        return max(3, min(val, 300))
     except Exception:
         return 18
 
@@ -88,14 +88,22 @@ def _normalize_base64_for_model(value: str) -> str:
     return text.split(",", 1)[1] if "," in text else text
 
 
+def _decode_base64_bytes(value: str) -> bytes:
+    text = _normalize_base64_for_model(value)
+    text += "=" * ((4 - len(text) % 4) % 4)
+    try:
+        return base64.b64decode(text)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"invalid image payload: {exc}")
+
+
 def _to_png_data_uri(base64_text: str) -> str:
     text = _normalize_base64_for_model(base64_text)
     return f"data:image/png;base64,{text}"
 
 
 def _prepare_vision_payload(base64_text: str) -> str:
-    raw = _normalize_base64_for_model(base64_text)
-    data = base64.b64decode(raw, validate=True)
+    data = _decode_base64_bytes(base64_text)
     if len(data) > VISION_MAX_INPUT_BYTES:
         raise HTTPException(status_code=413, detail=f"image payload too large (max {VISION_MAX_INPUT_BYTES} bytes)")
     image = Image.open(io.BytesIO(data)).convert("RGB")
@@ -115,8 +123,7 @@ def _prepare_vision_payload(base64_text: str) -> str:
 
 def _input_has_alpha(image_base64: str) -> bool:
     try:
-        b64 = _normalize_base64_for_model(image_base64)
-        img_data = base64.b64decode(b64, validate=True)
+        img_data = _decode_base64_bytes(image_base64)
         np_arr = np.frombuffer(img_data, np.uint8)
         decoded = cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
         return bool(decoded is not None and decoded.ndim == 3 and decoded.shape[2] == 4)
@@ -212,56 +219,6 @@ def _hex_to_color_name(hex_color: str) -> str:
     return "Multicolor"
 
 
-# Emergency fallbacks used only when model output is missing fields.
-def _extract_foreground_mask(decoded_img) -> np.ndarray | None:
-    try:
-        if decoded_img is None:
-            return None
-        if decoded_img.ndim == 3 and decoded_img.shape[2] == 4:
-            return decoded_img[:, :, 3] > 18
-
-        bgr = decoded_img if decoded_img.ndim == 3 else None
-        if bgr is None:
-            return None
-        rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-        hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
-        maxc, minc = rgb.max(axis=2), rgb.min(axis=2)
-        near_white = (rgb[:, :, 0] >= 236) & (rgb[:, :, 1] >= 236) & (rgb[:, :, 2] >= 236) & ((maxc - minc) <= 20)
-        saturated = hsv[:, :, 1] > 18
-        mask = (~near_white) | saturated
-
-        mask_u8 = mask.astype(np.uint8) * 255
-        kernel = np.ones((3, 3), np.uint8)
-        mask_u8 = cv2.morphologyEx(mask_u8, cv2.MORPH_OPEN, kernel, iterations=1)
-        mask_u8 = cv2.morphologyEx(mask_u8, cv2.MORPH_CLOSE, kernel, iterations=1)
-        final_mask = mask_u8 > 0
-        return final_mask if final_mask.sum() >= 200 else None
-    except Exception:
-        return None
-
-
-def _infer_garment_hint(decoded_img) -> tuple[str, str]:
-    mask = _extract_foreground_mask(decoded_img)
-    if mask is None:
-        return ("Tops", "Shirt")
-    ys, xs = np.where(mask)
-    if len(xs) == 0 or len(ys) == 0:
-        return ("Tops", "Shirt")
-    box_w, box_h = max(1, xs.max() - xs.min() + 1), max(1, ys.max() - ys.min() + 1)
-    if float(box_h) / float(box_w) > 1.15:
-        return ("Bottoms", "Trousers")
-    return ("Tops", "Shirt")
-
-
-def _infer_pattern(cv_image) -> str:
-    try:
-        gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 60, 160)
-        return "checked" if (float(np.count_nonzero(edges)) / float(edges.size)) > 0.09 else "plain"
-    except Exception:
-        return "plain"
-
-
 MASTER_VISION_PROMPT = """
 You are a high-end fashion stylist vision classifier.
 Analyze the garment image and return STRICT JSON with this exact shape:
@@ -339,7 +296,7 @@ def _normalize_category_from_subcategory(category: str, sub_category: str) -> st
     return cat
 
 
-def _shape_vision_output(raw_data, color_hex: str, decoded_img, cv_image) -> dict:
+def _shape_vision_output(raw_data, color_hex: str) -> dict:
     data = dict(raw_data) if isinstance(raw_data, dict) else {}
 
     name = _clean_text(data.get("name") or data.get("title"))
@@ -348,29 +305,24 @@ def _shape_vision_output(raw_data, color_hex: str, decoded_img, cv_image) -> dic
     pattern = _clean_text(data.get("pattern") or data.get("texture")).lower()
     occasions = _normalize_occasions(data.get("occasions") or data.get("occasion"))
 
-    if not category or not sub_category:
-        print("[vision] AI missing category/sub_category -> using emergency geometry fallback")
-        fallback_cat, fallback_sub = _infer_garment_hint(decoded_img)
-        category = category or fallback_cat
-        sub_category = sub_category or fallback_sub
-
+    # Strict mode: never guess missing core fields; let manual-entry flow handle it.
     if not name:
-        name = f"{_hex_to_color_name(color_hex)} {sub_category}"
-
+        raise ValueError("Vision output missing required field: name")
+    if not category:
+        raise ValueError("Vision output missing required field: category")
+    if not sub_category:
+        raise ValueError("Vision output missing required field: sub_category")
     if not pattern:
-        print("[vision] AI missing pattern -> using emergency edge fallback")
-        pattern = _infer_pattern(cv_image)
-
+        raise ValueError("Vision output missing required field: pattern")
     if len(occasions) < 3:
-        print("[vision] AI missing occasions -> using emergency generic fallback")
-        occasions = ["daily wear", "casual outing", "weekend", "travel", "office", "hangout"]
+        raise ValueError("Vision output missing required field: occasions (min 3)")
 
     # Guardrail: if LLM gives a mismatched category (e.g., shoes as accessories),
     # infer the main category from sub-category keywords.
     category = _normalize_category_from_subcategory(category, sub_category)
 
     if category not in _VALID_CATEGORIES:
-        category = "Tops"
+        raise ValueError(f"Vision output category is invalid: {category}")
 
     return {
         "name": name,
@@ -435,7 +387,7 @@ def vision_analyze_core(image_base64: str, user_id: str = "demo_user"):
         print(f"[vision] AI Vision Error: {e}")
         raise Exception(f"The Vision AI failed: {e}")
 
-    final_data = _shape_vision_output(final_data, extracted_color_hex, decoded, cv_image)
+    final_data = _shape_vision_output(final_data, extracted_color_hex)
     final_data["userId"] = user_id
 
     image_duplicate = {"checked": False, "is_duplicate": False, "id": None, "score": 0.0}

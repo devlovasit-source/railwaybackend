@@ -3,6 +3,7 @@ import os
 from typing import Any, Dict, List
 
 from fastapi import APIRouter, Request
+from pydantic import BaseModel, Field
 
 from brain.orchestrator import ahvi_orchestrator
 from brain.response_validator import validate_orchestrator_response
@@ -95,13 +96,20 @@ def _deterministic_fallback(request_id: str, errors: List[str]) -> Dict[str, Any
     }
 
 
+class RunAiRequest(BaseModel):
+    message: str = Field(..., min_length=1, max_length=12000)
+    context: Dict[str, Any] = Field(default_factory=dict)
+    userId: str | None = None
+    user_id: str | None = None
+
+
 @router.post("/run")
-def run_ai(payload: dict, request: Request):
-    raw_context = payload.get("context", {})
+def run_ai(payload: RunAiRequest, request: Request):
+    raw_context = payload.context or {}
     context = dict(raw_context) if isinstance(raw_context, dict) else {}
     request_id = _norm_text(getattr(request.state, "request_id", "")) or "ai-route"
-    message = _norm_text(payload.get("message"))
-    user_id = _norm_text(payload.get("userId")) or None
+    message = _norm_text(payload.message)
+    user_id = _norm_text(payload.userId or payload.user_id) or None
 
     policy = _runtime_policy(message, context, request_id)
     max_chars = int(policy.get("max_input_chars", 8000))

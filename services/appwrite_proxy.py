@@ -699,17 +699,6 @@ class AppwriteProxy:
             has_more = bool(fallback.get("has_more"))
             next_offset = fallback.get("next_offset")
             
-            # --- DEBUG BLOCK FOR FALLBACK SCAN ---
-            if resource == "outfits":
-                print("\n=== WARDROBE FETCH DEBUG (FALLBACK MODE) ===")
-                print(f"User ID Searched: {user_id}")
-                print(f"Collection ID Used: {collection_id}")
-                print(f"Total Items Found For You: {len(docs)}")
-                if len(docs) > 0:
-                    print(f"Sample Item Found: {docs[0].get('name')} - {docs[0].get('category')}")
-                print("============================================\n")
-            # -------------------------------------
-            
             payload = {
                 "documents": docs,
                 "meta": {
@@ -735,17 +724,6 @@ class AppwriteProxy:
 
         if has_more:
             next_offset = safe_offset + len(docs)
-
-        # --- DEBUG BLOCK FOR STANDARD QUERY ---
-        if resource == "outfits":
-            print("\n=== WARDROBE FETCH DEBUG (STANDARD QUERY) ===")
-            print(f"User ID Searched: {user_id}")
-            print(f"Collection ID Used: {collection_id}")
-            print(f"Total Items Found For You: {len(docs)}")
-            if len(docs) > 0:
-                print(f"Sample Item Found: {docs[0].get('name')} - {docs[0].get('category')}")
-            print("=============================================\n")
-        # --------------------------------------
 
         payload = {
             "documents": docs,

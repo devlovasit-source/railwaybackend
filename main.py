@@ -250,6 +250,22 @@ async def startup_event():
     except Exception as e:
         logger.exception("qdrant startup failed: %s", e)
 
+    # Optional: warm up background-removal model at boot so first user request
+    # does not pay download/init latency.
+    try:
+        bg_enabled = os.getenv("ENABLE_BG_REMOVER", "false").lower() in ("1", "true", "yes")
+        bg_preload = os.getenv("BG_PRELOAD_ON_STARTUP", "0").lower() in ("1", "true", "yes")
+        if bg_enabled and bg_preload:
+            import routers.bg_remover as bg_remover  # local import to avoid hard dependency
+
+            await asyncio.to_thread(bg_remover.load_model)
+            if getattr(bg_remover, "model_last_error", None):
+                logger.warning("bg preload incomplete error=%s", getattr(bg_remover, "model_last_error", "unknown"))
+            else:
+                logger.info("bg preload complete")
+    except Exception as e:
+        logger.warning("bg preload skipped error=%s", e)
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -352,7 +368,12 @@ async def rate_limit_middleware(request: Request, call_next):
     ip = extract_client_ip(request.headers, request.client.host if request.client else None)
     user_id = ""
     if isinstance(getattr(request.state, "user", None), dict):
-        user_id = str(request.state.user.get("$id") or request.state.user.get("id") or "")
+        user_id = str(
+            request.state.user.get("$id")
+            or request.state.user.get("id")
+            or request.state.user.get("user_id")
+            or ""
+        )
     identity = user_id or ip
     allowed, remaining = await check_rate_limit(
         bucket_key=f"{identity}:{request.url.path}",
@@ -483,7 +504,7 @@ class BgCompatRequest(BaseModel):
 
 @app.post("/api/background/remove-bg")
 @app.post("/api/remove-bg")
-def remove_bg_compat(payload: BgCompatRequest):
+async def remove_bg_compat(payload: BgCompatRequest):
     """
     Always expose background-removal endpoint even when optional router gating
     prevents router mounting. This keeps frontend flow stable.
@@ -504,11 +525,11 @@ def remove_bg_compat(payload: BgCompatRequest):
     fallback = ""
     for attempt in range(max_attempts):
         try:
-            result = remove_background_sync(image_base64)
+            result = await asyncio.to_thread(remove_background_sync, image_base64)
         except Exception as exc:
             fallback = f"Background removal failed: {exc}"
             if attempt < max_attempts - 1:
-                time.sleep(2)
+                await asyncio.sleep(2)
                 continue
             raise HTTPException(status_code=503, detail=fallback)
 
@@ -519,7 +540,7 @@ def remove_bg_compat(payload: BgCompatRequest):
         fallback_text = str(fallback or "").lower()
         warmup_hint = any(token in fallback_text for token in ("warm", "load", "download", "init"))
         if warmup_hint and attempt < max_attempts - 1:
-            time.sleep(2)
+            await asyncio.sleep(2)
             continue
         raise HTTPException(
             status_code=503,
@@ -542,6 +563,7 @@ class VisionCompatRequest(BaseModel):
 
 
 def _manual_vision_fallback_payload(error_message: str) -> dict:
+    message = "Vision model unavailable. Please enter item details manually."
     user_input_payload = {
         "name": "",
         "category": "",
@@ -553,7 +575,8 @@ def _manual_vision_fallback_payload(error_message: str) -> dict:
     return {
         "success": False,
         "requires_user_input": True,
-        "message": "Vision model unavailable. Please enter item details manually.",
+        "message": message,
+        "error": message,
         "data": user_input_payload,
         "items": [
             {
@@ -612,6 +635,8 @@ def analyze_compat(payload: VisionCompatRequest):
     analysis = core.get("data") if isinstance(core.get("data"), dict) else {}
     meta = core.get("meta") if isinstance(core.get("meta"), dict) else {}
     similar_items = core.get("similar_items") if isinstance(core.get("similar_items"), list) else []
+    if not str(analysis.get("name") or "").strip():
+        return _manual_vision_fallback_payload("Vision analyzer produced empty item metadata.")
     duplicate = {
         "is_duplicate": bool(meta.get("probable_duplicate")),
         "id": meta.get("image_duplicate_point_id") or meta.get("pixel_duplicate_point_id"),

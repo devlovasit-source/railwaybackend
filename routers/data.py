@@ -10,7 +10,7 @@ from threading import Lock
 from urllib.parse import urlparse
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ConfigDict
 import requests
 try:
     import redis
@@ -181,6 +181,11 @@ class DeleteRequest(BaseModel):
 class OutfitDuplicateCheckRequest(BaseModel):
     data: Dict[str, Any]
     user_id: Optional[str] = None
+
+
+class UserProfileUpsertRequest(BaseModel):
+    data: Dict[str, Any] | None = None
+    model_config = ConfigDict(extra="allow")
 
 
 _HEX_COLOR_RE = re.compile(r"#(?:[0-9a-fA-F]{6})\b")
@@ -380,22 +385,21 @@ def _normalize_outfit_payload(payload: Dict[str, Any], request_user_id: Optional
     if not occasions:
         occasions = []
 
-    # Keep required URL parity resilient across client payload variants.
-    if not image_url and masked_url:
-        image_url = masked_url
-    if not masked_url and image_url:
-        masked_url = image_url
-
+    # Persist only canonical URL fields for Appwrite schema compatibility.
+    normalized.pop("imageUrl", None)
+    normalized.pop("raw_image_url", None)
+    normalized.pop("rawImageUrl", None)
+    normalized.pop("raw_url", None)
+    normalized.pop("rawUrl", None)
+    normalized.pop("maskedUrl", None)
+    normalized.pop("image_masked_url", None)
+    normalized.pop("maskedImageUrl", None)
+    normalized.pop("processed_image_url", None)
+    normalized.pop("processedImageUrl", None)
     if image_url:
         normalized["image_url"] = image_url
-        normalized["imageUrl"] = image_url
-        normalized["raw_image_url"] = image_url
-        normalized["rawImageUrl"] = image_url
     if masked_url:
         normalized["masked_url"] = masked_url
-        normalized["maskedUrl"] = masked_url
-        normalized["image_masked_url"] = masked_url
-        normalized["maskedImageUrl"] = masked_url
     if image_id:
         normalized["image_id"] = image_id
     if masked_id:
@@ -2580,40 +2584,39 @@ def create_document(request: CreateRequest):
             payload.setdefault("masked_id", str(uuid.uuid4()))
             payload.setdefault("qdrant_point_id", str(uuid.uuid4()))
 
-            # Heal URL fields before write, so strict schemas don't fail intermittently.
+            # Require canonical uploaded URLs; do not synthesize fallback URLs.
             image_url = str(payload.get("image_url") or "").strip()
             masked_url = str(payload.get("masked_url") or "").strip()
-            if not image_url and masked_url:
-                image_url = masked_url
-            if not masked_url and image_url:
-                masked_url = image_url
-
             if not image_url or not masked_url:
-                try:
-                    storage = R2Storage()
-                    image_id = str(payload.get("image_id") or "").strip()
-                    masked_id = str(payload.get("masked_id") or "").strip()
-                    if not image_url and storage.raw_public_url and image_id:
-                        raw_name = _derive_prefixed_png_name(image_id, "raw_")
-                        if raw_name:
-                            image_url = f"{storage.raw_public_url.rstrip('/')}/{raw_name}"
-                    if not masked_url and storage.wardrobe_public_url and masked_id:
-                        masked_name = _derive_prefixed_png_name(masked_id, "wardrobe_")
-                        if masked_name:
-                            masked_url = f"{storage.wardrobe_public_url.rstrip('/')}/{masked_name}"
-                except Exception:
-                    pass
+                raise HTTPException(
+                    status_code=400,
+                    detail="Both image_url and masked_url are required and must come from R2 upload response.",
+                )
+
+            try:
+                storage = R2Storage()
+                raw_prefix = str(getattr(storage, "raw_public_url", "") or "").strip().rstrip("/")
+                masked_prefix = str(getattr(storage, "wardrobe_public_url", "") or "").strip().rstrip("/")
+                if raw_prefix and not image_url.startswith(f"{raw_prefix}/"):
+                    raise HTTPException(
+                        status_code=400,
+                        detail="image_url must be an R2 raw-images URL from upload response.",
+                    )
+                if masked_prefix and not masked_url.startswith(f"{masked_prefix}/"):
+                    raise HTTPException(
+                        status_code=400,
+                        detail="masked_url must be an R2 wardrobe-images URL from upload response.",
+                    )
+            except HTTPException:
+                raise
+            except Exception:
+                # If storage config is not available, keep strict required-field validation above.
+                pass
 
             if image_url:
                 payload["image_url"] = image_url
-                payload["imageUrl"] = image_url
-                payload["raw_image_url"] = image_url
-                payload["rawImageUrl"] = image_url
             if masked_url:
                 payload["masked_url"] = masked_url
-                payload["maskedUrl"] = masked_url
-                payload["image_masked_url"] = masked_url
-                payload["maskedImageUrl"] = masked_url
 
         doc = _create_document_with_schema_retries(
             resource=resource,
@@ -2844,9 +2847,12 @@ def delete_document(request: DeleteRequest):
 
 
 @router.put("/users/{user_id}")
-def upsert_user_profile(user_id: str, body: Dict[str, Any]):
+def upsert_user_profile(user_id: str, body: UserProfileUpsertRequest):
     try:
-        safe_body = _normalize_user_payload(body or {})
+        payload = body.data if isinstance(body.data, dict) and body.data else {}
+        if not payload and isinstance(getattr(body, "model_extra", None), dict):
+            payload = dict(body.model_extra or {})
+        safe_body = _normalize_user_payload(payload)
         # Write with schema drift tolerance for profile attributes.
         try:
             doc = _update_document_with_schema_retries(

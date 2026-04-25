@@ -26,11 +26,7 @@ extra_gated_fields:
 ---
 
 # BRIA Background Removal v2.0 Model Card
-<<<<<<< HEAD
 <p align="center"><img src="https://bria-public.s3.us-east-1.amazonaws.com/Bria-logo.svg" alt="BRIA Logo" width="200" /></p>
-=======
-<p align="center"><img src="https://platform.bria.ai/assets/Bria-logo-BdHFpNGW.svg" alt="BRIA Logo" width="200" /></p>
->>>>>>> 33f7745a316c84265f5a4206fc974c92a0ebbb22
 
 <!-- RMBG Card wrapper -->
 <div class="rmbg-card" style="position: relative; border-radius: 12px; overflow: hidden;">

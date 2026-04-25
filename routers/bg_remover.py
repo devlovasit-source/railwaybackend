@@ -2,17 +2,26 @@
 import io
 import base64
 import gc
-import torch
 import threading
 import time
+import tempfile
 import numpy as np
 import cv2
 from collections import deque
 from PIL import Image, ImageFilter
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, validator
-from transformers import AutoModelForImageSegmentation
 from fastapi import status
+
+try:
+    import torch
+except Exception:
+    torch = None
+
+try:
+    from transformers import AutoModelForImageSegmentation
+except Exception:
+    AutoModelForImageSegmentation = None
 
 try:
     from huggingface_hub import snapshot_download, login as hf_login
@@ -49,21 +58,72 @@ model_last_error = None
 model_lock = threading.Lock()
 model_fail_count = 0
 model_disabled_until = 0.0
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if torch is not None:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    _device_type = device.type
+else:
+    device = "cpu"
+    _device_type = "cpu"
 onnx_session = None
 onnx_lock = threading.Lock()
 onnx_last_error = None
 onnx_runtime_disabled = False
-_default_bg_use_torch = "1" if device.type == "cuda" else "0"
-USE_TORCH_MODEL = os.getenv("BG_USE_TORCH_MODEL", _default_bg_use_torch) == "1"
+_default_bg_use_torch = "1" if (_device_type == "cuda" and AutoModelForImageSegmentation is not None) else "0"
+USE_TORCH_MODEL = (
+    os.getenv("BG_USE_TORCH_MODEL", _default_bg_use_torch) == "1"
+    and torch is not None
+    and AutoModelForImageSegmentation is not None
+)
 BG_DISABLE_ONNX = os.getenv("BG_DISABLE_ONNX", "0") == "1"
 BG_AUTO_DOWNLOAD = os.getenv("BG_AUTO_DOWNLOAD", "1") == "1"
 BG_HF_REPO_ID = os.getenv("BG_HF_REPO_ID", "briaai/RMBG-2.0")
+BG_ALLOW_TORCH_FALLBACK = os.getenv("BG_ALLOW_TORCH_FALLBACK", "1") == "1"
+BG_DOWNLOAD_ONNX_ASSETS = os.getenv("BG_DOWNLOAD_ONNX_ASSETS", "0") == "1"
 
-print(f"Using device: {device}")
+print(f"Using device: {_device_type}")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "RMBG_2_0")
+
+
+def _path_has_rmbg_assets(path: str) -> bool:
+    try:
+        if not path or not os.path.exists(path):
+            return False
+        # Torch checkpoint assets (required for AutoModelForImageSegmentation).
+        if os.path.exists(os.path.join(path, "config.json")) and any(
+            os.path.exists(os.path.join(path, candidate))
+            for candidate in ("model.safetensors", "pytorch_model.bin", "pytorch_model.bin.index.json")
+        ):
+            return True
+        # ONNX fallback assets.
+        onnx_dir = os.path.join(path, "onnx")
+        if os.path.isdir(onnx_dir) and any(
+            os.path.exists(os.path.join(onnx_dir, candidate))
+            for candidate in (
+                "model_q4f16.onnx",
+                "model_q4.onnx",
+                "model_int8.onnx",
+                "model_uint8.onnx",
+                "model_quantized.onnx",
+                "model_fp16.onnx",
+                "model.onnx",
+            )
+        ):
+            return True
+    except Exception:
+        return False
+    return False
+
+
+_repo_default_model_path = os.path.join(BASE_DIR, "..", "RMBG_2_0")
+_cache_default_model_path = os.path.join(tempfile.gettempdir(), "ahvi_rmbg_2_0")
+_configured_model_path = str(os.getenv("BG_MODEL_PATH", "") or "").strip()
+if _configured_model_path:
+    MODEL_PATH = _configured_model_path
+elif _path_has_rmbg_assets(_repo_default_model_path):
+    MODEL_PATH = _repo_default_model_path
+else:
+    MODEL_PATH = _cache_default_model_path
 ONNX_DIR = os.path.join(MODEL_PATH, "onnx")
 ONNX_MODEL_CANDIDATES = [
     "model_q4f16.onnx",
@@ -100,6 +160,8 @@ def _resize_for_bg(image: Image.Image) -> Image.Image:
     return image.resize((nw, nh), Image.LANCZOS)
 
 def _to_model_input_tensor(image: Image.Image, side: int = 1024):
+    if torch is None:
+        raise RuntimeError("torch is not installed")
     rgb = image.convert("RGB").resize((side, side), Image.BILINEAR)
     arr = np.asarray(rgb).astype(np.float32) / 255.0
     arr = (arr - np.array([0.485, 0.456, 0.406], dtype=np.float32)) / np.array(
@@ -135,10 +197,15 @@ def _ensure_model_downloaded() -> str | None:
             hf_login(token, add_to_git_credential=False)
 
         print(f"Downloading model from {BG_HF_REPO_ID} to {MODEL_PATH} ...")
-        snapshot_download(
-            repo_id=BG_HF_REPO_ID,
-            local_dir=MODEL_PATH,
-        )
+        # Keep local startup stable by default: download only Torch assets.
+        # ONNX assets in RMBG repo are very large and can cause long cold starts.
+        kwargs = {
+            "repo_id": BG_HF_REPO_ID,
+            "local_dir": MODEL_PATH,
+        }
+        if not BG_DOWNLOAD_ONNX_ASSETS:
+            kwargs["ignore_patterns"] = ["onnx/*", "*.onnx", "*.png"]
+        snapshot_download(**kwargs)
     except Exception as exc:
         return f"Model download failed: {exc}"
 
@@ -151,6 +218,15 @@ def load_model():
 
     if model is not None:
         return model
+
+    if torch is None or AutoModelForImageSegmentation is None:
+        missing = []
+        if torch is None:
+            missing.append("torch")
+        if AutoModelForImageSegmentation is None:
+            missing.append("transformers")
+        model_last_error = f"Torch RMBG unavailable: missing {', '.join(missing)}"
+        return None
 
     now = time.time()
     if model_disabled_until and now < model_disabled_until:
@@ -306,6 +382,14 @@ def remove_background_sync(image_base64: str):
     if model_instance is None:
         onnx_instance = load_onnx_session()
 
+    # If ONNX is unavailable on CPU-only setups, transparently fall back to
+    # the Torch RMBG model so upload flow does not hard-fail.
+    if model_instance is None and onnx_instance is None and BG_ALLOW_TORCH_FALLBACK:
+        try:
+            model_instance = load_model()
+        except Exception:
+            model_instance = None
+
     try:
         try:
             base64_data = image_base64.split(",")[-1]
@@ -429,7 +513,7 @@ def remove_background_sync(image_base64: str):
         except Exception:
             pass
         try:
-            if torch.cuda.is_available():
+            if torch is not None and torch.cuda.is_available():
                 torch.cuda.empty_cache()
         except Exception:
             pass

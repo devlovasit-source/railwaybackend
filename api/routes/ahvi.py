@@ -18,14 +18,25 @@ class ChatRequest(BaseModel):
 
 @router.post("/ahvi/chat")
 def chat(req: ChatRequest):
+    message = str(req.message or "").strip()
+    if not message:
+        return JSONResponse(
+            status_code=422,
+            content={
+                "success": False,
+                "error": {
+                    "code": "INVALID_MESSAGE",
+                    "message": "message cannot be empty",
+                },
+            },
+        )
 
     result = ahvi_orchestrator.run(
-        text=req.message,
+        text=message,
         user_id=req.user_id,
         context=req.context or {}
     )
 
-    if not result.get("success", False):
-        return JSONResponse(status_code=500, content=result)
-
+    # Orchestrator can legitimately return success=False for business-level
+    # outcomes (e.g. graceful fallback); that's not a server crash.
     return result

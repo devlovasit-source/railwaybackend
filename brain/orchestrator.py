@@ -484,14 +484,69 @@ class AhviOrchestrator:
             logger.warning("orchestrator.outfits_load_failed request_id=%s error=%s", request_id, e)
             existing_hashes = set()
 
+        def _pick_first_text(node: Any, keys: list[str]) -> str:
+            if not isinstance(node, dict):
+                return ""
+            for key in keys:
+                value = str(node.get(key) or "").strip()
+                if value:
+                    return value
+            return ""
+
+        def _derive_outfit_image_url(outfit_obj: dict) -> str:
+            keys = [
+                "image_url",
+                "imageUrl",
+                "raw_image_url",
+                "rawImageUrl",
+                "masked_url",
+                "maskedUrl",
+                "masked_image_url",
+                "maskedImageUrl",
+            ]
+            direct = _pick_first_text(outfit_obj, keys)
+            if direct:
+                return direct
+            for part_key in ("top", "bottom", "shoes", "outerwear", "dress", "bag", "accessory"):
+                value = outfit_obj.get(part_key)
+                if isinstance(value, dict):
+                    part_url = _pick_first_text(value, keys)
+                    if part_url:
+                        return part_url
+            return ""
+
         for outfit in outfits:
             try:
                 outfit_hash = _hash_outfit(outfit)
                 if outfit_hash in existing_hashes:
                     continue
+                image_url = _derive_outfit_image_url(outfit if isinstance(outfit, dict) else {})
+                if not image_url:
+                    logger.warning(
+                        "orchestrator.outfit_save_skipped_missing_image request_id=%s user_id=%s",
+                        request_id,
+                        user_id,
+                    )
+                    continue
+                safe_doc = {
+                    **(outfit if isinstance(outfit, dict) else {}),
+                    "userId": user_id,
+                    "hash": outfit_hash,
+                    "name": str((outfit or {}).get("name") or "AI Outfit").strip(),
+                    "category": str((outfit or {}).get("category") or "Tops").strip(),
+                    "sub_category": str((outfit or {}).get("sub_category") or "Outfit").strip(),
+                    "color_code": str((outfit or {}).get("color_code") or "#000000").strip(),
+                    "pattern": str((outfit or {}).get("pattern") or "plain").strip().lower(),
+                    "occasions": (outfit or {}).get("occasions") if isinstance((outfit or {}).get("occasions"), list) else ["casual"],
+                    "image_url": image_url,
+                    "masked_url": str((outfit or {}).get("masked_url") or image_url).strip(),
+                    "status": str((outfit or {}).get("status") or "active").strip(),
+                    "worn": int((outfit or {}).get("worn") or 0),
+                    "liked": bool((outfit or {}).get("liked") or False),
+                }
                 doc = appwrite.create_document(
                     "outfits",
-                    {"userId": user_id, "hash": outfit_hash, **outfit},
+                    safe_doc,
                 )
                 saved_outfit_ids.append(doc.get("$id"))
                 existing_hashes.add(outfit_hash)

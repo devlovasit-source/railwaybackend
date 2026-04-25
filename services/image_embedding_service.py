@@ -98,8 +98,10 @@ def encode_image_base64(value: Any) -> list:
     text = _normalize_base64(value)
     if not text:
         return []
+    # Be tolerant to stripped padding from mobile/base64 transport.
+    text += "=" * ((4 - len(text) % 4) % 4)
     try:
-        image_bytes = base64.b64decode(text, validate=True)
+        image_bytes = base64.b64decode(text)
     except Exception:
         return []
     return encode_image_bytes(image_bytes)
